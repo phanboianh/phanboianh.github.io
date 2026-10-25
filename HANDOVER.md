@@ -1,5 +1,10 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0e. ĐÃ LÊN MẠNG (2026-10-25)
+- Web: **https://phanboianh.github.io**. Repo `phanboianh/phanboianh.github.io` (Public, Pages lấy nhánh main ở thư mục gốc). Git đã đăng nhập bằng `gh` (Homebrew) với tài khoản phanboianh. Email commit đặt trong repo này là phanboianh8063@gmail.com.
+- Đăng lại sau khi sửa: bấm đúp `Dang-len-mang.command` (git add/commit/push). Pages tự build lại trong khoảng 1–2 phút.
+- `.gitignore` bỏ qua `tools/sao-luu/`, `.DS_Store`, `*.tmp`, `__pycache__`. Trình chỉnh sửa (`chinh-sua.html`) cũng nằm trên mạng, nhưng không có máy chủ thì nó chỉ hiện trang báo "mở đúng cách", không sửa được gì.
+
 ## 0d. Cập nhật 2026-10-25 (lần 2) — bố cục ảnh trong từng sản phẩm
 - Mỗi sản phẩm (design và video) có trường `boCuc`: `trinhChieu` (mặc định: khung 16:10 cố định, lướt bằng scroll-snap, mũi tên ← →, dải ảnh nhỏ, nền là chính ảnh làm mờ thay cho viền đen), `luoi` (masonry 2 cột), `doc` (xếp dọc, ảnh đúng tỉ lệ, không còn nền đen). Hàm `gallery()` / `initGalleries()` trong site.js. Sản phẩm chỉ có 1 ảnh thì luôn xếp dọc.
 - Video: ô "Ảnh / video thêm" (`anh[]`) nhận cả file video (máy chủ tự nén), hiện dưới video chính theo bố cục đã chọn.

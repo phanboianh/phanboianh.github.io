@@ -140,4 +140,10 @@ Với sản phẩm dùng **thương hiệu thật** mà không phải đơn đ�
 
 ---
 
-*Khi muốn đưa website lên mạng (có đường link gửi cho khách), hãy nhắn Claude để được hướng dẫn từng bước, có cách miễn phí.*
+## 9. Đưa bản sửa lên mạng
+
+Website đang ở **https://phanboianh.github.io**. Sửa trong Trình chỉnh sửa xong **chỉ mới thay đổi trên máy bạn**. Muốn web trên mạng cập nhật theo:
+
+1. Bấm **Lưu** trong Trình chỉnh sửa.
+2. Vào Finder → `portfolio-web`, bấm đúp file **`Dang-len-mang.command`**.
+3. Thấy dòng ✅ *Đã đăng lên mạng* là xong. Đợi 1–2 phút rồi mở web, bấm **⌘ R** để tải lại.
