@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chọn phong cách</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=Cormorant+Garamond:ital@1&display=swap&subset=vietnamese" rel="stylesheet">
+<style>
+  /* Trang tổng: so sánh 3 bản thử phong cách */
+  :root { --bg: #f4f2ee; --ink: #161514; --mute: #6f6a63; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 'Be Vietnam Pro', system-ui, sans-serif; padding: clamp(20px, 5vw, 64px) clamp(16px, 5vw, 64px); }
+  h1 { font-size: clamp(28px, 4vw, 44px); letter-spacing: -.03em; }
+  .sub { color: var(--mute); margin: 8px 0 32px; max-width: 640px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  a.card { display: block; color: inherit; text-decoration: none; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgba(0, 0, 0, .06); transition: transform .3s, box-shadow .3s; }
+  a.card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0, 0, 0, .12); }
+  .sw { aspect-ratio: 16/10; position: relative; overflow: hidden; }
+  .sw video { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+  .sw b { position: absolute; left: 18px; bottom: 14px; font-size: 34px; line-height: 1; letter-spacing: -.03em; }
+  .a .sw { background: #0a0909; color: #eee8e1; } .a .sw b { font: italic 400 46px/1 'Cormorant Garamond', Georgia, serif; }
+  .b .sw { background: #f1eee7; color: #151413; border-bottom: 1px solid #ddd; } .b .sw b { font-weight: 700; text-transform: uppercase; } .b .sw video { opacity: .9; height: 46%; position: absolute; top: 18px; left: 18px; right: 18px; width: calc(100% - 36px); border-radius: 99px; }
+  .c .sw { background: radial-gradient(circle at 70% 0, #2b4fb8, #04060f 70%); color: #eef2ff; }
+  .info { padding: 18px; }
+  .info h2 { font-size: 18px; }
+  .info p { color: var(--mute); font-size: 14px; margin-top: 6px; }
+  .info ul { margin: 12px 0 0 18px; font-size: 14px; }
+  .go { display: inline-block; margin-top: 14px; font-weight: 700; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <h1>3 bản thử phong cách</h1>
+  <p class="sub">Cùng một nội dung (tác phẩm thật của bạn), ba cá tính khác nhau. Bấm vào từng bản, cuộn hết trang, rê chuột lên hình và video. Bạn có thể chọn một bản, hoặc ghép điểm thích từ nhiều bản.</p>
+  <div class="grid">
+    <a class="card a" href="a-cinema.html">
+      <div class="sw"><video src="../assets/video/p-lily-orbit.mp4" autoplay muted loop playsinline></video><b>Ánh Phan</b></div>
+      <div class="info"><h2>A — Cinema</h2><p>Đen, sang, như mở đầu một bộ phim.</p>
+        <ul><li>Showreel phủ kín màn hình, chữ serif lớn</li><li>Cuộn xuống thì poster chạy ngang như cuộn phim</li><li>Rê chuột lên tên video → video nổi theo chuột</li></ul>
+        <span class="go">Xem bản A →</span></div>
+    </a>
+    <a class="card b" href="b-editorial.html">
+      <div class="sw"><video src="../assets/video/p-apstudio.mp4" autoplay muted loop playsinline></video><b>Ánh Phan*</b></div>
+      <div class="info"><h2>B — Editorial</h2><p>Sáng, mạnh, như trang bìa tạp chí.</p>
+        <ul><li>Tên khổng lồ, showreel nằm giữa tên</li><li>Lưới ảnh kiểu tạp chí, băng chữ chạy màu cam</li><li>Bảng video bên trái, màn chiếu bên phải</li></ul>
+        <span class="go">Xem bản B →</span></div>
+    </a>
+    <a class="card c" href="c-night.html">
+      <div class="sw"><video src="../assets/video/p-annie.mp4" autoplay muted loop playsinline></video><b>ánh phan</b></div>
+      <div class="info"><h2>C — Night Glass</h2><p>Xanh đêm, kính mờ, nối tiếp video Showcase của bạn.</p>
+        <ul><li>Thanh 01·02·03 ở đáy chạy theo tiến độ cuộn</li><li>Nút lọc Poster / 3D / Bao bì / Minh hoạ</li><li>Băng chuyền video, bấm là chép email</li></ul>
+        <span class="go">Xem bản C →</span></div>
+    </a>
+  </div>
+</body>
+</html>

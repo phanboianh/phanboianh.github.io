@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trình chỉnh sửa portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+<style>
+  /* Trình chỉnh sửa — chỉ dùng trên máy bạn, không đưa lên mạng */
+  :root {
+    --bg: #111010; --panel: #1a1918; --card: #222120; --line: #34312f;
+    --ink: #f1ece6; --mute: #9b948c; --accent: #ff3b5c; --ok: #4fd18b; --warn: #f5b54a;
+    --r: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font: 400 14px/1.5 'Be Vietnam Pro', system-ui, sans-serif; min-height: 100vh; }
+  button, input, textarea { font: inherit; color: inherit; }
+  a { color: inherit; text-decoration: none; }
+  button { cursor: pointer; border: 0; background: none; }
+  .btn { padding: 9px 16px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); font-weight: 500; transition: border-color .2s, background .2s; white-space: nowrap; }
+  .btn:hover { border-color: var(--mute); }
+  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 600; }
+  .btn.primary:disabled { opacity: .45; cursor: default; }
+  .btn.danger:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.small { padding: 6px 12px; font-size: 13px; }
+  .icon { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: var(--mute); }
+  .icon:hover { background: var(--line); color: var(--ink); }
+  .icon:disabled { opacity: .25; cursor: default; background: none; }
+
+  /* ---------- thanh trên ---------- */
+  header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: rgba(17, 16, 16, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  header h1 { font-size: 16px; font-weight: 700; margin-right: auto; }
+  .status { font-size: 13px; color: var(--mute); display: flex; align-items: center; gap: 8px; }
+  .status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .status.dirty { color: var(--warn); } .status.dirty::before { background: var(--warn); }
+  .tabs { display: flex; gap: 4px; padding: 16px 24px 0; border-bottom: 1px solid var(--line); }
+  .tabs button { padding: 10px 16px; border-radius: 10px 10px 0 0; color: var(--mute); font-weight: 500; border-bottom: 2px solid transparent; }
+  .tabs button.on { color: var(--ink); border-bottom-color: var(--accent); }
+  .tabs b { font-weight: 500; color: var(--mute); margin-left: 4px; }
+
+  /* ---------- bố cục 2 cột: danh sách | biểu mẫu ---------- */
+  main { padding: 24px; }
+  .split { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+  .list { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 8px; position: sticky; top: 76px; max-height: calc(100vh - 100px); overflow-y: auto; }
+  .list .add { width: 100%; margin-bottom: 6px; padding: 12px; border: 1px dashed var(--line); border-radius: 10px; color: var(--mute); font-weight: 500; }
+  .list .add:hover { border-color: var(--ink); color: var(--ink); }
+  .item { display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; align-items: center; padding: 8px; border-radius: 10px; cursor: pointer; }
+  .item:hover { background: var(--card); }
+  .item.on { background: var(--card); box-shadow: inset 0 0 0 1px var(--mute); }
+  .item .th { width: 56px; height: 56px; border-radius: 8px; overflow: hidden; background: #000; display: grid; place-items: center; color: var(--mute); font-size: 11px; }
+  .item .th img, .item .th video { width: 100%; height: 100%; object-fit: cover; }
+  .item b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item small { color: var(--mute); }
+  .item small.warn { color: var(--warn); }
+  .item .ord { display: flex; flex-direction: column; }
+  .empty { padding: 30px 14px; color: var(--mute); text-align: center; }
+
+  .form { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; }
+  .form-head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .form-head h2 { font-size: 20px; margin-right: auto; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { display: block; margin-bottom: 18px; }
+  .field > span { display: block; font-weight: 600; margin-bottom: 6px; }
+  .field > span em { font-style: normal; font-weight: 400; color: var(--mute); margin-left: 6px; }
+  .field select { width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; outline: none; color: var(--ink); font: inherit; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 4px 10px; }
+  .chips button { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); color: var(--mute); font-size: 13px; }
+  .chips button b { font-weight: 500; opacity: .6; }
+  .chips button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .m video { width: 100%; height: 100%; object-fit: contain; }
+  .m .badge.vid { left: auto; right: 6px; background: #000; border: 1px solid var(--line); }
+  .field input, .field textarea { width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; outline: none; transition: border-color .2s; }
+  .field input:focus, .field textarea:focus { border-color: var(--ink); }
+  .field textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+  .hint { color: var(--mute); font-size: 12px; margin-top: 6px; }
+  .counter { float: right; font-style: normal; color: var(--mute); font-weight: 400; font-size: 12px; }
+  .counter.over { color: var(--warn); }
+
+  /* ---------- ảnh / video ---------- */
+  .media { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+  .m { position: relative; border-radius: 10px; overflow: hidden; background: #000; aspect-ratio: 1; border: 1px solid var(--line); }
+  .m img { width: 100%; height: 100%; object-fit: contain; }
+  .m .badge { position: absolute; left: 6px; top: 6px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
+  .m .tools { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; padding: 4px; background: linear-gradient(transparent, rgba(0, 0, 0, .85)); }
+  .m .tools .icon { color: #fff; }
+  .drop { border: 1.5px dashed var(--line); border-radius: 10px; display: grid; place-items: center; text-align: center; color: var(--mute); padding: 16px; cursor: pointer; min-height: 140px; transition: border-color .2s, background .2s; }
+  .drop:hover, .drop.over { border-color: var(--ink); color: var(--ink); background: var(--card); }
+  .drop b { display: block; font-size: 22px; font-weight: 400; }
+  .vid { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 12px; }
+  .vid video { width: 100%; border-radius: 10px; background: #000; max-height: 360px; }
+  .vid .side { display: grid; gap: 12px; align-content: start; }
+  .jobs { position: fixed; right: 20px; bottom: 20px; width: min(360px, calc(100% - 40px)); display: grid; gap: 8px; z-index: 25; }
+  .job { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13px; box-shadow: 0 10px 30px rgba(0, 0, 0, .4); }
+  .job .bar { height: 4px; border-radius: 4px; background: var(--line); margin-top: 8px; overflow: hidden; }
+  .job .bar i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .2s; }
+  .job.err { color: var(--accent); border-color: var(--accent); cursor: pointer; }
+
+  .links-row { display: grid; grid-template-columns: 1fr 1fr 1.4fr auto; gap: 8px; margin-bottom: 8px; }
+  .links-row input { width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; outline: none; }
+  .links-row input:focus { border-color: var(--ink); }
+  .rows { display: grid; gap: 10px; }
+  .row-card { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 14px 0; padding-right: 50px; }
+  .row-card .field { margin-bottom: 14px; }
+  .row-card input, .row-card textarea { background: var(--panel) !important; }
+  .row-tools { position: absolute; top: 10px; right: 8px; display: flex; flex-direction: column; }
+  .rows > .btn { justify-self: start; }
+  .section-title { font-size: 13px; font-weight: 600; color: var(--mute); text-transform: uppercase; letter-spacing: .08em; margin: 26px 0 14px; padding-top: 20px; border-top: 1px solid var(--line); }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 99px; font-weight: 600; transition: .3s; pointer-events: none; z-index: 30; }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .toast.err { background: var(--accent); color: #fff; }
+  .blocker { max-width: 560px; margin: 12vh auto; padding: 32px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; line-height: 1.7; }
+  .blocker h2 { margin-bottom: 12px; }
+  .blocker code { background: var(--card); padding: 2px 8px; border-radius: 6px; }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: 1fr; }
+    .list { position: static; max-height: none; }
+    .grid2, .vid { grid-template-columns: 1fr; }
+    .links-row { grid-template-columns: 1fr 1fr; }
+    header { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Trình chỉnh sửa portfolio</h1>
+  <span class="status" id="status">Đã lưu</span>
+  <a class="btn" href="index.html" target="_blank" id="view">Xem website ↗</a>
+  <button class="btn primary" id="save" disabled>Lưu thay đổi</button>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+
+<script src="noi-dung.js"></script>
+<script src="chinh-sua.js"></script>
+</body>
+</html>
