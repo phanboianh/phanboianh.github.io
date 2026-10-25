@@ -1,0 +1,11 @@
+# File rác của macOS
+.DS_Store
+
+# Bản sao lưu tự động mỗi lần bấm "Lưu" trong Trình chỉnh sửa (chỉ cần trên máy, không đưa lên mạng)
+tools/sao-luu/
+
+# File tạm khi máy chủ đang ghi nội dung
+*.tmp
+
+# Bộ nhớ đệm của Python
+__pycache__/
