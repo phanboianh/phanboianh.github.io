@@ -501,11 +501,16 @@
         <button class="icon" data-act="row-del" data-key="${key}" data-j="${j}" title="Xoá mục này">✕</button>
       </div></div>`).join('')}
       <button class="btn small" data-act="row-add" data-key="${key}">+ Thêm</button></div>`;
-  const photoHTML = (a) => a.anh
-    ? `<img src="${esc(a.anh)}" alt="" style="width:100%;max-height:320px;object-fit:contain;border-radius:10px;background:#000">
-       <div class="side"><div class="drop" data-drop="chan-dung"><div><b>↻</b>Đổi ảnh</div></div>
-         <button class="btn small danger" data-act="chan-dung-del">Bỏ ảnh</button></div>`
-    : '<div class="drop" data-drop="chan-dung" style="min-height:160px"><div><b>+</b>Kéo ảnh chân dung vào đây<br>(không bắt buộc)</div></div>';
+  // 3 ảnh của bạn: anh (chân dung trang About), anhHover (hiện khi rê chuột vào tên ở trang đầu), anhTron (ảnh tròn ở phần liên hệ)
+  const PHOTOS = [['anh', 'Ảnh chân dung — trang About', 'ảnh dọc đẹp nhất · để trống thì phần chữ trải rộng'],
+    ['anhHover', 'Ảnh hiện khi rê chuột vào tên', 'trang đầu (Video) · trên điện thoại hiện thành ảnh tròn nhỏ cạnh tên'],
+    ['anhTron', 'Ảnh tròn ở phần liên hệ', 'cuối mọi trang · nên chọn ảnh rõ mặt, nền trơn']];
+  const photoHTML = (a, k = 'anh') => a[k]
+    ? `<img src="${esc(a[k])}" alt="" style="width:100%;max-height:260px;object-fit:contain;border-radius:10px;background:#000">
+       <div class="side"><div class="drop" data-drop="me:${k}"><div><b>↻</b>Đổi ảnh</div></div>
+         <button class="btn small danger" data-act="me-del" data-k="${k}">Bỏ ảnh</button></div>`
+    : `<div class="drop" data-drop="me:${k}" style="min-height:140px"><div><b>+</b>Kéo ảnh vào đây<br>(không bắt buộc)</div></div>`;
+  const photosHTML = (a) => PHOTOS.map(([k, t, em]) => `<div class="field"><span>${t}<em>${em}</em></span><div class="vid" data-photo="${k}">${photoHTML(a, k)}</div></div>`).join('');
 
   function renderAbout() {
     const a = S.about;
@@ -518,7 +523,8 @@
       ${field('motCau', 'Một câu nói bạn làm gì', a.motCau, { em: 'hiện dưới nghề, và ở đầu trang Video', ph: 'Mình viết kịch bản và dựng MV, phim ngắn…', max: 110 })}
       ${field('khuVuc', 'Khu vực', a.khuVuc, { ph: 'TP. Hồ Chí Minh, Việt Nam' })}
       ${area('tomTat', 'Giới thiệu', a.tomTat, 'xuống dòng để tách đoạn')}
-      <div class="field"><span>Ảnh chân dung<em>ảnh dọc đẹp nhất · để trống thì phần chữ trải rộng</em></span><div class="vid" id="photoBox">${photoHTML(a)}</div></div>
+      <p class="section-title">Ảnh của bạn</p>
+      <div id="photoBox">${photosHTML(a)}</div>
       <p class="section-title">Con số nổi bật</p>${rowsHTML('conSo')}
       <p class="section-title">Kinh nghiệm làm việc</p>${rowsHTML('kinhNghiem')}
       <p class="section-title">Dự án & hoạt động</p>${rowsHTML('hoatDong')}
@@ -540,7 +546,7 @@
   // Sau khi tải file xong: chỉ vẽ lại phần ảnh/video, không làm mất chữ đang gõ
   function refreshMedia() {
     if (tab === 'info') return;
-    if (tab === 'about') { const b = $('#photoBox'); if (b) b.innerHTML = photoHTML(S.about); return; }
+    if (tab === 'about') { const b = $('#photoBox'); if (b) b.innerHTML = photosHTML(S.about); return; }
     const p = S[tab][sel[tab]], b = $('#mediaBox');
     if (b && p) b.innerHTML = tab === 'design' ? mediaDesign(p) : mediaVideo(p) + mediaExtra(p);
     refreshFrame();
@@ -626,8 +632,8 @@
         else if (act === 'row-del') { if (!confirm('Xoá mục này?')) return; list.splice(j, 1); }
         else { const n = act === 'row-up' ? j - 1 : j + 1; [list[j], list[n]] = [list[n], list[j]]; }
         const y = scrollY; setDirty(); renderAbout(); scrollTo(0, y);
-      } else if (act === 'chan-dung-del') {
-        S.about.anh = '';
+      } else if (act === 'me-del') {
+        S.about[a.dataset.k] = '';
         setDirty(); refreshMedia();
       } else if (act === 'link-add') {
         S.thongTin.lienKet.push({ nhan: '', chu: '', link: '' });
@@ -668,7 +674,7 @@
   addEventListener('drop', (e) => e.preventDefault());
 
   async function handleFiles(kind, files) {
-    const target = kind === 'chan-dung' ? S.about : S[tab][sel[tab]];
+    const target = kind.startsWith('me:') ? S.about : S[tab][sel[tab]];
     if (!target) return;
     const list = kind === 'anh' ? files : files.slice(0, 1);
     for (const file of list) {
@@ -682,7 +688,7 @@
         const r = await upload(file, job.progress);
         if (kind === 'anh') target.anh.push(r.loai === 'video' ? r.video : r.duongDan);
         else if (kind === 'bia') target.anhBia = r.duongDan;
-        else if (kind === 'chan-dung') target.anh = r.duongDan;
+        else if (kind.startsWith('me:')) target[kind.slice(3)] = r.duongDan;
         else {
           Object.assign(target, { video: r.video, xemTruoc: r.xemTruoc, anhBia: r.anhBia });
           if (r.thoiLuong) target.thoiLuong = r.thoiLuong;

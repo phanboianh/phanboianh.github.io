@@ -1,5 +1,9 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0i. Tên to + ảnh cá nhân (2026-10-26)
+- Đầu index.html có .vhero: h1 #vh-name (tên to), #vh-role, #vh-line. "Video (07)" thu nhỏ thành nhãn. Rê chuột vào tên → img#peek (about.anhHover) bay theo con trỏ. Trên điện thoại (hover:none) hiện ảnh tròn .vh-ava cạnh tên.
+- about.anh = assets/me/chan-dung.jpg (ảnh hoa mai nhìn thẳng, 4:5), about.anhHover = assets/me/r-chuot.jpg (ảnh nhắm mắt), about.anhTron = assets/me/tron.jpg (selfie tốt nghiệp) → img#c-ava tròn ở phần liên hệ mọi trang. Trình chỉnh sửa, tab About me → "Ảnh của bạn" có 3 ô (drop kind 'me:<khóa>').
+
 ## 0h. Thứ tự trang mới (2026-10-26) — ƯU TIÊN HƠN 0c
 - index.html = trang **Video** (trang đầu, có dòng #who "Tên — Nghề" + about.motCau) · design.html = **Design & Illustration** · about.html = **About** (dạng CV) · Contact ở cuối mọi trang. video.html chỉ còn tự chuyển về index.html (giữ nguyên #video-n).
 - about.chucDanh "Video Editor & Scriptwriter" hiện to bằng màu nhấn. Thêm trường about.motCau. Thẻ video hiện vaiTro. conSo xếp theo công việc trước: Best MV · 2 MV The 1210 Label · 3 quốc gia LED · 1,1M TikTok (đã bỏ 247K và 21K).

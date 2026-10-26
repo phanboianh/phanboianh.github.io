@@ -100,10 +100,18 @@ body::after {
 
 /* ---------- VIDEO: lưới video tự chạy ---------- */
 #video { padding: 130px 0 120px; }
-/* dòng "Tên — Nghề" ở đầu trang Video (trang đầu tiên của web) */
-.who { padding: 0 var(--pad); margin-bottom: 26px; font-size: clamp(16px, 1.5vw, 21px); color: var(--ink2); }
-.who b { color: var(--accent); font-weight: 600; }
-.who span { display: block; margin-top: 4px; font-size: .82em; color: var(--mute); }
+/* Đầu trang Video (trang đầu tiên): tên to + nghề; mục "Video (07)" nhỏ lại thành nhãn */
+.vhero { padding: 0 var(--pad); margin-bottom: 64px; }
+.vhero h1 { display: inline-flex; align-items: center; gap: .25em; font: var(--tw) calc(clamp(48px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin-bottom: 14px; cursor: default; }
+.vh-ava { display: none; }
+#video .sec-head h2 { font-size: calc(clamp(30px, 3.6vw, 52px) * var(--ts)); letter-spacing: calc(-.04em * var(--tls)); }
+#video .sec-head { border-top: 1px solid var(--line); padding-top: 26px; margin-left: var(--pad); margin-right: var(--pad); padding-left: 0; padding-right: 0; }
+/* ảnh hiện ra khi rê chuột vào tên */
+.peek { position: fixed; left: 0; top: 0; z-index: 70; width: clamp(180px, 16vw, 240px); aspect-ratio: 4 / 5; object-fit: cover; pointer-events: none; border-radius: 4px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .5); opacity: 0; transform: translate(24px, -50%) rotate(-4deg) scale(.85); transition: opacity .35s, transform .5s var(--ease); }
+.peek.on { opacity: 1; transform: translate(24px, -50%) rotate(-4deg) scale(1); }
+/* ảnh tròn ở phần liên hệ */
+.c-ava { width: clamp(72px, 7vw, 108px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; margin-bottom: 28px; border: 2px solid var(--accent); }
 .vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 24px; padding: 0 var(--pad); }
 .vcard { cursor: pointer; }
 .vcard .scr { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
@@ -285,7 +293,7 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 .cursor b { font: 700 10px var(--mono); letter-spacing: .1em; color: #000; opacity: 0; }
 .cursor.big { width: 78px; height: 78px; }
 .cursor.big b { opacity: 1; }
-@media (hover: none) { .cursor { display: none; } .vcard .play { opacity: 1; transform: none; width: 48px; height: 48px; margin: -24px 0 0 -24px; } }
+@media (hover: none) { .peek { display: none; } .vh-ava { display: block; width: .78em; height: .78em; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex: none; } .cursor { display: none; } .vcard .play { opacity: 1; transform: none; width: 48px; height: 48px; margin: -24px 0 0 -24px; } }
 
 /* ---------- máy tính bảng ---------- */
 @media (max-width: 1000px) {
@@ -295,6 +303,8 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 @media (max-width: 760px) {
   .nav nav a i { display: none; }
   .nav nav { gap: 12px; }
+  .vh-ava { display: block; width: .78em; height: .78em; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex: none; }
+  .vhero { margin-bottom: 44px; }
   .g-arrow { width: 38px; height: 38px; margin-top: -19px; font-size: 15px; }
   .g-prev { left: 8px; } .g-next { right: 8px; }
   .g-thumbs button { width: 60px; height: 42px; }

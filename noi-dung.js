@@ -396,7 +396,7 @@ window.PORTFOLIO = {
   "about": {
     "hoTen": "Phan Bội Ánh",
     "chucDanh": "Video Editor & Scriptwriter",
-    "anh": "",
+    "anh": "assets/me/chan-dung.jpg",
     "khuVuc": "TP. Hồ Chí Minh, Việt Nam",
     "tomTat": "",
     "conSo": [
@@ -494,7 +494,9 @@ window.PORTFOLIO = {
         "ketQua": "Tăng followers cho page từ ~300 lên 2.000 followers trong năm 2020 (trong 1 năm hoạt động).\nThu hút nhiều sự quan tâm cả trong và ngoài trường.\nBài đăng trung bình đạt 200–500 lượt thích; MV nổi bật đạt 21K lượt xem, 1,1K lượt thích và hơn 200 lượt chia sẻ."
       }
     ],
-    "motCau": "Mình viết kịch bản và dựng MV, phim ngắn, video LED cho nghệ sĩ."
+    "motCau": "Mình viết kịch bản và dựng MV, phim ngắn, video LED cho nghệ sĩ.",
+    "anhHover": "assets/me/r-chuot.jpg",
+    "anhTron": "assets/me/tron.jpg"
   },
   "giaoDien": {
     "boMau": "tuChon",
