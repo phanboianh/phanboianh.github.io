@@ -313,14 +313,6 @@
   const vio = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause())), { threshold: 0.35 });
   $$('video[data-auto]').forEach((v) => vio.observe(v));
 
-  // Đồng hồ timecode ở góc phải (giờ:phút:giây:khung hình, 24 hình/giây)
-  const tc = $('#tc'), t0 = performance.now();
-  (function tick(now) {
-    const f = Math.floor((now - t0) / (1000 / 24));
-    tc.textContent = `${pad(Math.floor(f / 86400))}:${pad(Math.floor(f / 1440) % 60)}:${pad(Math.floor(f / 24) % 60)}:${pad(f % 24)}`;
-    requestAnimationFrame(tick);
-  })(t0);
-
   // Con trỏ tròn "XEM" trên những thứ bấm được (chỉ máy tính)
   if (canHover) {
     const cursor = $('#cursor');

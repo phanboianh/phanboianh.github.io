@@ -1,5 +1,9 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0g. Giới hạn dung lượng (2026-10-26)
+- GitHub từ chối file trên 100 MB (đã gặp: remake-va-toi-di.mp4 113 MB). Đã nén lại còn 44 MB (720p, crf 24). Bản gốc để trong `tools/video-goc/` (đã đưa vào gitignore).
+- may-chu.py: video đã nén mà vẫn > `LIMIT_VIDEO` (45 MB) thì nén lại lần lượt 1280/crf25 → 1280/crf29 → 960/crf31. Dang-len-mang.command chặn và báo nếu có file > 95 MB trong assets.
+
 ## 0f. Giao diện tuỳ chỉnh (2026-10-26)
 - `giao-dien.js` (nạp trong <head> cùng noi-dung.js, `<html data-site>`) đọc `PORTFOLIO.giaoDien` = { boMau, nen, chu, nhan, fontTieuDe, fontChu, coTieuDe, doDam, tiLeBia }, rồi ghi các biến CSS: --bg/--bg-rgb/--ink/--ink-rgb/--ink2/--mute/--card/--strip/--sprocket/--accent/--title/--sans/--mono/--ts/--tw/--tls/--cat-ratio. Font tải động từ Google, mỗi font một link với đúng độ đậm có sẵn. Có 5 bộ màu có sẵn và 10 font có tiếng Việt.
 - site.css không còn màu viết cứng, trừ chữ trắng phủ trên ảnh. Tiêu đề dùng `calc(cỡ * var(--ts))`, độ đậm var(--tw), khoảng chữ × var(--tls) (font có chân thì nới ra).
