@@ -42,9 +42,9 @@
   if (T.email) { mail.textContent = T.email; mail.href = 'mailto:' + T.email; } else mail.hidden = true;
 
   // Ảnh hoặc video (video tự chạy không tiếng khi cuộn tới)
-  const media = (src, alt, extra = '') => isVid(src)
-    ? `<video src="${esc(src)}" muted loop playsinline preload="metadata" data-auto ${extra}></video>`
-    : `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async">`;
+  const media = (src, alt, extra = '', style = '') => isVid(src)
+    ? `<video src="${esc(src)}" muted loop playsinline preload="metadata" data-auto ${extra}${style ? ` style="${style}"` : ''}></video>`
+    : `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async"${style ? ` style="${style}"` : ''}>`;
 
   // Khối chữ: thể loại, tên, chú thích, vai trò/công cụ
   function aside(p, isVideo) {
@@ -60,13 +60,26 @@
   }
   // Ảnh/video của một sản phẩm, theo bố cục chọn trong Trình chỉnh sửa:
   //   trinhChieu = khung cố định, lướt bằng mũi tên ← → (mặc định) · luoi = lưới 2 cột · doc = xếp dọc từng ảnh
-  function gallery(list, alt, mode) {
+  // Khung ảnh (chọn riêng cho từng sản phẩm): khung = tỉ lệ khung, datAnh = vua (thấy trọn ảnh) / phu (phủ kín, cắt mép),
+  // layNet = giữ phần nào khi cắt (top / center / bottom)
+  function gallery(list, alt, p) {
     if (!list.length) return '';
-    if (mode === 'doc' || list.length === 1) return list.map((a) => `<div class="p-m">${media(a, alt, 'controls')}</div>`).join('');
-    if (mode === 'luoi') return `<div class="p-m g-grid">${list.map((a) => `<figure>${media(a, alt, 'controls')}</figure>`).join('')}</div>`;
-    return `<div class="p-m g-show">
+    const mode = p.boCuc, phu = p.datAnh === 'phu';
+    const look = ` style="--ratio:${esc(p.khung || '16 / 10')};--focus:${esc(p.layNet || 'center')}"`;
+    const fit = phu ? ' phu' : '';
+    // Ảnh đã cắt riêng thì hiện đúng vùng đã cắt; trong khung trình chiếu thì vừa khít khung (không tràn)
+    const R = GIAO_DIEN.ratioNum(p.khung);
+    const one = (a, inShow) => {
+      const c = GIAO_DIEN.getCrop(p, a);
+      return c ? GIAO_DIEN.cropImg(a, c, inShow && c.r < R ? 'h' : 'w', alt) : media(a, alt, 'controls');
+    };
+    if (mode === 'doc' || list.length === 1) return list.map((a) => `<div class="p-m${fit}"${look}>${one(a)}</div>`).join('');
+    // Lưới: mục nào bật "Cả hàng" trong Trình chỉnh sửa thì tách ra một hàng riêng, rộng hết khung
+    const full = (a) => (p.caHang && p.caHang[a] ? ' class="full"' : '');
+    if (mode === 'luoi') return `<div class="p-m g-grid${fit}"${look}>${list.map((a) => `<figure${full(a)}>${one(a)}</figure>`).join('')}</div>`;
+    return `<div class="p-m g-show${fit}"${look}>
       <div class="g-frame">
-        <div class="g-track">${list.map((a) => `<div class="g-slide">${isVid(a) ? '' : `<img class="g-bg" src="${esc(a)}" alt="" aria-hidden="true">`}${media(a, alt, 'controls')}</div>`).join('')}</div>
+        <div class="g-track">${list.map((a) => `<div class="g-slide">${isVid(a) ? '' : `<img class="g-bg" src="${esc(a)}" alt="" aria-hidden="true">`}${one(a, true)}</div>`).join('')}</div>
         <button class="g-arrow g-prev" aria-label="Ảnh trước">←</button><button class="g-arrow g-next" aria-label="Ảnh sau">→</button>
         <span class="mono g-count">01 / ${pad(list.length)}</span>
       </div>
@@ -179,7 +192,7 @@
       content.innerHTML = `
         <div class="p-body">${aside(v, true)}
           <div class="p-m">${main}</div>
-          ${gallery(extra, v.tieuDe, v.boCuc)}
+          ${gallery(extra, v.tieuDe, v)}
         </div>
         ${n > 1 ? `<div class="p-nav">
           <button data-go="${(i - 1 + n) % n}"><span class="mono">← Trước</span><b>${esc(prev.tieuDe)}</b></button>
@@ -235,7 +248,7 @@
         <span class="mono num">${pad(j + 1)} / ${pad(list.length)}</span>
         <div class="p-body">
           ${aside(p, false)}
-          ${gallery(p.anh, p.tieuDe, p.boCuc)}
+          ${gallery(p.anh, p.tieuDe, p)}
         </div>
       </article>`).join('')
       : '<p class="none">Mục này chưa có sản phẩm — thêm trong Trình chỉnh sửa.</p>';

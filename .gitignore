@@ -9,3 +9,6 @@ tools/sao-luu/
 
 # Bộ nhớ đệm của Python
 __pycache__/
+
+# Bản gốc của video quá nặng (đã thay bằng bản nén trong assets/tai-len)
+tools/video-goc/

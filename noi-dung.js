@@ -61,7 +61,11 @@ window.PORTFOLIO = {
       "vaiTro": "Thiết kế, ghép ảnh",
       "congCu": "",
       "link": "",
-      "boCuc": "luoi"
+      "boCuc": "luoi",
+      "khung": "4 / 5",
+      "datAnh": "vua",
+      "layNet": "center",
+      "caHang": {}
     },
     {
       "nhom": "graphic",
@@ -81,7 +85,25 @@ window.PORTFOLIO = {
       "vaiTro": "Design theo yêu cầu khách ",
       "congCu": "",
       "link": "",
-      "boCuc": "luoi"
+      "boCuc": "luoi",
+      "datAnh": "vua",
+      "khung": "16 / 9",
+      "catAnh": {
+        "assets/port/pakamio-8.jpg": {
+          "x": 0.0145,
+          "y": 0,
+          "w": 0.9777,
+          "h": 1,
+          "r": 1
+        },
+        "assets/port/pakamio-3.jpg": {
+          "x": 0.0035,
+          "y": 0,
+          "w": 0.9929,
+          "h": 1,
+          "r": 1
+        }
+      }
     },
     {
       "nhom": "illustration",
@@ -89,18 +111,50 @@ window.PORTFOLIO = {
       "loai": "Fan art",
       "nam": "2025",
       "anh": [
-        "assets/port/muado-1.jpg",
         "assets/port/muado-2.jpg",
+        "assets/port/muado-5.jpg",
         "assets/port/muado-3.jpg",
-        "assets/port/muado-4.jpg",
-        "assets/port/muado-5.jpg"
+        "assets/port/muado-4.jpg"
       ],
       "moTa": "Chân dung 3 nhân vật phim \"Mưa Đỏ\", vẽ tặng các diễn viên.",
       "chuThich": "Trong đợt quảng bá phim \"Mưa Đỏ\", mình vẽ tranh chân dung 3 nhân vật để tặng các diễn viên: Hứa Vĩ Văn, Nguyễn Đình Khang và Steven Nguyễn. Các diễn viên đã đăng tranh lên mạng xã hội, sau đó tranh được nhắc đến trong bài viết của báo Thanh Niên và Tuổi Trẻ – Người Lao Động.\nClip mình quay cùng diễn viên Steven Nguyễn (vai Quang) và tự edit dựng content đạt hơn 1 triệu lượt xem và 93,5K lượt thích trên TikTok.",
       "vaiTro": "",
       "congCu": "",
       "link": "",
-      "boCuc": "luoi"
+      "boCuc": "luoi",
+      "khung": "3 / 4",
+      "datAnh": "vua",
+      "layNet": "center",
+      "catAnh": {
+        "assets/port/muado-4.jpg": {
+          "x": 0,
+          "y": 0.0631,
+          "w": 1,
+          "h": 0.9369,
+          "r": 0.4912
+        },
+        "assets/port/muado-5.jpg": {
+          "x": 0,
+          "y": 0.0641,
+          "w": 1,
+          "h": 0.9359,
+          "r": 0.4918
+        },
+        "assets/port/muado-3.jpg": {
+          "x": 0,
+          "y": 0.0625,
+          "w": 1,
+          "h": 0.9375,
+          "r": 0.8
+        },
+        "assets/port/muado-2.jpg": {
+          "x": 0,
+          "y": 0.0065,
+          "w": 1,
+          "h": 0.9808,
+          "r": 0.8
+        }
+      }
     },
     {
       "nhom": "illustration",
@@ -123,12 +177,12 @@ window.PORTFOLIO = {
       "nam": "",
       "anh": [
         "assets/tai-len/phan-boi-anh.jpg",
-        "assets/tai-len/img-5077.jpg",
         "assets/tai-len/img-5075.jpg",
         "assets/tai-len/img-5076.jpg",
         "assets/tai-len/anh-man-hinh-2026-09-16-luc-15-34-44.png",
-        "assets/port/mam-7.jpg",
         "assets/port/mam-3.jpg",
+        "assets/tai-len/img-5077.jpg",
+        "assets/port/mam-7.jpg",
         "assets/port/mam-6.jpg",
         "assets/tai-len/short-animation-mam.mp4"
       ],
@@ -137,7 +191,10 @@ window.PORTFOLIO = {
       "vaiTro": "Scriptwriter, Director, Animation, Editor",
       "congCu": "Adobe Illustrator, Moho, CapCut",
       "link": "https://drive.google.com/file/d/1nbCMgcl3W3Rh5XLTDECdigFcspacmdR_/view?usp=share_link",
-      "boCuc": "doc"
+      "boCuc": "luoi",
+      "caHang": {
+        "assets/tai-len/short-animation-mam.mp4": true
+      }
     },
     {
       "nhom": "3d",
@@ -155,28 +212,32 @@ window.PORTFOLIO = {
       "vaiTro": "Concept, 3D, art direction",
       "congCu": "Blender, Photoshop",
       "link": "",
-      "boCuc": "luoi"
+      "boCuc": "luoi",
+      "datAnh": "vua",
+      "catAnh": {}
     }
   ],
   "video": [
     {
-      "tieuDe": "Quên Đi",
-      "loai": "MV - VJay x JayD",
-      "nam": "2026",
-      "video": "",
-      "xemTruoc": "",
-      "anhBia": "assets/port/quendi-1.jpg",
+      "tieuDe": "Bunnie Studio - Design Commission",
+      "loai": "Video LED",
+      "nam": "",
+      "video": "assets/tai-len/04-10.mp4",
+      "xemTruoc": "assets/tai-len/04-10-xem-truoc.mp4",
+      "anhBia": "assets/tai-len/04-10-bia.jpg",
       "anh": [
-        "assets/port/quendi-2.jpg",
-        "assets/port/quendi-3.jpg"
+        "assets/tai-len/1920x1080.mp4",
+        "assets/tai-len/02-02.mp4",
+        "assets/tai-len/p3-1.mp4"
       ],
-      "thoiLuong": "",
-      "moTa": "MV chính thức — biên kịch và phát triển ý tưởng.",
-      "chuThich": "Viết kịch bản và phát triển ý tưởng cho MV \"Quên Đi\" - VJay x JayD. \nLên shot list, hỗ trợ sản xuất tại trường quay để giữ đúng định hướng sáng tạo ban đầu.\n\nKết quả: teaser đạt 747 lượt thích và 4,1K lượt xem trên Facebook, ảnh demo đạt 700 lượt thích.",
-      "vaiTro": "Scriptwriter, Concept, Production Assistant ",
+      "thoiLuong": "00:15",
+      "moTa": "Freelancer - Video Editor",
+      "chuThich": "Dựng video quảng bá cho các dự án LED do fan góp quỹ ủng hộ nghệ sĩ, và hỗ trợ thiết kế hình ảnh đi kèm.\nKết quả: video được chiếu trên màn hình LED tại Vincom (Việt Nam) và ga tàu điện ngầm ở Hàn Quốc, Thái Lan,..\n(Xem thêm các LED khác trong Link bên dưới)",
+      "vaiTro": "Video editor",
       "congCu": "",
-      "link": "https://youtu.be/w8-giC8abTo",
-      "boCuc": "luoi"
+      "link": "https://www.behance.net/gallery/225143463/LED-VIDEO-EDITING",
+      "boCuc": "doc",
+      "catAnh": {}
     },
     {
       "tieuDe": "NMLL",
@@ -195,7 +256,90 @@ window.PORTFOLIO = {
       "vaiTro": "Scriptwriter, Concept, Production Assistant ",
       "congCu": "",
       "link": "https://youtu.be/sux2vr6X0yE",
-      "boCuc": "doc"
+      "boCuc": "doc",
+      "catAnh": {}
+    },
+    {
+      "tieuDe": "Lỡ",
+      "loai": "Phim ngắn · Phim ngắn 14 ngày",
+      "nam": "2024",
+      "video": "assets/tai-len/trailer-lo.mp4",
+      "xemTruoc": "assets/tai-len/trailer-lo-xem-truoc.mp4",
+      "anhBia": "assets/tai-len/trailer-lo-bia.jpg",
+      "anh": [
+        "assets/tai-len/476010199-546472208407913-8513793296858050807-n.jpg"
+      ],
+      "thoiLuong": "00:32",
+      "moTa": "Cuộc thi làm ngắn trong 14 ngày ",
+      "chuThich": "\"Phim ngắn 14 ngày\" là cuộc thi làm trọn một phim ngắn trong 14 ngày, từ ý tưởng, kịch bản đến quay và dựng. \nPhát triển ý tưởng, viết kịch bản, lên shot list, hỗ trợ sản xuất tại phim trường và edit trailer.\n\nKết quả: trailer đạt 41K lượt xem, 210 lượt thích, phim chính thức đạt 19K lượt xem, 134 lượt thích trên Facebook.",
+      "vaiTro": "Scriptwriter, Production Assistant, Video Editor",
+      "congCu": "",
+      "link": "Trailer | https://drive.google.com/file/d/1XI2XqoCy-IEnPiFWAXNdAldsPPrdjDpg/view?usp=share_link\nPhim chính thức | https://www.facebook.com/share/v/14v9wk9wZY8/"
+    },
+    {
+      "tieuDe": "Và Tôi Đi",
+      "loai": "MV remake - Pick Your Team 2022",
+      "nam": "2022",
+      "video": "assets/tai-len/remake-va-toi-di.mp4",
+      "xemTruoc": "assets/tai-len/remake-va-toi-di-xem-truoc.mp4",
+      "anhBia": "assets/tai-len/remake-va-toi-di-bia.jpg",
+      "anh": [
+        "assets/tai-len/anh-man-hinh-2026-10-26-luc-14-15-24.png"
+      ],
+      "thoiLuong": "02:52",
+      "moTa": "Giải Best MV & Live Session.",
+      "chuThich": "Dự án sinh viên - Remake MV \"Và Tôi Đi\" (Đoàn Thế Lân / GreyD) cho một cuộc thi phi thương mại tại Trường Đại học Văn Lang, sản phẩm tập trung kể chuyện bằng hình ảnh.\nLên ý tưởng, viết kịch bản, shot list và storyboard, dựng toàn bộ MV.\n\nKết quả: đoạt giải Best MV & Live Session.",
+      "vaiTro": "Biên kịch, Quay phim, Edit ",
+      "congCu": "",
+      "link": "https://drive.google.com/file/d/13Pb8iAbzgD8fDjHJ7qdeV4DBqsdIQsT6/view?usp=share_link",
+      "khung": "16 / 9",
+      "datAnh": "vua",
+      "catAnh": {
+        "assets/tai-len/anh-man-hinh-2026-10-26-luc-14-15-24.png": {
+          "x": 0.0069,
+          "y": 0,
+          "w": 0.9931,
+          "h": 1,
+          "r": 0.8184
+        }
+      }
+    },
+    {
+      "tieuDe": "Quên Đi",
+      "loai": "MV - VJay x JayD",
+      "nam": "2026",
+      "video": "",
+      "xemTruoc": "",
+      "anhBia": "assets/port/quendi-1.jpg",
+      "anh": [
+        "assets/port/quendi-3.jpg",
+        "assets/port/quendi-2.jpg",
+        "assets/tai-len/att-utktgcfel3pn6ey0mxki-3ywfqn11wtwlzbed755un4.jpg",
+        "assets/tai-len/anh-man-hinh-2026-10-26-luc-13-57-38.png",
+        "assets/tai-len/anh-man-hinh-2026-10-26-luc-13-57-08.png",
+        "assets/tai-len/img-0471.jpg"
+      ],
+      "thoiLuong": "",
+      "moTa": "MV chính thức — biên kịch và phát triển ý tưởng.",
+      "chuThich": "Viết kịch bản và phát triển ý tưởng cho MV \"Quên Đi\" - VJay x JayD. \nLên shot list, hỗ trợ sản xuất tại trường quay để giữ đúng định hướng sáng tạo ban đầu.\n\nKết quả: teaser đạt 747 lượt thích và 4,1K lượt xem trên Facebook, ảnh demo đạt 700 lượt thích.",
+      "vaiTro": "Scriptwriter, Concept, Production Assistant ",
+      "congCu": "",
+      "link": "https://youtu.be/w8-giC8abTo",
+      "boCuc": "luoi",
+      "caHang": {
+        "assets/tai-len/att-utktgcfel3pn6ey0mxki-3ywfqn11wtwlzbed755un4.jpg": true,
+        "assets/tai-len/img-0470.jpg": true,
+        "assets/tai-len/img-0471.jpg": true
+      },
+      "catAnh": {
+        "assets/tai-len/anh-man-hinh-2026-10-26-luc-13-57-08.png": {
+          "x": 0,
+          "y": 0.0846,
+          "w": 1,
+          "h": 0.8665,
+          "r": 1.7778
+        }
+      }
     },
     {
       "tieuDe": "Radar Sống Khoẻ",
@@ -205,35 +349,26 @@ window.PORTFOLIO = {
       "xemTruoc": "",
       "anhBia": "assets/port/radar-1.jpg",
       "anh": [
-        "assets/port/radar-2.jpg",
+        "assets/tai-len/anh-man-hinh-2026-09-19-luc-22-09-00.png",
+        "assets/tai-len/anh-man-hinh-2026-09-19-luc-22-09-29.png",
+        "assets/tai-len/anh-man-hinh-2026-09-19-luc-22-09-51.png",
+        "assets/tai-len/anh-man-hinh-2026-09-19-luc-22-09-39.png",
+        "assets/port/radar-6.jpg",
         "assets/port/radar-3.jpg",
+        "assets/port/radar-2.jpg",
         "assets/port/radar-4.jpg",
-        "assets/port/radar-5.jpg",
-        "assets/port/radar-6.jpg"
+        "assets/port/radar-5.jpg"
       ],
       "thoiLuong": "",
       "moTa": "Bản tin truyền hình về sức khoẻ — 9,4/10 điểm.",
       "chuThich": "Đồ án môn Sản xuất truyền thông số: mô phỏng một bản tin truyền hình, nhóm chọn chủ đề sức khoẻ. \nQuay các phóng sự, thực hiện phỏng vấn chuyên gia, thiết kế bộ nhận diện chương trình và hỗ trợ dựng phim hậu kỳ.\n\nKết quả: 9,4/10 điểm. Giảng viên khen cấu trúc chương trình chặt chẽ, phần dẫn hiện trường cuốn hút, tông màu đúng nhận diện, bố cục và góc máy phỏng vấn chuyên nghiệp.",
       "vaiTro": "Quay phim, thiết kế nhận diện, hỗ trợ dựng",
       "congCu": "",
-      "link": "https://drive.google.com/file/d/1mU7H6pm47_SvI45JXK3BrQM_7xPrhk4T/view?usp=share_link"
-    },
-    {
-      "tieuDe": "Lỡ",
-      "loai": "Phim ngắn · Phim ngắn 14 ngày",
-      "nam": "2024",
-      "video": "",
-      "xemTruoc": "",
-      "anhBia": "assets/port/phim-1.jpg",
-      "anh": [
-        "assets/port/phim-2.jpg"
-      ],
-      "thoiLuong": "",
-      "moTa": "Cuộc thi làm ngắn trong 14 ngày ",
-      "chuThich": "\"Phim ngắn 14 ngày\" là cuộc thi làm trọn một phim ngắn trong 14 ngày, từ ý tưởng, kịch bản đến quay và dựng. \nPhát triển ý tưởng, viết kịch bản, lên shot list, hỗ trợ sản xuất tại phim trường và edit trailer.\n\nKết quả: trailer đạt 41K lượt xem, 210 lượt thích, phim chính thức đạt 19K lượt xem, 134 lượt thích trên Facebook.",
-      "vaiTro": "Scriptwriter, Production Assistant, Video Editor",
-      "congCu": "",
-      "link": "Trailer | https://drive.google.com/file/d/1XI2XqoCy-IEnPiFWAXNdAldsPPrdjDpg/view?usp=share_link\nPhim chính thức | https://www.facebook.com/share/v/14v9wk9wZY8/"
+      "link": "https://drive.google.com/file/d/1mU7H6pm47_SvI45JXK3BrQM_7xPrhk4T/view?usp=share_link",
+      "caHang": {
+        "assets/tai-len/anh-man-hinh-2026-09-19-luc-22-02-56.png": true
+      },
+      "boCuc": "luoi"
     },
     {
       "tieuDe": "UP NK's Media Club",
@@ -241,52 +376,21 @@ window.PORTFOLIO = {
       "nam": "2020 – 2021",
       "video": "",
       "xemTruoc": "",
-      "anhBia": "assets/port/upnk-1.jpg",
+      "anhBia": "assets/tai-len/453183854-798856865754240-2340412112460370797-n.jpg",
       "anh": [
-        "assets/port/upnk-3.jpg",
         "assets/port/upnk-5.jpg",
-        "assets/port/upnk-6.jpg"
+        "assets/tai-len/anh-man-hinh-2026-09-12-luc-14-51-57.png",
+        "assets/tai-len/anh-man-hinh-2026-09-12-luc-15-09-20.png",
+        "assets/tai-len/anh-man-hinh-2026-09-12-luc-14-35-21-2.png"
       ],
       "thoiLuong": "",
       "moTa": "",
       "chuThich": "Các video nổi bật: \n- MV \"Trường Tao Học\" đạt 21K lượt xem, 1,2K lượt thích, 200+ lượt chia sẻ. \n- Series \"Khi UP Ở Nhà\" mùa giãn cách: mỗi tập 1,9K–3,2K lượt xem.\nKết quả chung: trang tăng từ khoảng 300 lên 2.000 người theo dõi trong năm 2020.",
       "vaiTro": "Phó chủ nhiệm, quay phim, chụp ảnh, dựng video",
       "congCu": "",
-      "link": "MV Trường Tao Học | https://www.facebook.com/share/v/1FdMtmcUrc/\nKhi UP Ở Nhà | https://www.facebook.com/share/v/1LKNmD4oun/"
-    },
-    {
-      "tieuDe": "Và Tôi Đi",
-      "loai": "MV remake - Pick Your Team 2022",
-      "nam": "2022",
-      "video": "",
-      "xemTruoc": "",
-      "anhBia": "assets/tai-len/anh-man-hinh-2025-08-16-luc-16-58-42.jpg",
-      "anh": [],
-      "thoiLuong": "",
-      "moTa": "Giải Best MV & Live Session.",
-      "chuThich": "Bản remake MV \"Và Tôi Đi\" (Đoàn Thế Lân / GreyD) cho một cuộc thi phi thương mại, tập trung kể chuyện bằng hình ảnh và âm nhạc. Mình lên ý tưởng, viết kịch bản, shot list và storyboard; dựng toàn bộ MV, chỉnh màu và mix âm thanh; phối hợp với nhóm để giữ đúng định hướng sáng tạo.\n\nKết quả: đoạt giải Best MV & Live Session.",
-      "vaiTro": "Kịch bản, Quay phim, Edit ",
-      "congCu": "",
-      "link": "https://drive.google.com/file/d/13Pb8iAbzgD8fDjHJ7qdeV4DBqsdIQsT6/view?usp=share_link"
-    },
-    {
-      "tieuDe": "Bunnie Studio - Design Commission",
-      "loai": "Video LED",
-      "nam": "",
-      "video": "assets/tai-len/04-10.mp4",
-      "xemTruoc": "assets/tai-len/04-10-xem-truoc.mp4",
-      "anhBia": "assets/tai-len/04-10-bia.jpg",
-      "anh": [
-        "assets/tai-len/1920x1080.mp4",
-        "assets/tai-len/0505-1.mp4"
-      ],
-      "thoiLuong": "00:15",
-      "moTa": "Freelancer - Video Editor",
-      "chuThich": "Dựng video quảng bá cho các dự án LED do fan góp quỹ ủng hộ nghệ sĩ, và hỗ trợ thiết kế hình ảnh đi kèm.\nKết quả: video được chiếu trên màn hình LED tại Vincom (Việt Nam) và ga tàu điện ngầm ở Hàn Quốc, Thái Lan,..\n(Xem thêm các LED khác trong Link bên dưới)",
-      "vaiTro": "Video editor",
-      "congCu": "",
-      "link": "https://www.behance.net/gallery/225143463/LED-VIDEO-EDITING",
-      "boCuc": "doc"
+      "link": "MV Trường Tao Học | https://www.facebook.com/share/v/1FdMtmcUrc/\nKhi UP Ở Nhà | https://www.facebook.com/share/v/1LKNmD4oun/",
+      "boCuc": "luoi",
+      "catAnh": {}
     }
   ],
   "about": {
@@ -390,5 +494,22 @@ window.PORTFOLIO = {
         "ketQua": "Tăng followers cho page từ ~300 lên 2.000 followers trong năm 2020 (trong 1 năm hoạt động).\nThu hút nhiều sự quan tâm cả trong và ngoài trường.\nBài đăng trung bình đạt 200–500 lượt thích; MV nổi bật đạt 21K lượt xem, 1,1K lượt thích và hơn 200 lượt chia sẻ."
       }
     ]
+  },
+  "giaoDien": {
+    "boMau": "tuChon",
+    "nen": "#100404",
+    "chu": "#f3efe4",
+    "nhan": "#f5c842",
+    "fontTieuDe": "Be Vietnam Pro",
+    "fontChu": "Be Vietnam Pro",
+    "coTieuDe": "1",
+    "doDam": "700",
+    "tiLeBia": "4 / 3",
+    "hieuUng": "vutru",
+    "mau2": "#4d0a0a",
+    "vienPhim": "khong",
+    "mauVien": "#3b0202",
+    "saoSang": "0.55",
+    "saoMoKhiCuon": "co"
   }
 };
