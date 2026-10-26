@@ -1,6 +1,84 @@
 <!doctype html>
+<html lang="vi" data-site>
+<head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About</title>
-<!-- Trang About đã chuyển thành trang đầu (index.html) -->
-<meta http-equiv="refresh" content="0; url=index.html">
-<a href="index.html">Mở trang About</a>
+<meta name="description" content="Portfolio video editing, sản xuất nội dung và thiết kế.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500&display=swap&subset=vietnamese" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=202610262142">
+<!-- nội dung + màu/font chọn trong Trình chỉnh sửa: nạp sớm để trang không bị nháy màu -->
+<script src="noi-dung.js?v=202610262142"></script>
+<script src="giao-dien.js?v=202610262142"></script>
+</head>
+<body data-page="about">
+
+<!-- Menu: Video là trang đầu tiên (index.html) → Design → About (CV) → Contact -->
+<header class="nav">
+  <a href="index.html" class="logo" id="logo"></a>
+  <nav>
+    <a href="index.html"><i>01</i>Video</a>
+    <a href="design.html"><i>02</i>Design</a>
+    <a href="about.html" class="on"><i>03</i>About</a>
+    <a href="#contact"><i>04</i>Contact</a>
+  </nav>
+</header>
+
+<!-- Thông tin chung: tên, vai trò, giới thiệu, ảnh chân dung (nội dung lấy từ noi-dung.js → about) -->
+<section class="ab-hero">
+  <div class="ab-intro">
+    <span class="mono crumb">About me</span>
+    <h1 id="ab-name"></h1>
+    <p class="ab-role" id="ab-role"></p>
+    <p class="ab-line" id="ab-line"></p>
+    <div class="ab-sum" id="ab-sum"></div>
+    <div class="ab-contact" id="ab-contact"></div>
+  </div>
+  <figure class="ab-photo" id="ab-photo"></figure>
+</section>
+
+<div class="ab-nums" id="ab-nums"></div>
+
+<section class="ab-sec">
+  <h2 class="ab-h">Kinh nghiệm làm việc</h2>
+  <div id="ab-exp"></div>
+</section>
+
+<section class="ab-sec">
+  <h2 class="ab-h">Dự án &amp; hoạt động</h2>
+  <div id="ab-act"></div>
+</section>
+
+<section class="ab-sec ab-grid">
+  <div>
+    <h2 class="ab-h">Kỹ năng</h2>
+    <div class="ab-skills" id="ab-skills"></div>
+  </div>
+  <div>
+    <h2 class="ab-h">Công cụ</h2>
+    <ul class="ab-tools" id="ab-tools"></ul>
+  </div>
+</section>
+
+<section class="ab-sec ab-grid three">
+  <div><h2 class="ab-h">Học vấn</h2><div class="ab-edu" id="ab-edu"></div></div>
+  <div><h2 class="ab-h">Ngôn ngữ</h2><ul class="ab-list" id="ab-lang"></ul></div>
+  <div><h2 class="ab-h">Mục tiêu</h2><div class="ab-goal" id="ab-goal"></div></div>
+</section>
+
+
+<!-- Liên hệ (cuối mọi trang) -->
+<section id="contact">
+  <h2 class="big" data-reveal><span id="c1"></span><br><em id="c2"></em></h2>
+  <a class="mail" id="mail" data-reveal></a>
+  <div class="links" id="links" data-reveal></div>
+  <footer class="site mono"><span id="copy"></span><span>Video editing · Design</span></footer>
+</section>
+
+<div class="cursor" id="cursor"><b>XEM</b></div>
+
+<script src="site.js?v=202610262142"></script>
+</body>
+</html>

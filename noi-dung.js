@@ -395,26 +395,26 @@ window.PORTFOLIO = {
   ],
   "about": {
     "hoTen": "Phan Bội Ánh",
-    "chucDanh": "Video Editor",
+    "chucDanh": "Video Editor & Scriptwriter",
     "anh": "",
     "khuVuc": "TP. Hồ Chí Minh, Việt Nam",
     "tomTat": "",
     "conSo": [
       {
-        "so": "1,1M",
-        "nhan": "lượt xem video TikTok sơ duyệt 30/4"
-      },
-      {
-        "so": "247K",
-        "nhan": "lượt thích trên kênh TikTok cá nhân"
-      },
-      {
         "so": "Best MV",
         "nhan": "& Live Session — Pick Your Team 2022"
       },
       {
-        "so": "21K",
-        "nhan": "lượt xem MV \"Trường Tao Học\" và  1,1K Likes"
+        "so": "2",
+        "nhan": "MV chính thức cho The 1210 Label (NMLL · Quên Đi)"
+      },
+      {
+        "so": "3",
+        "nhan": "quốc gia chiếu video LED (Việt Nam, Hàn Quốc, Thái Lan)"
+      },
+      {
+        "so": "1,1M",
+        "nhan": "lượt xem video TikTok sơ duyệt 30/4"
       }
     ],
     "kinhNghiem": [
@@ -493,7 +493,8 @@ window.PORTFOLIO = {
         "moTa": "Chụp ảnh tại các sự kiện trong trường.\nEdit các video ngắn.\nQuản lý và điều phối các công tác truyền thông tại các sự kiện của trường.\nXây dựng dự án, hoạt động truyền thông chào mừng các dịp lễ như Ngày Phụ nữ Việt Nam (20/10), Ngày Nhà giáo Việt Nam,...\nPhân công và theo dõi tiến độ sản xuất hình ảnh/video.\nTham gia các cuộc thi, hoạt động ngoài trường như cuộc thi làm phim (RMIT x Hoa Học Trò), trend remake MV,...",
         "ketQua": "Tăng followers cho page từ ~300 lên 2.000 followers trong năm 2020 (trong 1 năm hoạt động).\nThu hút nhiều sự quan tâm cả trong và ngoài trường.\nBài đăng trung bình đạt 200–500 lượt thích; MV nổi bật đạt 21K lượt xem, 1,1K lượt thích và hơn 200 lượt chia sẻ."
       }
-    ]
+    ],
+    "motCau": "Mình viết kịch bản và dựng MV, phim ngắn, video LED cho nghệ sĩ."
   },
   "giaoDien": {
     "boMau": "tuChon",
