@@ -388,7 +388,7 @@
         <div class="look-side">
           <p class="section-title first">Xem trước</p>
           <div class="lp" id="lookPreview">
-            <div class="lp-nav"><b>${esc(S.thongTin.ten || 'Tên')}</b><span>01 About</span><span class="on">02 Design</span><span>03 Video</span></div>
+            <div class="lp-nav"><b>${esc(S.thongTin.ten || 'Tên')}</b><span>01 Video</span><span class="on">02 Design</span><span>03 About</span></div>
             <div class="lp-kick">About me</div>
             <div class="lp-h">${esc(S.about.hoTen || S.thongTin.ten || 'Tên của bạn')}</div>
             <p class="lp-p">${esc(String(S.about.tomTat || 'Đoạn giới thiệu ngắn về bạn.').split('\n')[0])}</p>
@@ -410,7 +410,7 @@
     f.innerHTML = `<div class="form">
       <div class="form-head">
         <h2>${isD ? 'Sản phẩm Design' : 'Video'} số ${i + 1}</h2>
-        <a class="btn small" href="${isD ? `design.html?muc=${encodeURIComponent(p.nhom)}#sp-${i}` : `video.html#video-${i + 1}`}" target="_blank" title="Nhớ bấm Lưu trước">Xem trên web ↗</a>
+        <a class="btn small" href="${isD ? `design.html?muc=${encodeURIComponent(p.nhom)}#sp-${i}` : `index.html#video-${i + 1}`}" target="_blank" title="Nhớ bấm Lưu trước">Xem trên web ↗</a>
         <button class="btn small danger" data-act="del">Xoá</button>
       </div>
       ${isD ? `<label class="field"><span>Thuộc mục<em>sản phẩm sẽ hiện trong trang của mục này</em></span>
@@ -510,11 +510,12 @@
   function renderAbout() {
     const a = S.about;
     main.innerHTML = `<div class="form" style="max-width:920px">
-      <p class="hint" style="margin:0 0 18px">Nội dung trang <b>About</b> — trang đầu tiên của website (nút "01 About" trên menu). Email và số điện thoại lấy từ tab "Thông tin & liên hệ".</p>
+      <p class="hint" style="margin:0 0 18px">Nội dung trang <b>About</b> (nút "03 About" trên menu, giống một bản CV). Tên và nghề cũng hiện ở đầu trang Video, là trang đầu tiên của web. Email và số điện thoại lấy từ tab "Thông tin & liên hệ".</p>
       <div class="grid2">
         ${field('hoTen', 'Họ tên', a.hoTen, { em: 'chữ to đầu trang' })}
-        ${field('chucDanh', 'Chức danh', a.chucDanh, { ph: 'Video Editor' })}
+        ${field('chucDanh', 'Nghề / chức danh', a.chucDanh, { em: 'chữ to, màu nhấn', ph: 'Video Editor & Scriptwriter' })}
       </div>
+      ${field('motCau', 'Một câu nói bạn làm gì', a.motCau, { em: 'hiện dưới nghề, và ở đầu trang Video', ph: 'Mình viết kịch bản và dựng MV, phim ngắn…', max: 110 })}
       ${field('khuVuc', 'Khu vực', a.khuVuc, { ph: 'TP. Hồ Chí Minh, Việt Nam' })}
       ${area('tomTat', 'Giới thiệu', a.tomTat, 'xuống dòng để tách đoạn')}
       <div class="field"><span>Ảnh chân dung<em>ảnh dọc đẹp nhất · để trống thì phần chữ trải rộng</em></span><div class="vid" id="photoBox">${photoHTML(a)}</div></div>

@@ -1,5 +1,10 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0h. Thứ tự trang mới (2026-10-26) — ƯU TIÊN HƠN 0c
+- index.html = trang **Video** (trang đầu, có dòng #who "Tên — Nghề" + about.motCau) · design.html = **Design & Illustration** · about.html = **About** (dạng CV) · Contact ở cuối mọi trang. video.html chỉ còn tự chuyển về index.html (giữ nguyên #video-n).
+- about.chucDanh "Video Editor & Scriptwriter" hiện to bằng màu nhấn. Thêm trường about.motCau. Thẻ video hiện vaiTro. conSo xếp theo công việc trước: Best MV · 2 MV The 1210 Label · 3 quốc gia LED · 1,1M TikTok (đã bỏ 247K và 21K).
+- Dang-len-mang đổi số phiên bản ở index/design/about.
+
 ## 0g. Giới hạn dung lượng (2026-10-26)
 - GitHub từ chối file trên 100 MB (đã gặp: remake-va-toi-di.mp4 113 MB). Đã nén lại còn 44 MB (720p, crf 24). Bản gốc để trong `tools/video-goc/` (đã đưa vào gitignore).
 - may-chu.py: video đã nén mà vẫn > `LIMIT_VIDEO` (45 MB) thì nén lại lần lượt 1280/crf25 → 1280/crf29 → 960/crf31. Dang-len-mang.command chặn và báo nếu có file > 95 MB trong assets.

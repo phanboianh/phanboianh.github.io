@@ -70,7 +70,7 @@ Bạn **không cần đụng vào code**. Mọi việc thêm, sửa, xoá sản 
 Bấm tab **Thông tin & liên hệ**:
 
 - **Tên hiển thị**: tên ở góc trái trên của mọi trang.
-- Website có 3 trang: **About** (trang đầu tiên), **Design**, **Video**. Phần liên hệ nằm ở cuối mỗi trang.
+- Website có 3 trang theo thứ tự: **Video** (trang đầu tiên), **Design**, **About** (giống CV). Phần liên hệ nằm ở cuối mỗi trang.
 - **Email** và **Các liên kết** (Instagram, Behance, TikTok, điện thoại…):
   - Bấm **+ Thêm liên kết** để thêm dòng mới, hoặc **✕** để xoá dòng.
   - Với số điện thoại, ô *Link* ghi dạng `tel:+84901234567` để người xem bấm là gọi được.
@@ -81,7 +81,7 @@ Sửa xong nhớ bấm **Lưu thay đổi**.
 
 ## 5b. Trang About me
 
-Bấm tab **About me** trong Trình chỉnh sửa:
+Bấm tab **About me** trong Trình chỉnh sửa (ô **Nghề** và **Một câu nói bạn làm gì** còn hiện ở đầu trang Video):
 
 - **Họ tên, chức danh, khu vực, giới thiệu**: phần đầu trang About.
 - **Ảnh chân dung**: kéo ảnh vào ô. Nếu để trống, phần chữ sẽ trải rộng hết trang.

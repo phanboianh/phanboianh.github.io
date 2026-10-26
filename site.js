@@ -157,8 +157,12 @@
 
   // ======================= VIDEO =======================
   function videoPage() {
-    document.title = `Video — ${name}`;
+    const A = D.about || {};
+    document.title = `${A.hoTen || name} — ${A.chucDanh || 'Video'}`;
     $('#n-video').textContent = `(${pad(VS.length)})`;
+    // Trang đầu tiên: một dòng cho người xem biết ngay đây là ai, làm nghề gì
+    $('#who').innerHTML = [A.hoTen || name, A.chucDanh].filter(Boolean).map((x, k) => k ? `<b>${esc(x)}</b>` : esc(x)).join(' — ') +
+      (A.motCau ? `<span>${esc(A.motCau)}</span>` : '');
     // Video: lưới video xem trước tự chạy, thấy sản phẩm ngay
     $('#vgrid').innerHTML = VS.map((v, i) => `
       <article class="vcard" data-i="${i}" data-cursor data-reveal>
@@ -169,7 +173,7 @@
           <span class="play">▶</span>
         </div>
         <div class="info">
-          <div><h3>${esc(v.tieuDe)}</h3>${v.moTa ? `<p>${esc(v.moTa)}</p>` : ''}</div>
+          <div><h3>${esc(v.tieuDe)}</h3>${v.vaiTro ? `<p class="mono role">${esc(v.vaiTro)}</p>` : ''}${v.moTa ? `<p>${esc(v.moTa)}</p>` : ''}</div>
           <span class="mono kind">${esc(v.loai)}</span>
         </div>
       </article>`).join('');
@@ -184,7 +188,7 @@
       stop();
       cur = i;
       const n = VS.length, prev = VS[(i - 1 + n) % n], next = VS[(i + 1) % n];
-      where.textContent = `03 Video — ${pad(i + 1)} / ${pad(n)}`;
+      where.textContent = `01 Video — ${pad(i + 1)} / ${pad(n)}`;
       const main = v.video ? `<video src="${esc(v.video)}"${v.anhBia ? ` poster="${esc(v.anhBia)}"` : ''} controls autoplay playsinline></video>`
         : v.yt ? `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${v.yt}?rel=0" title="${esc(v.tieuDe)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
         : `<img src="${esc(v.bia)}" alt="${esc(v.tieuDe)}">`;
@@ -272,6 +276,7 @@
     document.title = `About — ${name}`;
     $('#ab-name').textContent = A.hoTen || name;
     $('#ab-role').textContent = A.chucDanh || '';
+    $('#ab-line').textContent = A.motCau || '';
     $('#ab-sum').innerHTML = paras(A.tomTat);
     const ph = $('#ab-photo');
     if (A.anh) ph.innerHTML = `<img src="${esc(A.anh)}" alt="${esc(A.hoTen || name)}">`; else ph.remove();

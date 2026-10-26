@@ -99,7 +99,11 @@ body::after {
 .cat.empty .meta { background: none; }
 
 /* ---------- VIDEO: lưới video tự chạy ---------- */
-#video { padding: 150px 0 120px; }
+#video { padding: 130px 0 120px; }
+/* dòng "Tên — Nghề" ở đầu trang Video (trang đầu tiên của web) */
+.who { padding: 0 var(--pad); margin-bottom: 26px; font-size: clamp(16px, 1.5vw, 21px); color: var(--ink2); }
+.who b { color: var(--accent); font-weight: 600; }
+.who span { display: block; margin-top: 4px; font-size: .82em; color: var(--mute); }
 .vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 24px; padding: 0 var(--pad); }
 .vcard { cursor: pointer; }
 .vcard .scr { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
@@ -114,6 +118,7 @@ body::after {
 .vcard h3 { font: var(--tw) calc(clamp(24px, 2.6vw, 38px) * var(--ts))/1.05 var(--title); letter-spacing: calc(-.035em * var(--tls)); transition: color .4s; }
 .vcard:hover h3 { color: var(--accent); }
 .vcard .info p { margin-top: 8px; font-size: 14px; color: var(--mute); }
+.vcard .info .role { color: var(--accent); font-size: 10.5px; margin-top: 10px; }
 .vcard .kind { color: var(--mute); text-align: right; flex: none; max-width: 40%; }
 
 /* ---------- CONTACT ---------- */
@@ -225,7 +230,8 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 .ab-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: end; padding: 150px var(--pad) 60px; }
 .ab-hero .crumb { color: var(--accent); }
 .ab-hero h1 { font: var(--tw) calc(clamp(52px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 18px 0 14px; }
-.ab-role { color: var(--mute); font-size: 13px; }
+.ab-role { font: var(--tw) calc(clamp(22px, 2.6vw, 38px) * var(--ts))/1.15 var(--title); letter-spacing: calc(-.03em * var(--tls)); color: var(--accent); }
+.ab-line { margin-top: 10px; max-width: 46ch; font-size: clamp(16px, 1.4vw, 20px); color: var(--ink2); }
 .ab-sum { margin-top: 30px; max-width: 58ch; }
 .ab-hero:not(:has(.ab-photo)) { grid-template-columns: 1fr; } /* chưa có ảnh chân dung thì phần chữ trải rộng */
 .ab-sum p { font-size: clamp(17px, 1.5vw, 21px); line-height: 1.6; color: var(--ink2); margin-bottom: 12px; }
