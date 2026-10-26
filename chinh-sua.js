@@ -27,7 +27,8 @@
   S.about = S.about || {};
   const G = window.GIAO_DIEN;
   S.giaoDien = { ...G.DEFAULT, ...(S.giaoDien || {}) };
-  S.trangTri = { video: [], about: [], contact: [], catAnh: {}, ...(S.trangTri || {}) };
+  S.trangTri = { home: [], about: [], contact: [], catAnh: {}, ...(S.trangTri || {}) };
+  if (S.trangTri.video) { S.trangTri.home = S.trangTri.home.length ? S.trangTri.home : S.trangTri.video; delete S.trangTri.video; } // tên cũ của vùng trang chủ
   ['conSo', 'kinhNghiem', 'hoatDong', 'kyNang', 'hocVan'].forEach((k) => { S.about[k] = S.about[k] || []; });
   S.nhomDesign = S.nhomDesign && S.nhomDesign.length ? S.nhomDesign : CAT_DEFAULT;
   S.design.forEach((p) => {
@@ -148,7 +149,7 @@
         const missing = k === 'design' ? !p.anh.length : !p.video && !p.anhBia && !isYT(p.link);
         return `<div class="item ${i === sel[k] ? 'on' : ''}" data-i="${i}">
           <div class="th">${thumbOf(k, p)}</div>
-          <div><b>${esc(p.tieuDe || '(chưa đặt tên)')}</b>${missing
+          <div><b>${p.noiBat ? '⭐ ' : ''}${esc(p.tieuDe || '(chưa đặt tên)')}</b>${missing
             ? `<small class="warn">Chưa có ${k === 'design' ? 'ảnh' : 'video, link YouTube hay ảnh bìa'} — chưa hiện trên web</small>`
             : `<small>${[k === 'design' && filt === 'all' ? catName(p.nhom) : p.loai, p.nam].filter(Boolean).map(esc).join(' · ')}</small>`}</div>
           <div class="ord">
@@ -346,9 +347,9 @@
   // ---------- Tab Ảnh trang trí: kéo thả ảnh ngay trên trang web thật ----------
   // Khung bên trái là chính trang web (iframe, chế độ ?trangtri=1); kéo ảnh trong đó để đổi vị trí.
   // Vị trí máy tính (x, y, w) và điện thoại (xDT, yDT, wDT) lưu riêng.
-  const ZONES = [['video', 'Đầu trang Video', 'index.html', ''], ['about', 'Đầu trang About', 'about.html', ''], ['contact', 'Phần liên hệ', 'index.html', '#contact']];
+  const ZONES = [['home', 'Trang chủ', 'index.html', ''], ['about', 'Đầu trang About', 'about.html', ''], ['contact', 'Phần liên hệ', 'index.html', '#contact']];
   const KIEU = [['polaroid', 'Polaroid — khung trắng, băng dính'], ['hoa', 'Hoà vào nền — mép mờ dần'], ['tron', 'Tròn — viền màu nhấn'], ['khung', 'Khung mảnh']];
-  let decoZone = 'video', decoDev = 'pc', decoSel = -1;
+  let decoZone = 'home', decoDev = 'pc', decoSel = -1;
   window.__deco = {
     get: () => S.trangTri,
     get sel() { return decoSel >= 0 ? { zone: decoZone, i: decoSel } : null; },
@@ -412,6 +413,13 @@
         </div>` : `<p class="hint" style="margin-top:14px">Bấm vào một ảnh (ở danh sách hoặc ngay trên trang bên trái) để chỉnh.</p>`}
       <p class="hint" style="margin-top:16px">🖐 <b>Kéo ảnh trực tiếp trên trang bên trái</b> để đổi vị trí. Vị trí trên <b>máy tính</b> và <b>điện thoại</b> lưu riêng: bấm 📱 Điện thoại để sắp xếp riêng cho màn hình nhỏ. Xong nhớ bấm <b>Lưu thay đổi</b>.</p>`;
   }
+  // ô tick (Nổi bật ở trang chủ)
+  main.addEventListener('input', (e) => {
+    const k = e.target.dataset.chk, it = k && S[tab] && S[tab][sel[tab]];
+    if (!it) return;
+    it[k] = e.target.checked;
+    setDirty(); renderList(tab);
+  });
   main.addEventListener('input', (e) => {
     const k0 = e.target.dataset.dk;
     if (tab !== 'deco' || !k0) return;
@@ -494,11 +502,12 @@
     f.innerHTML = `<div class="form">
       <div class="form-head">
         <h2>${isD ? 'Sản phẩm Design' : 'Video'} số ${i + 1}</h2>
-        <a class="btn small" href="${isD ? `design.html?muc=${encodeURIComponent(p.nhom)}#sp-${i}` : `index.html#video-${i + 1}`}" target="_blank" title="Nhớ bấm Lưu trước">Xem trên web ↗</a>
+        <a class="btn small" href="${isD ? `design.html?muc=${encodeURIComponent(p.nhom)}#sp-${i}` : `video.html#video-${i + 1}`}" target="_blank" title="Nhớ bấm Lưu trước">Xem trên web ↗</a>
         <button class="btn small danger" data-act="del">Xoá</button>
       </div>
       ${isD ? `<label class="field"><span>Thuộc mục<em>sản phẩm sẽ hiện trong trang của mục này</em></span>
         <select data-f="nhom">${S.nhomDesign.map((c) => `<option value="${esc(c.ma)}"${c.ma === p.nhom ? ' selected' : ''}>${esc(c.ten)}</option>`).join('')}</select></label>` : ''}
+      ${isD ? '' : `<label class="field check"><input type="checkbox" data-chk="noiBat"${p.noiBat ? ' checked' : ''}> ⭐ Nổi bật ở trang chủ <em style="font-weight:400;color:var(--mute)">(trang chủ hiện tối đa 4 video được tick)</em></label>`}
       <div id="mediaBox">${isD ? mediaDesign(p) : mediaVideo(p) + mediaExtra(p)}</div>
       ${layoutField(p)}
       ${frameField(p)}

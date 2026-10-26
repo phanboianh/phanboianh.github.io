@@ -1,5 +1,12 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0k. Trang chủ + trang con chung khuôn (2026-10-26) — MỚI NHẤT
+- index.html = **Trang chủ** (data-page home): .vhero (tên/nghề/motCau + ảnh trang trí vùng `home`), "Selected work" (video có noiBat, tối đa 4, thẻ dẫn video.html#video-n), 4 mục Design, About ngắn (tomTat đoạn đầu + tên nơi làm + ab-nums), liên hệ.
+- video.html = trang Video (có panel), design.html, about.html đều dùng khuôn `.page-head` (kick "0X — Tên" màu nhấn, h1 = var(--page-title), mô tả). ab-hero h1 và cat-hero h1 cũng dùng --page-title. Logo về trang chủ. Menu: Video · Design · About · Contact.
+- trangTri.video đổi tên thành trangTri.home (Trình chỉnh sửa tự đổi dữ liệu cũ). Form video có ô tick ⭐ "Nổi bật ở trang chủ" (noiBat).
+- favicon.svg, assets/og.jpg (1200×630, vẽ bằng JXA, xem scratch og.js), có thẻ og và twitter trên 4 trang. Dang-len-mang đổi số phiên bản ở cả 4 trang.
+- Đã sửa chữ: " _ " và " - " thành " · ", "real !", mô tả mục Motion, False Eden (bỏ chữ kiểu đặc biệt). CHƯA sửa số liệu lệch giữa CV và PDF (cần người dùng chọn).
+
 ## 0j. Ảnh trang trí kéo thả (2026-10-26) — thay cho 0i (đã bỏ ảnh rê chuột, ab-photo, c-ava, about.anh*)
 - `PORTFOLIO.trangTri = { video:[], about:[], contact:[], catAnh:{} }`. Mỗi ảnh: { src, x, y (tâm, % vùng), w (% bề rộng vùng), xoay, kieu: polaroid|hoa|tron|khung, chu, lop: truoc|sau, xDT/yDT/wDT (riêng điện thoại ≤760px), anDT }. Vùng = phần tử có `data-deco` (.vhero, .ab-hero, #contact). site.js `renderDeco()`.
 - Trình chỉnh sửa, tab "Ảnh trang trí": iframe trang thật `?trangtri=1` đọc `window.parent.__deco` (get/sel/select/move), kéo ảnh trong iframe để ghi vị trí. Nút Máy tính/Điện thoại (iframe 1280 thu nhỏ / 380). Thêm ảnh (drop 'deco'), kiểu, chữ viết tay (font Dancing Script), cỡ, xoay, trước/sau chữ, ẩn trên ĐT, cắt (openCrop trên S.trangTri), lên/xuống lớp, xoá.

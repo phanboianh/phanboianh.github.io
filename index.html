@@ -3,41 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phan Bội Ánh — Video Editor</title>
-<meta name="description" content="Portfolio video editing, sản xuất nội dung và thiết kế.">
+<title>Phan Bội Ánh — Video Editor & Scriptwriter</title>
+<meta name="description" content="Portfolio của Phan Bội Ánh — Video Editor & Scriptwriter: MV, phim ngắn, video LED, thiết kế và minh hoạ.">
+<!-- icon trên tab trình duyệt + ảnh xem trước khi gửi link (Zalo, Messenger, Facebook…) -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Phan Bội Ánh — Video Editor & Scriptwriter">
+<meta property="og:description" content="Portfolio của Phan Bội Ánh — Video Editor & Scriptwriter: MV, phim ngắn, video LED, thiết kế và minh hoạ.">
+<meta property="og:image" content="https://phanboianh.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://phanboianh.github.io/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500&family=Dancing+Script:wght@600&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610262219">
+<link rel="stylesheet" href="site.css?v=202610262234">
 <!-- nội dung + màu/font chọn trong Trình chỉnh sửa: nạp sớm để trang không bị nháy màu -->
-<script src="noi-dung.js?v=202610262219"></script>
-<script src="giao-dien.js?v=202610262219"></script>
+<script src="noi-dung.js?v=202610262234"></script>
+<script src="giao-dien.js?v=202610262234"></script>
 </head>
-<body data-page="video">
+<body data-page="home">
 
-<!-- Menu: Video là trang đầu tiên (index.html) → Design → About (CV) → Contact -->
+<!-- Menu: logo "Ánh Phan" về trang chủ · Video · Design · About · Contact (cuối trang) -->
 <header class="nav">
   <a href="index.html" class="logo" id="logo"></a>
   <nav>
-    <a href="index.html" class="on"><i>01</i>Video</a>
+    <a href="video.html"><i>01</i>Video</a>
     <a href="design.html"><i>02</i>Design</a>
     <a href="about.html"><i>03</i>About</a>
     <a href="#contact"><i>04</i>Contact</a>
   </nav>
 </header>
 
-<section id="video">
-  <!-- Đầu trang: tên to + nghề (lấy từ tab About me). Rê chuột vào tên thì hiện ảnh (ảnh "rê chuột") -->
-  <div class="vhero" data-deco="video">
-    <h1 id="vh-name"><span></span></h1>
-    <p class="ab-role" id="vh-role"></p>
-    <p class="ab-line" id="vh-line"></p>
-  </div>
-  <div class="sec-head" data-reveal>
-    <h2>Video<sup id="n-video"></sup></h2>
-    <p>MV, phim ngắn, bản tin và video truyền thông. Bấm vào từng dự án để xem video kèm chú thích.</p>
+<!-- TRANG CHỦ: tên to + nghề + ảnh trang trí (kéo thả trong tab "Ảnh trang trí") -->
+<section class="vhero" data-deco="home">
+  <h1 id="vh-name"><span></span></h1>
+  <p class="ab-role" id="vh-role"></p>
+  <p class="ab-line" id="vh-line"></p>
+</section>
+
+<!-- Video nổi bật (tick "Nổi bật ở trang chủ" trong Trình chỉnh sửa) -->
+<section class="home-sec">
+  <div class="home-head" data-reveal>
+    <div><span class="mono kick">01 — Video</span><h2>Selected work<sup id="n-video"></sup></h2></div>
+    <a class="mono more" href="video.html">Xem tất cả video →</a>
   </div>
   <div class="vgrid" id="vgrid"></div>
+</section>
+
+<section class="home-sec">
+  <div class="home-head" data-reveal>
+    <div><span class="mono kick">02 — Design</span><h2>Design &amp; Illustration<sup id="n-design"></sup></h2></div>
+    <a class="mono more" href="design.html">Xem tất cả →</a>
+  </div>
+  <div class="strip"><div class="cats" id="cats"></div></div>
+</section>
+
+<section class="home-sec">
+  <div class="home-head" data-reveal>
+    <div><span class="mono kick">03 — About</span><h2>About me</h2></div>
+    <a class="mono more" href="about.html">Xem CV đầy đủ →</a>
+  </div>
+  <div class="home-about" id="ha-text" data-reveal></div>
+  <div class="ab-nums" id="ab-nums"></div>
 </section>
 
 <!-- Liên hệ (cuối mọi trang) -->
@@ -48,14 +77,8 @@
   <footer class="site mono"><span id="copy"></span><span>Video editing · Design</span></footer>
 </section>
 
-<!-- Bảng chi tiết video -->
-<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Chi tiết video">
-  <div class="p-top"><span class="mono" id="p-where"></span><button class="p-close mono" id="p-close">Đóng <b>×</b></button></div>
-  <div id="p-content"></div>
-</div>
-
 <div class="cursor" id="cursor"><b>XEM</b></div>
 
-<script src="site.js?v=202610262219"></script>
+<script src="site.js?v=202610262234"></script>
 </body>
 </html>

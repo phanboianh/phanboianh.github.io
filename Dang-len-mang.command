@@ -16,7 +16,7 @@ fi
 if [ -n "$(git status --porcelain)" ]; then
   # Đổi số phiên bản ?v=… để điện thoại/trình duyệt tải bản mới thay vì dùng bản cũ đã nhớ
   v=$(date +%Y%m%d%H%M)
-  sed -i '' -E "s#\?v=[0-9]+\"#?v=$v\"#g" index.html design.html about.html
+  sed -i '' -E "s#\?v=[0-9]+\"#?v=$v\"#g" index.html video.html design.html about.html
 fi
 git add -A
 if git diff --cached --quiet; then

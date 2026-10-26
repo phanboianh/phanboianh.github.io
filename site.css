@@ -16,7 +16,9 @@
   --accent: #ff3b5c;
   --ts: 1;              /* hệ số cỡ tiêu đề */
   --tw: 700;            /* độ đậm tiêu đề */
-  --tls: 1;             /* hệ số khoảng cách chữ tiêu đề (font có chân thì nới ra) */
+  --tls: 1;
+  /* cỡ tiêu đề chung của mọi trang con (Video, Design, About, từng mục Design) */
+  --page-title: calc(clamp(48px, 7.4vw, 116px) * var(--ts));             /* hệ số khoảng cách chữ tiêu đề (font có chân thì nới ra) */
   --title: 'Arimo', 'Helvetica Neue', Arial, sans-serif;
   --sans: 'Be Vietnam Pro', system-ui, sans-serif;
   --mono: 'Arimo', 'Helvetica Neue', Arial, sans-serif; /* nhãn nhỏ in hoa: chữ không chân, nét đậm */
@@ -97,6 +99,23 @@ body::after {
 .edit-deco .deco.chon { outline: 2px dashed var(--accent); outline-offset: 6px; }
 .edit-deco .deco.an-dt { opacity: .3; }
 
+/* ---------- ĐẦU TRANG CON: một khuôn chung cho Video · Design · About ---------- */
+.page-head { padding: 150px var(--pad) 40px; margin-bottom: 44px; border-bottom: 1px solid var(--line); }
+.page-head .kick, .ab-hero .crumb, .cat-hero .crumb, .home-head .kick { color: var(--accent); }
+.page-head h1 { font: var(--tw) var(--page-title)/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 16px 0 18px; }
+.page-head h1 sup, .home-head h2 sup { font: 700 14px var(--mono); color: var(--accent); vertical-align: top; margin-left: 8px; letter-spacing: 0; }
+.page-head p { max-width: 52ch; color: var(--ink2); font-size: clamp(15px, 1.3vw, 18px); }
+
+/* ---------- TRANG CHỦ: các phần nổi bật ---------- */
+.home-sec { padding: 90px 0 30px; }
+.home-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; padding: 0 var(--pad) 22px; margin: 0 var(--pad) 36px; padding-left: 0; padding-right: 0; border-bottom: 1px solid var(--line); }
+.home-head h2 { font: var(--tw) calc(clamp(32px, 4.4vw, 64px) * var(--ts))/1 var(--title); letter-spacing: calc(-.045em * var(--tls)); margin-top: 12px; }
+.home-head .more { flex: none; padding: 10px 16px; border: 1px solid var(--line); border-radius: 99px; transition: border-color .3s, color .3s; }
+.home-head .more:hover { border-color: var(--accent); color: var(--accent); }
+.home-about { padding: 0 var(--pad) 40px; max-width: calc(64ch + 2 * var(--pad)); }
+.home-about p { font-size: clamp(16px, 1.4vw, 20px); color: var(--ink2); margin-bottom: 14px; }
+.home-about .jobs { color: var(--mute); font-size: 11px; line-height: 1.8; }
+
 /* ---------- tiêu đề mỗi phần ---------- */
 .sec-head { display: flex; justify-content: space-between; align-items: end; padding: 0 var(--pad); margin-bottom: 40px; gap: 20px; }
 .sec-head h2 { font: var(--tw) calc(clamp(52px, 10vw, 156px) * var(--ts))/.88 var(--title); letter-spacing: calc(-.055em * var(--tls)); }
@@ -104,7 +123,7 @@ body::after {
 .sec-head p { max-width: 300px; color: var(--mute); font-size: 14px; }
 
 /* ---------- DESIGN trên trang chủ: 4 khung phim = 4 mục ---------- */
-#design-home { padding: 150px 0 100px; }
+#design-home { padding: 0 0 100px; }
 .strip { position: relative; padding: 34px var(--pad); background: var(--strip); }
 .strip::before, .strip::after { content: ''; position: absolute; left: 0; right: 0; height: 12px; background: repeating-linear-gradient(90deg, transparent 0 14px, var(--sprocket) 14px 26px); }
 .strip::before { top: 11px; } .strip::after { bottom: 11px; }
@@ -125,14 +144,12 @@ body::after {
 .cat.empty .meta { background: none; }
 
 /* ---------- VIDEO: lưới video tự chạy ---------- */
-#video { padding: 130px 0 120px; }
+#video { padding: 0 0 120px; }
 /* Đầu trang Video (trang đầu tiên): tên to + nghề; mục "Video (07)" nhỏ lại thành nhãn */
-.vhero { position: relative; padding: 0 var(--pad); margin-bottom: 64px; min-height: clamp(260px, 30vw, 380px); }
+.vhero { position: relative; padding: 150px var(--pad) 40px; min-height: clamp(460px, 44vw, 600px); }
 .vhero h1 { display: inline-flex; align-items: center; gap: .25em; font: var(--tw) calc(clamp(48px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin-bottom: 14px; cursor: default; }
-#video .sec-head h2 { font-size: calc(clamp(30px, 3.6vw, 52px) * var(--ts)); letter-spacing: calc(-.04em * var(--tls)); }
-#video .sec-head { border-top: 1px solid var(--line); padding-top: 26px; margin-left: var(--pad); margin-right: var(--pad); padding-left: 0; padding-right: 0; }
 .vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 24px; padding: 0 var(--pad); }
-.vcard { cursor: pointer; }
+.vcard { cursor: pointer; display: block; }
 .vcard .scr { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
 .vcard .scr video, .vcard .scr img { height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .vcard:hover .scr video { transform: scale(1.035); }
@@ -240,7 +257,7 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 .subnav .tab i { font-style: normal; opacity: .55; margin-left: 6px; }
 .cat-hero { padding: 44px var(--pad) 40px; }
 .cat-hero .crumb { color: var(--accent); }
-.cat-hero h1 { font: var(--tw) calc(clamp(56px, 11vw, 176px) * var(--ts))/.9 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 16px 0 22px; }
+.cat-hero h1 { font: var(--tw) var(--page-title)/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 16px 0 22px; }
 .cat-hero p { max-width: 520px; color: var(--ink2); font-size: 17px; }
 .work { padding: 70px var(--pad) 40px; border-top: 1px solid var(--line); scroll-margin-top: 150px; }
 .work .num { color: var(--mute); display: block; margin-bottom: 26px; }
@@ -256,7 +273,7 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 /* ---------- TRANG ABOUT (about.html) ---------- */
 .ab-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: end; padding: 150px var(--pad) 60px; }
 .ab-hero .crumb { color: var(--accent); }
-.ab-hero h1 { font: var(--tw) calc(clamp(52px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 18px 0 14px; }
+.ab-hero h1 { font: var(--tw) var(--page-title)/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 18px 0 14px; }
 .ab-role { font: var(--tw) calc(clamp(22px, 2.6vw, 38px) * var(--ts))/1.15 var(--title); letter-spacing: calc(-.03em * var(--tls)); color: var(--accent); }
 .ab-line { margin-top: 10px; max-width: 46ch; font-size: clamp(16px, 1.4vw, 20px); color: var(--ink2); }
 .ab-sum { margin-top: 30px; max-width: 58ch; }
@@ -318,7 +335,10 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 @media (max-width: 760px) {
   .nav nav a i { display: none; }
   .nav nav { gap: 12px; }
-  .vhero:has(> .deco:not(.an-dt)) { min-height: 440px; }
+  .page-head { padding-top: 120px; }
+  .home-head { flex-direction: column; align-items: start; }
+  .vhero { padding-top: 120px; }
+  .vhero:has(> .deco:not(.an-dt)) { min-height: 540px; }
   .ab-hero:has(> .deco:not(.an-dt)) { padding-top: 300px; }
   .vhero { margin-bottom: 44px; }
   .g-arrow { width: 38px; height: 38px; margin-top: -19px; font-size: 15px; }

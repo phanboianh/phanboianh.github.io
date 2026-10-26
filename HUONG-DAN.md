@@ -70,7 +70,8 @@ Bạn **không cần đụng vào code**. Mọi việc thêm, sửa, xoá sản 
 Bấm tab **Thông tin & liên hệ**:
 
 - **Tên hiển thị**: tên ở góc trái trên của mọi trang.
-- Website có 3 trang theo thứ tự: **Video** (trang đầu tiên), **Design**, **About** (giống CV). Phần liên hệ nằm ở cuối mỗi trang.
+- Website gồm **Trang chủ** (tên, ảnh, video nổi bật, Design, giới thiệu ngắn) và 3 trang con **Video · Design · About**. Bấm tên "Ánh Phan" ở góc trái để về trang chủ. Liên hệ nằm ở cuối mỗi trang.
+- Muốn video nào hiện ở trang chủ: tab **Video** → chọn video → tick **⭐ Nổi bật ở trang chủ** (tối đa 4).
 - **Email** và **Các liên kết** (Instagram, Behance, TikTok, điện thoại…):
   - Bấm **+ Thêm liên kết** để thêm dòng mới, hoặc **✕** để xoá dòng.
   - Với số điện thoại, ô *Link* ghi dạng `tel:+84901234567` để người xem bấm là gọi được.
@@ -148,7 +149,7 @@ Ngay dưới có ô **Xem trước trên web**: đổi bố cục hay khung là 
 ## 5g. Ảnh trang trí (ảnh của bạn trên web)
 
 Bấm tab **Ảnh trang trí**:
-1. Chọn vùng ở trên: **Đầu trang Video**, **Đầu trang About** hay **Phần liên hệ**. Khung bên trái chính là trang web thật.
+1. Chọn vùng ở trên: **Trang chủ**, **Đầu trang About** hay **Phần liên hệ**. Khung bên trái chính là trang web thật.
 2. **Kéo ảnh trực tiếp trên trang** để đổi chỗ.
 3. Bấm một ảnh để chỉnh ở cột phải: **Kiểu** (Polaroid, Hoà vào nền, Tròn, Khung mảnh), **chữ viết tay** dưới polaroid, **Cỡ**, **Xoay**, nằm **trước hay sau chữ**, **✂ Cắt**, **Lên trên / Xuống dưới**, **Xoá**.
 4. **+ Thêm ảnh**: kéo ảnh mới vào ô này.
