@@ -131,42 +131,9 @@
   }).join('');
 
 
-  const muc = new URLSearchParams(location.search).get('muc');
-  if (page === 'about') aboutPage(); else if (page === 'video') videoPage(); else if (muc) designPage(); else designHome();
-
-  // ======================= DESIGN: 4 mục =======================
-  function designHome() {
-    document.title = `Design — ${name}`;
-    $('#design-cat').remove();
-    $('#n-design').textContent = `(${pad(DS.length)})`;
-    // Design: 4 khung = 4 mục, ảnh bìa lấy từ sản phẩm đầu tiên của mục
-    $('#cats').innerHTML = CATS.map((c, k) => {
-      const list = inCat(c.ma), cover = list[0] && list[0].anh[0];
-      return `<a class="cat${cover ? '' : ' empty'}" href="design.html?muc=${encodeURIComponent(c.ma)}" data-cursor data-reveal>
-        ${cover ? media(cover, c.ten).replace(' loading="lazy"', '') : ''}
-        <span class="mono no">${pad(k + 1)}</span>
-        <div class="meta">
-          <h3>${esc(c.ten)}</h3>
-          ${c.moTa ? `<p>${esc(c.moTa)}</p>` : ''}
-          <div class="foot mono"><span>${list.length ? pad(list.length) + ' sản phẩm' : 'Sắp có'}</span><b>Xem →</b></div>
-        </div>
-      </a>`;
-    }).join('');
-
-  }
-
-  // ======================= VIDEO =======================
-  function videoPage() {
-    const A = D.about || {};
-    document.title = `${A.hoTen || name} — ${A.chucDanh || 'Video'}`;
-    $('#n-video').textContent = `(${pad(VS.length)})`;
-    // Trang đầu tiên: tên thật to + nghề, để người xem biết ngay đây là ai, làm nghề gì
-    $('#vh-name span').textContent = A.hoTen || name;
-    $('#vh-role').textContent = A.chucDanh || '';
-    $('#vh-line').textContent = A.motCau || '';
-    // Video: lưới video xem trước tự chạy, thấy sản phẩm ngay
-    $('#vgrid').innerHTML = VS.map((v, i) => `
-      <article class="vcard" data-i="${i}" data-cursor data-reveal>
+  // Thẻ video (trang Video: bấm mở bảng chi tiết · trang chủ: href dẫn sang trang Video, mở đúng dự án)
+  const vcard = (v, i, href = '') => `
+      <${href ? `a href="${href}"` : 'article'} class="vcard" data-i="${i}" data-cursor data-reveal>
         <div class="scr">
           ${v.video ? media(v.xemTruoc || v.video, v.tieuDe, v.anhBia ? `poster="${esc(v.anhBia)}"` : '') : media(v.bia, v.tieuDe)}
           <span class="mono idx">${pad(i + 1)}</span>
@@ -177,7 +144,64 @@
           <div><h3>${esc(v.tieuDe)}</h3>${v.vaiTro ? `<p class="mono role">${esc(v.vaiTro)}</p>` : ''}${v.moTa ? `<p>${esc(v.moTa)}</p>` : ''}</div>
           <span class="mono kind">${esc(v.loai)}</span>
         </div>
-      </article>`).join('');
+      </${href ? 'a' : 'article'}>`;
+  // 4 ô mục Design: ảnh bìa lấy từ sản phẩm đầu tiên của mục
+  const catsHTML = () => CATS.map((c, k) => {
+    const list = inCat(c.ma), cover = list[0] && list[0].anh[0];
+    return `<a class="cat${cover ? '' : ' empty'}" href="design.html?muc=${encodeURIComponent(c.ma)}" data-cursor data-reveal>
+        ${cover ? media(cover, c.ten).replace(' loading="lazy"', '') : ''}
+        <span class="mono no">${pad(k + 1)}</span>
+        <div class="meta">
+          <h3>${esc(c.ten)}</h3>
+          ${c.moTa ? `<p>${esc(c.moTa)}</p>` : ''}
+          <div class="foot mono"><span>${list.length ? pad(list.length) + ' sản phẩm' : 'Sắp có'}</span><b>Xem →</b></div>
+        </div>
+      </a>`;
+  }).join('');
+  // Các con số nổi bật (tab About me)
+  const numsHTML = (A) => (A.conSo || []).filter((c) => c.so).map((c) => `<div data-reveal><b>${esc(c.so)}</b><span>${esc(c.nhan)}</span></div>`).join('');
+
+  const muc = new URLSearchParams(location.search).get('muc');
+  if (page === 'home') homePage(); else if (page === 'about') aboutPage(); else if (page === 'video') videoPage(); else if (muc) designPage(); else designHome();
+
+  // ======================= TRANG CHỦ =======================
+  // Tên to + nghề + ảnh trang trí · video nổi bật · 4 mục Design · giới thiệu ngắn + con số · liên hệ
+  function homePage() {
+    const A = D.about || {};
+    document.title = [A.hoTen || name, A.chucDanh].filter(Boolean).join(' — ');
+    $('#vh-name span').textContent = A.hoTen || name;
+    $('#vh-role').textContent = A.chucDanh || '';
+    $('#vh-line').textContent = A.motCau || '';
+    // Video nổi bật: những video tick "Nổi bật ở trang chủ" trong Trình chỉnh sửa (chưa tick cái nào thì lấy 4 video đầu)
+    const picked = VS.map((v, i) => [v, i]).filter(([v]) => v.noiBat);
+    const feat = (picked.length ? picked : VS.map((v, i) => [v, i])).slice(0, 4);
+    $('#vgrid').innerHTML = feat.map(([v, i]) => vcard(v, i, `video.html#video-${i + 1}`)).join('');
+    $('#n-video').textContent = `(${pad(VS.length)})`;
+    $('#cats').innerHTML = catsHTML();
+    $('#n-design').textContent = `(${pad(DS.length)})`;
+    const firstPara = String(A.tomTat || '').split(/\n+/).find((x) => x.trim()) || '';
+    const jobs = (A.kinhNghiem || []).map((e) => e.noi).filter((x) => x && !/hoạt động cá nhân/i.test(x));
+    $('#ha-text').innerHTML = (firstPara ? `<p>${esc(firstPara)}</p>` : '') + (jobs.length ? `<p class="mono jobs">Kinh nghiệm: ${jobs.map(esc).join(' · ')}</p>` : '');
+    const nums = numsHTML(A);
+    if (nums) $('#ab-nums').innerHTML = nums; else $('#ab-nums').remove();
+  }
+
+  // ======================= DESIGN: 4 mục =======================
+  function designHome() {
+    document.title = `Design — ${(D.about || {}).hoTen || name}`;
+    $('#design-cat').remove();
+    $('#n-design').textContent = `(${pad(DS.length)})`;
+    // Design: 4 khung = 4 mục, ảnh bìa lấy từ sản phẩm đầu tiên của mục
+    $('#cats').innerHTML = catsHTML();
+
+  }
+
+  // ======================= VIDEO =======================
+  function videoPage() {
+    document.title = `Video — ${(D.about || {}).hoTen || name}`;
+    $('#n-video').textContent = `(${pad(VS.length)})`;
+    // Video: lưới video xem trước tự chạy, thấy sản phẩm ngay
+    $('#vgrid').innerHTML = VS.map((v, i) => vcard(v, i)).join('');
 
     // Bảng chi tiết video
     const panel = $('#panel'), content = $('#p-content'), where = $('#p-where');
@@ -189,7 +213,7 @@
       stop();
       cur = i;
       const n = VS.length, prev = VS[(i - 1 + n) % n], next = VS[(i + 1) % n];
-      where.textContent = `01 Video — ${pad(i + 1)} / ${pad(n)}`;
+      where.textContent = `Video — ${pad(i + 1)} / ${pad(n)}`;
       const main = v.video ? `<video src="${esc(v.video)}"${v.anhBia ? ` poster="${esc(v.anhBia)}"` : ''} controls autoplay playsinline></video>`
         : v.yt ? `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${v.yt}?rel=0" title="${esc(v.tieuDe)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
         : `<img src="${esc(v.bia)}" alt="${esc(v.tieuDe)}">`;
@@ -238,7 +262,7 @@
     const ma = new URLSearchParams(location.search).get('muc');
     const k = Math.max(0, CATS.findIndex((c) => c.ma === ma));
     const c = CATS[k], list = inCat(c.ma);
-    document.title = `${c.ten} — ${name}`;
+    document.title = `${c.ten} — ${(D.about || {}).hoTen || name}`;
     $('#cat-no').textContent = `${pad(k + 1)} / ${pad(CATS.length)} · ${pad(list.length)} sản phẩm`;
     $('#cat-name').textContent = c.ten;
     $('#cat-desc').textContent = c.moTa || '';
@@ -274,7 +298,7 @@
   function aboutPage() {
     const A = D.about || {};
     const lines = (t) => String(t || '').split(/\n+/).map((x) => x.trim()).filter(Boolean);
-    document.title = `About — ${name}`;
+    document.title = `About — ${A.hoTen || name}`;
     $('#ab-name').textContent = A.hoTen || name;
     $('#ab-role').textContent = A.chucDanh || '';
     $('#ab-line').textContent = A.motCau || '';
@@ -285,9 +309,8 @@
       phone && `<a href="${esc(phone.link)}">${esc(phone.chu)}</a>`,
       A.khuVuc && `<span>${esc(A.khuVuc)}</span>`,
     ].filter(Boolean).join('');
-    const nums = (A.conSo || []).filter((c) => c.so);
-    $('#ab-nums').innerHTML = nums.map((c) => `<div data-reveal><b>${esc(c.so)}</b><span>${esc(c.nhan)}</span></div>`).join('');
-    if (!nums.length) $('#ab-nums').remove();
+    const nums = numsHTML(A);
+    if (nums) $('#ab-nums').innerHTML = nums; else $('#ab-nums').remove();
     // Kinh nghiệm làm việc + Dự án & hoạt động: cùng một kiểu dòng (thời gian | nơi + vai trò | mô tả + kết quả)
     const exp = (list) => (list || []).filter((e) => e.vaiTro || e.noi).map((e) => `
       <div class="exp" data-reveal>

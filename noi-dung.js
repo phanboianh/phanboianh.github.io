@@ -9,7 +9,7 @@ window.PORTFOLIO = {
     "showreel": "assets/video/showreel.mp4",
     "anhShowreel": "assets/img/showreel-poster.jpg",
     "tieuDeLienHe": "Dream it, design it",
-    "tieuDeLienHe2": "Let's make it real !",
+    "tieuDeLienHe2": "Let's make it real!",
     "email": "phanboianh8063@gmail.com",
     "lienKet": [
       {
@@ -38,7 +38,7 @@ window.PORTFOLIO = {
     {
       "ma": "motion",
       "ten": "Motion design",
-      "moTa": "short animation"
+      "moTa": "Animation ngắn và chuyển động."
     },
     {
       "ma": "3d",
@@ -198,7 +198,7 @@ window.PORTFOLIO = {
     },
     {
       "nhom": "3d",
-      "tieuDe": "False Eden ",
+      "tieuDe": "False Eden",
       "loai": "3D",
       "nam": "2026",
       "anh": [
@@ -207,7 +207,7 @@ window.PORTFOLIO = {
         "assets/tai-len/falseeden1.png",
         "assets/tai-len/copy-aaa2911c-dbef-4e75-8843-7731619a7b09.mp4"
       ],
-      "moTa": "𝑭𝑨𝑳𝑺𝑬 𝑬𝑫𝑬𝑵 🥀  Một thiên đường được xây dựng bằng lời nói dối…",
+      "moTa": "False Eden — một thiên đường được xây dựng bằng lời nói dối…",
       "chuThich": "",
       "vaiTro": "Concept, 3D, art direction",
       "congCu": "Blender, Photoshop",
@@ -219,7 +219,7 @@ window.PORTFOLIO = {
   ],
   "video": [
     {
-      "tieuDe": "Bunnie Studio - Design Commission",
+      "tieuDe": "Bunnie Studio · Design Commission",
       "loai": "Video LED",
       "nam": "",
       "video": "assets/tai-len/04-10.mp4",
@@ -231,13 +231,14 @@ window.PORTFOLIO = {
         "assets/tai-len/p3-1.mp4"
       ],
       "thoiLuong": "00:15",
-      "moTa": "Freelancer - Video Editor",
+      "moTa": "Freelancer · Video Editor",
       "chuThich": "Dựng video quảng bá cho các dự án LED do fan góp quỹ ủng hộ nghệ sĩ, và hỗ trợ thiết kế hình ảnh đi kèm.\nKết quả: video được chiếu trên màn hình LED tại Vincom (Việt Nam) và ga tàu điện ngầm ở Hàn Quốc, Thái Lan,..\n(Xem thêm các LED khác trong Link bên dưới)",
       "vaiTro": "Video editor",
       "congCu": "",
       "link": "https://www.behance.net/gallery/225143463/LED-VIDEO-EDITING",
       "boCuc": "doc",
-      "catAnh": {}
+      "catAnh": {},
+      "noiBat": false
     },
     {
       "tieuDe": "NMLL",
@@ -257,7 +258,8 @@ window.PORTFOLIO = {
       "congCu": "",
       "link": "https://youtu.be/sux2vr6X0yE",
       "boCuc": "doc",
-      "catAnh": {}
+      "catAnh": {},
+      "noiBat": true
     },
     {
       "tieuDe": "Lỡ",
@@ -270,15 +272,16 @@ window.PORTFOLIO = {
         "assets/tai-len/476010199-546472208407913-8513793296858050807-n.jpg"
       ],
       "thoiLuong": "00:32",
-      "moTa": "Cuộc thi làm ngắn trong 14 ngày ",
+      "moTa": "Phim ngắn làm trọn trong 14 ngày",
       "chuThich": "\"Phim ngắn 14 ngày\" là cuộc thi làm trọn một phim ngắn trong 14 ngày, từ ý tưởng, kịch bản đến quay và dựng. \nPhát triển ý tưởng, viết kịch bản, lên shot list, hỗ trợ sản xuất tại phim trường và edit trailer.\n\nKết quả: trailer đạt 41K lượt xem, 210 lượt thích, phim chính thức đạt 19K lượt xem, 134 lượt thích trên Facebook.",
       "vaiTro": "Scriptwriter, Production Assistant, Video Editor",
       "congCu": "",
-      "link": "Trailer | https://drive.google.com/file/d/1XI2XqoCy-IEnPiFWAXNdAldsPPrdjDpg/view?usp=share_link\nPhim chính thức | https://www.facebook.com/share/v/14v9wk9wZY8/"
+      "link": "Trailer | https://drive.google.com/file/d/1XI2XqoCy-IEnPiFWAXNdAldsPPrdjDpg/view?usp=share_link\nPhim chính thức | https://www.facebook.com/share/v/14v9wk9wZY8/",
+      "noiBat": true
     },
     {
       "tieuDe": "Và Tôi Đi",
-      "loai": "MV remake - Pick Your Team 2022",
+      "loai": "MV remake · Pick Your Team 2022",
       "nam": "2022",
       "video": "assets/tai-len/remake-va-toi-di.mp4",
       "xemTruoc": "assets/tai-len/remake-va-toi-di-xem-truoc.mp4",
@@ -302,11 +305,12 @@ window.PORTFOLIO = {
           "h": 1,
           "r": 0.8184
         }
-      }
+      },
+      "noiBat": true
     },
     {
       "tieuDe": "Quên Đi",
-      "loai": "MV - VJay x JayD",
+      "loai": "MV · VJay x JayD",
       "nam": "2026",
       "video": "",
       "xemTruoc": "",
@@ -339,7 +343,8 @@ window.PORTFOLIO = {
           "h": 0.8665,
           "r": 1.7778
         }
-      }
+      },
+      "noiBat": true
     },
     {
       "tieuDe": "Radar Sống Khoẻ",
@@ -368,7 +373,8 @@ window.PORTFOLIO = {
       "caHang": {
         "assets/tai-len/anh-man-hinh-2026-09-19-luc-22-02-56.png": true
       },
-      "boCuc": "luoi"
+      "boCuc": "luoi",
+      "noiBat": false
     },
     {
       "tieuDe": "UP NK's Media Club",
@@ -390,7 +396,8 @@ window.PORTFOLIO = {
       "congCu": "",
       "link": "MV Trường Tao Học | https://www.facebook.com/share/v/1FdMtmcUrc/\nKhi UP Ở Nhà | https://www.facebook.com/share/v/1LKNmD4oun/",
       "boCuc": "luoi",
-      "catAnh": {}
+      "catAnh": {},
+      "noiBat": false
     }
   ],
   "about": {
@@ -420,14 +427,14 @@ window.PORTFOLIO = {
       {
         "noi": "The 1210 Label",
         "thoiGian": "9/2025 – Hiện tại",
-        "vaiTro": "Freelancer _ Scriptwriter & Concept Developer",
+        "vaiTro": "Freelancer · Scriptwriter & Concept Developer",
         "moTa": "Viết kịch bản và phát triển ý tưởng cho 2 MV chính thức: \"NMLL\" (JayD) và \"Quên Đi\" (VJay x JayD).\nXây dựng shot list và hỗ trợ theo dõi quá trình sản xuất để đảm bảo bám sát định hướng sáng tạo ban đầu.\nHỗ trợ thiết kế hình ảnh và viết nội dung cho các bài đăng quảng bá trên mạng xã hội.",
         "ketQua": "\"NMLL\": đạt 4,8K lượt xem trên YouTube, teaser đăng trên Facebook đạt 8K lượt xem.\n\"Quên Đi\": teaser đạt 747 lượt thích và 4,1K lượt xem trên Facebook, ảnh demo đạt 700 lượt thích trên Facebook.\nSản phẩm cuối cùng được đội ngũ sản xuất và nghệ sĩ đánh giá cao."
       },
       {
-        "noi": "Bunnie Studio - Design Commission",
+        "noi": "Bunnie Studio · Design Commission",
         "thoiGian": "3/2025 – 6/2026",
-        "vaiTro": "Freelancer_Video Editor",
+        "vaiTro": "Freelancer · Video Editor",
         "moTa": "Dựng các video quảng bá cho màn hình LED do fan đóng góp kinh phí để làm dự án support nghệ sĩ.\nHỗ trợ thiết kế hình ảnh và đồ họa đi kèm cho các sản phẩm video.",
         "ketQua": "Video được trình chiếu trên màn hình LED tại Việt Nam, Hàn Quốc và Thái Lan."
       },
@@ -472,23 +479,23 @@ window.PORTFOLIO = {
         "ketQua": "Trailer đạt 41.000 lượt xem và 210 lượt thích trên Facebook."
       },
       {
-        "noi": "Sự kiện âm nhạc \"Trăng Khê\" _ Đại học Văn Lang",
+        "noi": "Sự kiện âm nhạc \"Trăng Khê\" · Đại học Văn Lang",
         "thoiGian": "2024",
         "vaiTro": "Phó ban Hậu cần",
         "moTa": "Đồng quản lý công tác hậu cần cho sự kiện nhạc kịch, vận hành công việc và điều phối nhân sự ngay trong sự kiện.\nTrao đổi và làm việc với các ban khác để thống nhất kế hoạch và sắp xếp công tác hậu cần, phân công nhân sự.\nThiết kế và dựng backdrop check-in cho khách mời, bao gồm mô hình mặt trăng cỡ lớn làm điểm nhấn cho backdrop.",
         "ketQua": "Tổ chức thành công sự kiện với hơn 400 người tham dự."
       },
       {
-        "noi": "Pick Your Team _ Đại học Văn Lang",
+        "noi": "Pick Your Team · Đại học Văn Lang",
         "thoiGian": "2022",
-        "vaiTro": "Biên kịch - Quay phim - Dựng phim",
+        "vaiTro": "Biên kịch · Quay phim · Dựng phim",
         "moTa": "Viết kịch bản remake MV \"Và Tôi Đi\" (Đoàn Thế Lân) cho cuộc thi làm phim phi thương mại, nội dung vừa truyền tải được câu chuyện vừa phù hợp với lyrics.",
         "ketQua": "Đạt giải Best MV & Live Session."
       },
       {
         "noi": "UP NK's Media Club",
         "thoiGian": "2019 – 2021",
-        "vaiTro": "Deputy Head - Social Media - Editor",
+        "vaiTro": "Deputy Head · Social Media · Editor",
         "moTa": "Chụp ảnh tại các sự kiện trong trường.\nEdit các video ngắn.\nQuản lý và điều phối các công tác truyền thông tại các sự kiện của trường.\nXây dựng dự án, hoạt động truyền thông chào mừng các dịp lễ như Ngày Phụ nữ Việt Nam (20/10), Ngày Nhà giáo Việt Nam,...\nPhân công và theo dõi tiến độ sản xuất hình ảnh/video.\nTham gia các cuộc thi, hoạt động ngoài trường như cuộc thi làm phim (RMIT x Hoa Học Trò), trend remake MV,...",
         "ketQua": "Tăng followers cho page từ ~300 lên 2.000 followers trong năm 2020 (trong 1 năm hoạt động).\nThu hút nhiều sự quan tâm cả trong và ngoài trường.\nBài đăng trung bình đạt 200–500 lượt thích; MV nổi bật đạt 21K lượt xem, 1,1K lượt thích và hơn 200 lượt chia sẻ."
       }
@@ -513,34 +520,6 @@ window.PORTFOLIO = {
     "saoMoKhiCuon": "co"
   },
   "trangTri": {
-    "video": [
-      {
-        "kieu": "polaroid",
-        "chu": "",
-        "lop": "truoc",
-        "src": "assets/me/r-chuot.jpg",
-        "x": 86,
-        "y": 46,
-        "w": 14,
-        "xoay": 7,
-        "xDT": 72,
-        "yDT": 80,
-        "wDT": 36
-      },
-      {
-        "kieu": "polaroid",
-        "chu": "",
-        "lop": "truoc",
-        "src": "assets/me/pho-thu.jpg",
-        "x": 71,
-        "y": 58,
-        "w": 12,
-        "xoay": -6,
-        "xDT": 32,
-        "yDT": 84,
-        "wDT": 32
-      }
-    ],
     "about": [
       {
         "kieu": "polaroid",
@@ -571,6 +550,34 @@ window.PORTFOLIO = {
         "wDT": 22
       }
     ],
-    "catAnh": {}
+    "catAnh": {},
+    "home": [
+      {
+        "kieu": "polaroid",
+        "chu": "",
+        "lop": "truoc",
+        "src": "assets/me/r-chuot.jpg",
+        "x": 86,
+        "y": 46,
+        "w": 14,
+        "xoay": 7,
+        "xDT": 72,
+        "yDT": 73,
+        "wDT": 36
+      },
+      {
+        "kieu": "polaroid",
+        "chu": "",
+        "lop": "truoc",
+        "src": "assets/me/pho-thu.jpg",
+        "x": 71,
+        "y": 58,
+        "w": 12,
+        "xoay": -6,
+        "xDT": 32,
+        "yDT": 77,
+        "wDT": 32
+      }
+    ]
   }
 };
