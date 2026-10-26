@@ -26,6 +26,7 @@ DATA = os.path.join(ROOT, 'noi-dung.js')
 UPLOAD_DIR = os.path.join(ROOT, 'assets', 'tai-len')
 BACKUP_DIR = os.path.join(ROOT, 'tools', 'sao-luu')
 KEEP_BACKUPS = 30
+LIMIT_VIDEO = 45 * 1024 * 1024  # video lớn hơn mức này sẽ được nén nhỏ thêm
 
 IMAGE_EXT = {'.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.tif', '.tiff', '.gif'}
 VIDEO_EXT = {'.mp4', '.mov', '.m4v', '.webm', '.mkv', '.avi'}
@@ -123,6 +124,13 @@ def process_video(src, name, ext):
     x264 = ['-c:v', 'libx264', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']
     run([FFMPEG, '-y', '-i', src, '-vf', "scale='trunc(min(1920,iw)/2)*2':-2", *x264, '-crf', '23',
          '-c:a', 'aac', '-b:a', '160k', out])
+    # GitHub không nhận file trên 100 MB, và video nặng thì web tải chậm:
+    # video dài làm nhỏ dần (720p, rồi nén mạnh hơn) cho tới khi dưới khoảng 45 MB
+    for width, crf in (('1280', '25'), ('1280', '29'), ('960', '31')):
+        if os.path.getsize(out) <= LIMIT_VIDEO:
+            break
+        run([FFMPEG, '-y', '-i', src, '-vf', f"scale='trunc(min({width},iw)/2)*2':-2", *x264, '-crf', crf,
+             '-c:a', 'aac', '-b:a', '128k', out])
     os.remove(src)
     run([FFMPEG, '-y', '-t', '8', '-i', out, '-an', '-vf', "scale='trunc(min(960,iw)/2)*2':-2", *x264, '-crf', '27', prev])
     try:

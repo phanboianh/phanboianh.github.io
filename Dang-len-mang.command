@@ -5,6 +5,14 @@ cd "$(dirname "$0")" || exit 1
 export PATH="/opt/homebrew/bin:$PATH"
 
 echo "Đang kiểm tra thay đổi…"
+# GitHub không nhận file trên 100 MB: báo trước để khỏi bị lỗi khi đẩy lên
+big=$(find assets -type f -size +95M 2>/dev/null)
+if [ -n "$big" ]; then
+  echo "❌ Có file quá nặng (GitHub không nhận file trên 100 MB):"
+  echo "$big"
+  echo "→ Nhắn Claude nén nhỏ file này, hoặc xoá nó khỏi sản phẩm trong Trình chỉnh sửa rồi thử lại."
+  read -k1 "?Bấm phím bất kỳ để đóng…"; exit 1
+fi
 if [ -n "$(git status --porcelain)" ]; then
   # Đổi số phiên bản ?v=… để điện thoại/trình duyệt tải bản mới thay vì dùng bản cũ đã nhớ
   v=$(date +%Y%m%d%H%M)

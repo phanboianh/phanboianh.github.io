@@ -109,6 +109,42 @@ Trong form của mỗi sản phẩm (cả Design và Video) có ô **Bố cục 
 
 Đổi xong nhớ bấm **Lưu**, rồi bấm **Xem trên web ↗** để xem thử.
 
+## 5e. Đổi màu, font, cỡ chữ (tab Giao diện)
+
+- **Bộ màu có sẵn**: bấm Cinema, Night Blue, Cream, Olive hoặc Studio trắng để đổi màu cả web.
+- **Tự chọn màu**: bấm vào ô màu để chọn **Màu nền**, **Màu chữ**, **Màu nhấn** (màu của chữ đỏ và nút).
+- **Hiệu ứng nền**: *Màu trơn*, *Gradient* (2 vệt màu loang), hoặc *Vũ trụ* (gradient kèm sao nhỏ nhấp nháy và sao 4 cánh lấp lánh). Ô **Màu gradient** chọn màu loang thứ hai. Bộ màu **Galaxy ✦** đã bật sẵn hiệu ứng vũ trụ.
+- **Độ sáng của sao**: kéo thanh trượt (20%–100%, mặc định 50%). **Khi cuộn xuống đọc**: chọn *Sao mờ dần* để chữ dễ đọc hơn (sao sáng ở đầu trang, mờ dần khi cuộn).
+- **Viền quanh 4 mục Design**: *Dải phim* (có lỗ phim), *Viền màu trơn*, hoặc *Không viền*. Ô **Màu viền** để đổi màu dải.
+- **Font tiêu đề / Font chữ thường**: chọn từ danh sách (đều hỗ trợ tiếng Việt). Font ghi "(có chân)" là kiểu cổ điển, sang.
+- **Cỡ tiêu đề**: kéo thanh trượt (70%–130%). **Độ đậm tiêu đề**: Thường → Đậm.
+- **Ô ảnh bìa 4 mục Design**: chọn dọc, vuông hay ngang.
+- Ô **Xem trước** bên phải đổi ngay khi bạn chỉnh. Ưng thì bấm **Lưu**. Muốn quay lại như cũ thì bấm **↺ Về mặc định**.
+
+## 5f. Khung ảnh cho từng sản phẩm
+
+Trong form mỗi sản phẩm, dưới **Bố cục ảnh** có mục **Khung ảnh**:
+- **Tỉ lệ khung**: ngang 16:9 (hợp video), 16:10, 4:3, vuông 1:1, dọc 4:5 (hợp poster), dọc 3:4.
+- **Vừa khung**: thấy trọn ảnh, chỗ trống có nền mờ. **Phủ kín**: ảnh lấp đầy khung, cắt bớt mép. Lưới và Xếp dọc chỉ dùng tỉ lệ khung khi chọn Phủ kín, để mọi ảnh bằng nhau.
+- **Khi cắt: giữ phần giữa / trên / dưới**: ví dụ ảnh chân dung thì chọn "phần trên" để không mất mặt.
+
+Ngay dưới có ô **Xem trước trên web**: đổi bố cục hay khung là thấy ngay ảnh sẽ hiện thế nào. Bấm **← →** hoặc ảnh nhỏ để xem từng ảnh.
+
+**Cắt từng ảnh (giống app Ảnh trên iPhone)**
+1. Ở ô ảnh của sản phẩm, rê chuột lên ảnh muốn cắt → bấm **✂ Cắt**.
+2. Một màn hình đen hiện ra với khung cắt:
+   - **Kéo 4 góc hoặc 4 cạnh** để thu nhỏ hay phóng to vùng giữ lại.
+   - **Kéo bên trong khung** để dời vùng cắt.
+   - Bấm tỉ lệ ở dưới để khoá hình dạng khung: **Tự do, Gốc, Vuông, Theo khung** (đúng tỉ lệ khung trình chiếu của sản phẩm), **16:9, 4:3, 4:5, 3:4, 9:16**.
+3. Bấm **Xong** (hoặc phím Return). Bấm **Huỷ** (hoặc Esc) để bỏ. Bấm **Đặt lại** để quay về nguyên ảnh.
+4. Ảnh đã cắt có nhãn **Đã cắt**, và ô Xem trước hiện đúng vùng đã cắt. Muốn bỏ cắt thì mở lại **✂ Cắt** → **Đặt lại** → **Xong**.
+
+**Cắt video**: làm y như ảnh, bấm **✂ Cắt** trên video. Video đã cắt sẽ tự chạy không tiếng và lặp lại, không có thanh điều khiển (vì thanh điều khiển sẽ bị cắt mất).
+
+**Đưa một ảnh/video xuống hàng riêng** (khi Bố cục ảnh là *Lưới 2 cột*): rê chuột lên ảnh/video → bấm **⤓ Cả hàng**. Mục đó sẽ tách ra một hàng riêng, rộng hết khung. Muốn nó nằm cuối thì dùng nút **→** để đưa nó xuống cuối danh sách. Bấm **↺ Bỏ cả hàng** để trả về như cũ.
+
+Ảnh gốc không bị cắt thật, chỉ đổi cách hiển thị, nên bạn đổi qua lại thoải mái.
+
 ## 6. Xem kết quả và tắt
 
 - Bấm **Xem website ↗** để mở website trong tab mới. Nếu đang mở sẵn, bấm **⌘ Command + R** để tải lại.

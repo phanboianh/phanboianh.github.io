@@ -1,5 +1,14 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0f. Giao diện tuỳ chỉnh (2026-10-26)
+- `giao-dien.js` (nạp trong <head> cùng noi-dung.js, `<html data-site>`) đọc `PORTFOLIO.giaoDien` = { boMau, nen, chu, nhan, fontTieuDe, fontChu, coTieuDe, doDam, tiLeBia }, rồi ghi các biến CSS: --bg/--bg-rgb/--ink/--ink-rgb/--ink2/--mute/--card/--strip/--sprocket/--accent/--title/--sans/--mono/--ts/--tw/--tls/--cat-ratio. Font tải động từ Google, mỗi font một link với đúng độ đậm có sẵn. Có 5 bộ màu có sẵn và 10 font có tiếng Việt.
+- site.css không còn màu viết cứng, trừ chữ trắng phủ trên ảnh. Tiêu đề dùng `calc(cỡ * var(--ts))`, độ đậm var(--tw), khoảng chữ × var(--tls) (font có chân thì nới ra).
+- Mỗi sản phẩm có `khung` (tỉ lệ), `datAnh` (vua/phu), `layNet` (top/center/bottom). gallery() đặt --ratio/--focus và class .phu.
+- Thêm `hieuUng` (khong/gradient/vutru) + `mau2`, và `vienPhim` (phim/mau/khong) + `mauVien` → `data-fx` và `data-vien` trên <html>. Lớp `.cosmos` (fixed, z-index -1) do GIAO_DIEN.cosmos() chèn vào: 3 lớp sao (box-shadow, chỉ animate opacity) và 9 sao 4 cánh. Có thêm bộ màu Galaxy.
+- Cắt ảnh kiểu iPhone: nút ✂ trên ảnh trong Trình chỉnh sửa mở `openCrop()` (kéo góc/cạnh/dời, khoá tỉ lệ). Lưu `p.catAnh[src] = {x,y,w,h,r}` (phần 0–1 của ảnh, r = tỉ lệ px của vùng cắt). Hiển thị bằng `GIAO_DIEN.cropImg()`: div.crop có aspect-ratio r, bên trong img dịch/phóng theo %. Dùng chung cho site.js gallery(), ô xem trước và ảnh nhỏ trong Trình chỉnh sửa. Trong trình chiếu thì vừa khít khung (fill 'h' khi r < tỉ lệ khung).
+- cropImg cắt được cả video (video tự chạy, không có controls). `p.caHang[src] = true` → figure.full (column-span: all) trong bố cục Lưới. Ảnh nhỏ trong Trình chỉnh sửa có nút ✂ Cắt và ⤓ Cả hàng.
+- Trình chỉnh sửa có tab "Giao diện" (ô xem trước dùng chung GIAO_DIEN.apply), và form sản phẩm có thêm mục "Khung ảnh".
+
 ## 0e. ĐÃ LÊN MẠNG (2026-10-25)
 - Web: **https://phanboianh.github.io**. Repo `phanboianh/phanboianh.github.io` (Public, Pages lấy nhánh main ở thư mục gốc). Git đã đăng nhập bằng `gh` (Homebrew) với tài khoản phanboianh. Email commit đặt trong repo này là phanboianh8063@gmail.com.
 - Đăng lại sau khi sửa: bấm đúp `Dang-len-mang.command` (git add/commit/push). Pages tự build lại trong khoảng 1–2 phút.
