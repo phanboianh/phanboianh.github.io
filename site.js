@@ -34,7 +34,7 @@
   const page = document.body.dataset.page;
 
   // ---------- Phần chung của mọi trang ----------
-  $('#logo').textContent = name;
+  $('#logo').textContent = T.logo || name; // nút về trang chủ (đổi chữ ở tab Thông tin & liên hệ)
   $('#copy').textContent = `© ${new Date().getFullYear()} ${name}`;
   $('#c1').textContent = T.tieuDeLienHe || '';
   $('#c2').textContent = T.tieuDeLienHe2 || '';
@@ -145,24 +145,21 @@
           <span class="mono kind">${esc(v.loai)}</span>
         </div>
       </${href ? 'a' : 'article'}>`;
-  // 4 ô mục Design: ảnh bìa lấy từ sản phẩm đầu tiên của mục
-  const catsHTML = () => CATS.map((c, k) => {
-    const list = inCat(c.ma), cover = list[0] && list[0].anh[0];
-    return `<a class="cat${cover ? '' : ' empty'}" href="design.html?muc=${encodeURIComponent(c.ma)}" data-cursor data-reveal>
-        ${cover ? media(cover, c.ten).replace(' loading="lazy"', '') : ''}
-        <span class="mono no">${pad(k + 1)}</span>
-        <div class="meta">
-          <h3>${esc(c.ten)}</h3>
-          ${c.moTa ? `<p>${esc(c.moTa)}</p>` : ''}
-          <div class="foot mono"><span>${list.length ? pad(list.length) + ' sản phẩm' : 'Sắp có'}</span><b>Xem →</b></div>
+  // Thẻ sản phẩm Design: ảnh bìa, tên, vai trò, mảng · năm
+  const catName = (ma) => (CATS.find((c) => c.ma === ma) || {}).ten || '';
+  const dcard = (p, j, href = `#sp-${p.i}`) => `
+      <a class="dcard" href="${href}" data-i="${j}" data-cursor data-reveal>
+        <div class="dthumb">${media(p.anh[0], p.tieuDe)}</div>
+        <div class="info">
+          <div><h3>${esc(p.tieuDe)}</h3>${p.vaiTro ? `<p class="mono role">${esc(p.vaiTro)}</p>` : ''}</div>
+          <span class="mono kind">${esc([catName(p.nhom), p.nam].filter(Boolean).join(' · '))}</span>
         </div>
       </a>`;
-  }).join('');
   // Các con số nổi bật (tab About me)
   const numsHTML = (A) => (A.conSo || []).filter((c) => c.so).map((c) => `<div data-reveal><b>${esc(c.so)}</b><span>${esc(c.nhan)}</span></div>`).join('');
 
   const muc = new URLSearchParams(location.search).get('muc');
-  if (page === 'home') homePage(); else if (page === 'about') aboutPage(); else if (page === 'video') videoPage(); else if (muc) designPage(); else designHome();
+  if (page === 'home') homePage(); else if (page === 'video') videoPage(); else designAll();
 
   // ======================= TRANG CHỦ =======================
   // Tên to + nghề + ảnh trang trí · video nổi bật · 4 mục Design · giới thiệu ngắn + con số · liên hệ
@@ -176,65 +173,89 @@
     const picked = VS.map((v, i) => [v, i]).filter(([v]) => v.noiBat);
     const feat = (picked.length ? picked : VS.map((v, i) => [v, i])).slice(0, 4);
     $('#vgrid').innerHTML = feat.map(([v, i]) => vcard(v, i, `video.html#video-${i + 1}`)).join('');
-    $('#n-video').textContent = `(${pad(VS.length)})`;
-    $('#cats').innerHTML = catsHTML();
-    $('#n-design').textContent = `(${pad(DS.length)})`;
-    const firstPara = String(A.tomTat || '').split(/\n+/).find((x) => x.trim()) || '';
-    const jobs = (A.kinhNghiem || []).map((e) => e.noi).filter((x) => x && !/hoạt động cá nhân/i.test(x));
-    $('#ha-text').innerHTML = (firstPara ? `<p>${esc(firstPara)}</p>` : '') + (jobs.length ? `<p class="mono jobs">Kinh nghiệm: ${jobs.map(esc).join(' · ')}</p>` : '');
-    const nums = numsHTML(A);
-    if (nums) $('#ab-nums').innerHTML = nums; else $('#ab-nums').remove();
+    // Design nổi bật: sản phẩm tick "Nổi bật ở trang chủ" (chưa tick thì lấy 3 sản phẩm đầu)
+    const dp = DS.filter((p) => p.noiBat), dfeat = (dp.length ? dp : DS).slice(0, 3);
+    $('#dgrid').innerHTML = dfeat.map((p, j) => dcard(p, j, `design.html#sp-${p.i}`)).join('');
+    fillAbout(); // phần About (CV) ngay dưới
+    // Mở bằng link …#about (nút "03 About" từ trang khác): cuộn tới sau khi nội dung đã vẽ xong
+    if (location.hash === '#about') {
+      const go = () => $('#about').scrollIntoView({ behavior: 'instant', block: 'start' });
+      requestAnimationFrame(go);
+      if (document.fonts) document.fonts.ready.then(go);
+    }
   }
 
-  // ======================= DESIGN: 4 mục =======================
-  function designHome() {
+  // ======================= DESIGN: tất cả sản phẩm + nút lọc =======================
+  function designAll() {
     document.title = `Design — ${(D.about || {}).hoTen || name}`;
-    $('#design-cat').remove();
-    $('#n-design').textContent = `(${pad(DS.length)})`;
-    // Design: 4 khung = 4 mục, ảnh bìa lấy từ sản phẩm đầu tiên của mục
-    $('#cats').innerHTML = catsHTML();
-
+    // ?muc=3d (link cũ) → mở sẵn bộ lọc 3D
+    let filt = CATS.some((c) => c.ma === muc) ? muc : 'all';
+    const shown = () => DS.filter((p) => filt === 'all' || p.nhom === filt);
+    const chips = () => {
+      $('#dfilter').innerHTML = [['all', 'Tất cả', DS.length], ...CATS.map((c) => [c.ma, c.ten, inCat(c.ma).length])].filter(([, , n]) => n)
+        .map(([m, t, n]) => `<button data-f="${esc(m)}" class="${m === filt ? 'on' : ''}">${esc(t)}<i>${n}</i></button>`).join('');
+    };
+    const draw = () => {
+      chips();
+      $('#dgrid').innerHTML = shown().map((p, j) => dcard(p, j)).join('') || '<p class="none">Chưa có sản phẩm — thêm trong Trình chỉnh sửa.</p>';
+      $$('#dgrid [data-reveal]').forEach((el) => el.classList.add('in'));
+      $$('#dgrid video[data-auto]').forEach((v) => v.play().catch(() => {}));
+    };
+    $('#dfilter').addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (b) { filt = b.dataset.f; draw(); } });
+    draw();
+    const P = makePanel({ items: shown, label: 'Design', hash: (p) => `sp-${p.i}`, body: (p) => `${aside(p, false)}${gallery(p.anh, p.tieuDe, p)}` });
+    $('#dgrid').addEventListener('click', (e) => { const c = e.target.closest('.dcard'); if (c) { e.preventDefault(); P.open(+c.dataset.i); } });
+    // Mở thẳng một sản phẩm: design.html#sp-3 (nút "Xem trên web" trong Trình chỉnh sửa, thẻ ở trang chủ)
+    const m = location.hash.match(/^#sp-(\d+)$/);
+    if (m) { filt = 'all'; draw(); const j = shown().findIndex((p) => p.i === +m[1]); if (j >= 0) P.open(j); }
   }
 
   // ======================= VIDEO =======================
   function videoPage() {
     document.title = `Video — ${(D.about || {}).hoTen || name}`;
-    $('#n-video').textContent = `(${pad(VS.length)})`;
     // Video: lưới video xem trước tự chạy, thấy sản phẩm ngay
     $('#vgrid').innerHTML = VS.map((v, i) => vcard(v, i)).join('');
 
     // Bảng chi tiết video
-    const panel = $('#panel'), content = $('#p-content'), where = $('#p-where');
-    let cur = -1;
-    const stop = () => $$('video', content).forEach((v) => v.pause());
-    function openVideo(i) {
-      const v = VS[i];
-      if (!v) return;
-      stop();
-      cur = i;
-      const n = VS.length, prev = VS[(i - 1 + n) % n], next = VS[(i + 1) % n];
-      where.textContent = `Video — ${pad(i + 1)} / ${pad(n)}`;
+    const P = makePanel({ items: () => VS, label: 'Video', hash: (v, i) => `video-${i + 1}`, body: (v) => {
       const main = v.video ? `<video src="${esc(v.video)}"${v.anhBia ? ` poster="${esc(v.anhBia)}"` : ''} controls autoplay playsinline></video>`
         : v.yt ? `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${v.yt}?rel=0" title="${esc(v.tieuDe)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
         : `<img src="${esc(v.bia)}" alt="${esc(v.tieuDe)}">`;
       const extra = (v.anh || []).filter((a) => a !== v.bia || v.yt);
+      return `${aside(v, true)}<div class="p-m">${main}</div>${gallery(extra, v.tieuDe, v)}`;
+    } });
+    $('#vgrid').addEventListener('click', (e) => { const c = e.target.closest('.vcard'); if (c) P.open(+c.dataset.i); });
+    const m = location.hash.match(/^#video-(\d+)$/);
+    if (m) P.open(+m[1] - 1);
+  }
+
+  // Bảng chi tiết trượt lên (dùng chung cho Video và Design): ← → hoặc nút Trước/Tiếp để chuyển, Esc để đóng
+  function makePanel({ items, label, hash, body }) {
+    const panel = $('#panel'), content = $('#p-content'), where = $('#p-where');
+    let cur = -1;
+    const stop = () => $$('video', content).forEach((v) => v.pause());
+    function open(i) {
+      const L = items(), v = L[i];
+      if (!v) return;
+      stop();
+      cur = i;
+      const n = L.length, prev = L[(i - 1 + n) % n], next = L[(i + 1) % n];
+      where.textContent = `${label} — ${pad(i + 1)} / ${pad(n)}`;
       content.innerHTML = `
-        <div class="p-body">${aside(v, true)}
-          <div class="p-m">${main}</div>
-          ${gallery(extra, v.tieuDe, v)}
-        </div>
+        <div class="p-body">${body(v)}</div>
         ${n > 1 ? `<div class="p-nav">
           <button data-go="${(i - 1 + n) % n}"><span class="mono">← Trước</span><b>${esc(prev.tieuDe)}</b></button>
           <button data-go="${(i + 1) % n}"><span class="mono">Tiếp →</span><b>${esc(next.tieuDe)}</b></button>
         </div>` : ''}`;
       firstMediaOnTop(content);
       initGalleries(content);
+      $$('video[data-auto]', content).forEach((x) => x.play().catch(() => {}));
       panel.classList.add('open');
       panel.scrollTop = 0;
       document.documentElement.classList.add('lock');
-      history.replaceState(null, '', `#video-${i + 1}`);
+      history.replaceState(null, '', `#${hash(v, i)}`);
     }
-    function closeVideo() {
+    function close() {
       if (cur < 0) return;
       cur = -1;
       stop();
@@ -243,65 +264,19 @@
       history.replaceState(null, '', location.pathname + location.search);
       setTimeout(() => { if (cur < 0) content.innerHTML = ''; }, 800);
     }
-    $('#vgrid').addEventListener('click', (e) => { const c = e.target.closest('.vcard'); if (c) openVideo(+c.dataset.i); });
-    content.addEventListener('click', (e) => { const g = e.target.closest('[data-go]'); if (g) openVideo(+g.dataset.go); });
-    $('#p-close').addEventListener('click', closeVideo);
+    content.addEventListener('click', (e) => { const g = e.target.closest('[data-go]'); if (g) open(+g.dataset.go); });
+    $('#p-close').addEventListener('click', close);
     addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeVideo();
-      if (cur >= 0 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) openVideo((cur + (e.key === 'ArrowRight' ? 1 : -1) + VS.length) % VS.length);
+      if (e.key === 'Escape') close();
+      if (cur >= 0 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) open((cur + (e.key === 'ArrowRight' ? 1 : -1) + items().length) % items().length);
     });
-    const m = location.hash.match(/^#video-(\d+)$/);
-    if (m) openVideo(+m[1] - 1);
-
     panel.addEventListener('mouseenter', () => $('#cursor').classList.remove('big'));
+    return { open, close };
   }
 
-  // ======================= TRANG MỤC DESIGN =======================
-  function designPage() {
-    $('#design-home').remove();
-    const ma = new URLSearchParams(location.search).get('muc');
-    const k = Math.max(0, CATS.findIndex((c) => c.ma === ma));
-    const c = CATS[k], list = inCat(c.ma);
-    document.title = `${c.ten} — ${(D.about || {}).hoTen || name}`;
-    $('#cat-no').textContent = `${pad(k + 1)} / ${pad(CATS.length)} · ${pad(list.length)} sản phẩm`;
-    $('#cat-name').textContent = c.ten;
-    $('#cat-desc').textContent = c.moTa || '';
-    $('#subnav').innerHTML = `<a class="back" href="design.html">← Design</a>` +
-      CATS.map((x) => `<a href="design.html?muc=${encodeURIComponent(x.ma)}" class="tab${x === c ? ' on' : ''}"${x === c ? ' aria-current="page"' : ''}>${esc(x.ten)}<i>${inCat(x.ma).length}</i></a>`).join('');
-    // Trên điện thoại thanh mục cuộn ngang: đưa nút đang chọn vào giữa
-    const sn = $('#subnav'), on = $('.on', sn);
-    if (on) sn.scrollLeft = on.offsetLeft - (sn.clientWidth - on.offsetWidth) / 2;
-
-    $('#works').innerHTML = list.length ? list.map((p, j) => `
-      <article class="work" id="sp-${p.i}">
-        <span class="mono num">${pad(j + 1)} / ${pad(list.length)}</span>
-        <div class="p-body">
-          ${aside(p, false)}
-          ${gallery(p.anh, p.tieuDe, p)}
-        </div>
-      </article>`).join('')
-      : '<p class="none">Mục này chưa có sản phẩm — thêm trong Trình chỉnh sửa.</p>';
-    firstMediaOnTop($('#works'));
-    initGalleries($('#works'));
-
-    const nx = CATS[(k + 1) % CATS.length], next = $('#cat-next');
-    if (CATS.length > 1) {
-      next.href = `design.html?muc=${encodeURIComponent(nx.ma)}`;
-      next.innerHTML = `<span class="mono">Mục tiếp theo</span><b>${esc(nx.ten)} <span>→</span></b>`;
-    } else next.remove();
-
-    // Mở thẳng tới một sản phẩm, ví dụ design.html?muc=3d#sp-0
-    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(() => t.scrollIntoView(), 50); }
-  }
-
-  // ======================= TRANG ABOUT =======================
-  function aboutPage() {
+  // ======================= PHẦN ABOUT (CV, nằm trong trang chủ) =======================
+  function fillAbout() {
     const A = D.about || {};
-    const lines = (t) => String(t || '').split(/\n+/).map((x) => x.trim()).filter(Boolean);
-    document.title = `About — ${A.hoTen || name}`;
-    $('#ab-name').textContent = A.hoTen || name;
-    $('#ab-role').textContent = A.chucDanh || '';
-    $('#ab-line').textContent = A.motCau || '';
     $('#ab-sum').innerHTML = paras(A.tomTat);
     const phone = (T.lienKet || []).find((l) => /^tel:/.test(l.link || ''));
     $('#ab-contact').innerHTML = [
@@ -311,25 +286,19 @@
     ].filter(Boolean).join('');
     const nums = numsHTML(A);
     if (nums) $('#ab-nums').innerHTML = nums; else $('#ab-nums').remove();
-    // Kinh nghiệm làm việc + Dự án & hoạt động: cùng một kiểu dòng (thời gian | nơi + vai trò | mô tả + kết quả)
-    const exp = (list) => (list || []).filter((e) => e.vaiTro || e.noi).map((e) => `
-      <div class="exp" data-reveal>
-        <span class="mono">${esc(e.thoiGian)}</span>
-        <div><h3>${esc(e.noi)}</h3><p class="org mono">${esc(e.vaiTro)}</p></div>
-        <div class="d"><ul>${lines(e.moTa).map((m) => `<li>${esc(m)}</li>`).join('')}</ul>
-          ${lines(e.ketQua).length ? `<span class="mono res">Kết quả</span><ul>${lines(e.ketQua).map((m) => `<li>${esc(m)}</li>`).join('')}</ul>` : ''}</div>
-      </div>`).join('');
-    $('#ab-exp').innerHTML = exp(A.kinhNghiem);
-    $('#ab-act').innerHTML = exp(A.hoatDong);
-    if (!$('#ab-act').innerHTML.trim()) $('#ab-act').closest('section').remove();
-    $('#ab-skills').innerHTML = (A.kyNang || []).filter((k) => k.nhom).map((k) => `
-      <div><span class="mono">${esc(k.nhom)}</span><ul>${lines(k.muc).map((m) => `<li>${esc(m)}</li>`).join('')}</ul></div>`).join('');
-    $('#ab-tools').innerHTML = lines(A.congCu).map((t) => `<li>${esc(t)}</li>`).join('');
-    $('#ab-edu').innerHTML = (A.hocVan || []).filter((h) => h.ten).map((h) => `
-      <div><span class="mono">${esc(h.thoiGian)}</span><h3>${esc(h.ten)}</h3><p>${esc(h.moTa)}</p></div>`).join('');
-    $('#ab-lang').innerHTML = lines(A.ngonNgu).map((t) => `<li>${esc(t)}</li>`).join('');
-    $('#ab-goal').innerHTML = paras(A.mucTieu);
+    // Kinh nghiệm dạng gọn: thời gian | nơi làm | vai trò (mô tả chi tiết để trong file CV)
+    const row = (list) => (list || []).filter((e) => e.vaiTro || e.noi).map((e) => `
+      <div class="xp"><span class="mono">${esc(e.thoiGian)}</span><b>${esc(e.noi)}</b><span class="xp-role">${esc(e.vaiTro)}</span></div>`).join('');
+    $('#ab-exp').innerHTML = row(A.kinhNghiem);
+    $('#ab-act').innerHTML = row(A.hoatDong);
+    $$('.xp-col').forEach((c) => { if (!$('.xp', c)) c.remove(); });
+    // Nút Tải CV: chỉ hiện khi đã tải file CV lên trong Trình chỉnh sửa (tab About me)
+    if (A.cv) {
+      ['#cv-top', '#cv-bottom'].forEach((id) => { const a = $(id); a.href = A.cv; a.setAttribute('download', ''); });
+      $('#cv-top').hidden = false; $('#cv-cta').hidden = false;
+    }
   }
+
 
   // ======================= ẢNH TRANG TRÍ =======================
   // Ảnh đặt tự do ở 3 vùng: đầu trang Video, đầu trang About, phần liên hệ (sửa trong Trình chỉnh sửa → tab "Ảnh trang trí").

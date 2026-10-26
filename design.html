@@ -18,50 +18,35 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500&family=Dancing+Script:wght@600&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610262234">
+<link rel="stylesheet" href="site.css?v=202610270041">
 <!-- nội dung + màu/font chọn trong Trình chỉnh sửa: nạp sớm để trang không bị nháy màu -->
-<script src="noi-dung.js?v=202610262234"></script>
-<script src="giao-dien.js?v=202610262234"></script>
+<script src="noi-dung.js?v=202610270041"></script>
+<script src="giao-dien.js?v=202610270041"></script>
 </head>
 <body data-page="design">
 
-<!-- Menu: logo "Ánh Phan" về trang chủ · Video · Design · About · Contact (cuối trang) -->
+<!-- Menu: logo "Ánh Phan" về trang chủ (có phần About) · 2 trang sản phẩm · nút Liên hệ cuộn xuống cuối trang -->
 <header class="nav">
   <a href="index.html" class="logo" id="logo"></a>
   <nav>
-    <a href="video.html"><i>01</i>Video</a>
-    <a href="design.html" class="on"><i>02</i>Design</a>
-    <a href="about.html"><i>03</i>About</a>
-    <a href="#contact"><i>04</i>Contact</a>
+    <a href="video.html">Video</a>
+    <a href="design.html" class="on">Design</a>
+    <a href="#contact" class="nav-cta">Liên hệ</a>
   </nav>
 </header>
 
-<!-- Không chọn mục: 4 ô = 4 mục -->
-<section id="design-home">
 <!-- Đầu trang con: dùng chung một khuôn cho Video · Design · About -->
 <header class="page-head" data-reveal>
-  <span class="mono kick">02 — Design</span>
-  <h1>Design &amp; Illustration<sup id="n-design"></sup></h1>
-  <p>Poster, minh hoạ, motion và 3D. Bấm vào từng mục để xem toàn bộ sản phẩm.</p>
+  <span class="mono kick">Design</span>
+  <h1>Design &amp; Illustration</h1>
+  <p>Poster, minh hoạ, motion và 3D. Bấm vào từng sản phẩm để xem chi tiết.</p>
 </header>
-  <div class="strip"><div class="cats" id="cats"></div></div>
+
+<!-- Tất cả sản phẩm Design trong một lưới; nút lọc theo mảng ở trên -->
+<section id="design">
+  <nav class="dfilter mono" id="dfilter" aria-label="Lọc theo mảng"></nav>
+  <div class="dgrid" id="dgrid"></div>
 </section>
-
-<!-- Đã chọn mục (design.html?muc=...) -->
-<div id="design-cat">
-<!-- Thanh chọn mục ở trên cùng (dính theo khi cuộn), bên dưới là tên + giới thiệu mục đang chọn -->
-<nav class="subnav mono" id="subnav"></nav>
-<section class="cat-hero">
-  <span class="mono crumb" id="cat-no"></span>
-  <h1 id="cat-name"></h1>
-  <p id="cat-desc"></p>
-</section>
-
-<!-- Toàn bộ sản phẩm của mục, cuộn dài từ trên xuống -->
-<main id="works"></main>
-
-<a class="cat-next" id="cat-next"></a>
-</div>
 
 <!-- Liên hệ (cuối mọi trang) -->
 <section id="contact" data-deco="contact">
@@ -71,8 +56,14 @@
   <footer class="site mono"><span id="copy"></span><span>Video editing · Design</span></footer>
 </section>
 
+<!-- Bảng chi tiết sản phẩm -->
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Chi tiết sản phẩm">
+  <div class="p-top"><span class="mono" id="p-where"></span><button class="p-close mono" id="p-close">Đóng <b>×</b></button></div>
+  <div id="p-content"></div>
+</div>
+
 <div class="cursor" id="cursor"><b>XEM</b></div>
 
-<script src="site.js?v=202610262234"></script>
+<script src="site.js?v=202610270041"></script>
 </body>
 </html>
