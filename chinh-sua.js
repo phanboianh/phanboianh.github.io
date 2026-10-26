@@ -27,6 +27,7 @@
   S.about = S.about || {};
   const G = window.GIAO_DIEN;
   S.giaoDien = { ...G.DEFAULT, ...(S.giaoDien || {}) };
+  S.trangTri = { video: [], about: [], contact: [], catAnh: {}, ...(S.trangTri || {}) };
   ['conSo', 'kinhNghiem', 'hoatDong', 'kyNang', 'hocVan'].forEach((k) => { S.about[k] = S.about[k] || []; });
   S.nhomDesign = S.nhomDesign && S.nhomDesign.length ? S.nhomDesign : CAT_DEFAULT;
   S.design.forEach((p) => {
@@ -36,7 +37,7 @@
   const catName = (ma) => (S.nhomDesign.find((c) => c.ma === ma) || {}).ten || '';
 
   const isYT = (t) => /youtu\.?be/.test(String(t || ''));
-  let tab = ['info', 'design', 'video', 'about', 'look'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'design';
+  let tab = ['info', 'design', 'video', 'about', 'look', 'deco'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'design';
   const sel = { design: 0, video: 0 };
   let dirty = false, busy = 0;
   let filt = 'all'; // đang lọc mục nào trong tab Design
@@ -105,11 +106,12 @@
 
   // ---------- Vẽ giao diện ----------
   function render() {
-    tabsEl.innerHTML = [['info', 'Thông tin & liên hệ'], ['look', 'Giao diện'], ['about', 'About me'], ['design', 'Design', S.design.length], ['video', 'Video', S.video.length]]
+    tabsEl.innerHTML = [['info', 'Thông tin & liên hệ'], ['look', 'Giao diện'], ['deco', 'Ảnh trang trí'], ['about', 'About me'], ['design', 'Design', S.design.length], ['video', 'Video', S.video.length]]
       .map(([k, t, n]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}">${t}${n !== undefined ? `<b>${n}</b>` : ''}</button>`).join('');
     if (tab === 'info') return renderInfo();
     if (tab === 'about') return renderAbout();
     if (tab === 'look') return renderLook();
+    if (tab === 'deco') return renderDeco();
     if (sel[tab] >= S[tab].length) sel[tab] = Math.max(0, S[tab].length - 1);
     main.innerHTML = '<div class="split"><div class="list" id="list"></div><div id="form"></div></div>';
     renderList(tab);
@@ -341,6 +343,88 @@
     });
   }
 
+  // ---------- Tab Ảnh trang trí: kéo thả ảnh ngay trên trang web thật ----------
+  // Khung bên trái là chính trang web (iframe, chế độ ?trangtri=1); kéo ảnh trong đó để đổi vị trí.
+  // Vị trí máy tính (x, y, w) và điện thoại (xDT, yDT, wDT) lưu riêng.
+  const ZONES = [['video', 'Đầu trang Video', 'index.html', ''], ['about', 'Đầu trang About', 'about.html', ''], ['contact', 'Phần liên hệ', 'index.html', '#contact']];
+  const KIEU = [['polaroid', 'Polaroid — khung trắng, băng dính'], ['hoa', 'Hoà vào nền — mép mờ dần'], ['tron', 'Tròn — viền màu nhấn'], ['khung', 'Khung mảnh']];
+  let decoZone = 'video', decoDev = 'pc', decoSel = -1;
+  window.__deco = {
+    get: () => S.trangTri,
+    get sel() { return decoSel >= 0 ? { zone: decoZone, i: decoSel } : null; },
+    select(zone, i) {
+      if (zone !== decoZone) return;
+      decoSel = i; renderDecoSide(); markDecoSel();
+    },
+    move(zone, i, x, y, phone) {
+      const it = S.trangTri[zone][i];
+      if (phone) { it.xDT = x; it.yDT = y; if (it.wDT == null) it.wDT = it.w; } else { it.x = x; it.y = y; }
+      setDirty();
+    },
+  };
+  const decoWin = () => { const f = $('#decoFrame'); return f && f.contentWindow; };
+  const decoFrame = () => { const w = decoWin(); if (w && w.__renderDeco) w.__renderDeco(); };
+  const markDecoSel = () => {
+    const w = decoWin(); if (!w || !w.document) return;
+    w.document.querySelectorAll('.deco').forEach((d) => d.classList.toggle('chon', d.parentElement.dataset.deco === decoZone && +d.dataset.i === decoSel));
+  };
+  function renderDeco() {
+    const z = ZONES.find((x) => x[0] === decoZone);
+    main.innerHTML = `<div class="deco-top">
+        <div class="chips">${ZONES.map(([k, t]) => `<button data-act="deco-zone" data-v="${k}" class="${k === decoZone ? 'on' : ''}">${t} <b>${S.trangTri[k].length}</b></button>`).join('')}</div>
+        <div class="chips">${[['pc', '💻 Máy tính'], ['dt', '📱 Điện thoại']].map(([k, t]) => `<button data-act="deco-dev" data-v="${k}" class="${k === decoDev ? 'on' : ''}">${t}</button>`).join('')}</div>
+      </div>
+      <div class="deco-grid">
+        <div class="deco-stage ${decoDev}" id="decoStage"><iframe id="decoFrame" title="Xem trước trang web" src="${z[2]}?trangtri=1${z[3]}"></iframe></div>
+        <div class="form deco-side" id="decoSide"></div>
+      </div>`;
+    const f = $('#decoFrame'), st = $('#decoStage');
+    const fit = () => { if (decoDev === 'pc') { const k = st.clientWidth / 1280; f.style.transform = `scale(${k})`; st.style.height = 800 * k + 'px'; } };
+    fit(); addEventListener('resize', fit);
+    f.addEventListener('load', () => {
+      const d = f.contentDocument, el = d && d.querySelector(`[data-deco="${decoZone}"]`);
+      if (el) f.contentWindow.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + f.contentWindow.scrollY - 90));
+      markDecoSel();
+    });
+    renderDecoSide();
+  }
+  function renderDecoSide() {
+    const box = $('#decoSide'); if (!box) return;
+    const L = S.trangTri[decoZone], it = L[decoSel], phone = decoDev === 'dt';
+    const thumb = (x) => { const c = G.getCrop(S.trangTri, x.src); return c ? G.cropImg(x.src, c, c.r >= 1 ? 'w' : 'h') : `<img src="${esc(x.src)}" alt="">`; };
+    const w = it ? (phone && it.wDT != null ? it.wDT : it.w) : 0;
+    box.innerHTML = `<p class="section-title first">Ảnh trong "${esc(ZONES.find((x) => x[0] === decoZone)[1])}"</p>
+      <div class="deco-list">${L.map((x, i) => `<button class="deco-item${i === decoSel ? ' on' : ''}" data-act="deco-sel" data-i="${i}"><span class="m">${thumb(x)}</span>${esc(KIEU.find((k) => k[0] === x.kieu)?.[1].split(' —')[0] || 'Ảnh')}${x.anDT ? ' · ẩn trên ĐT' : ''}</button>`).join('')}
+        <div class="drop" data-drop="deco"><div><b>+</b>Thêm ảnh</div></div></div>
+      ${it ? `<p class="section-title">Ảnh đang chọn ${phone ? '<em class="dev">(đang chỉnh cho điện thoại)</em>' : ''}</p>
+        <label class="field"><span>Kiểu</span><select data-dk="kieu">${KIEU.map(([v, t]) => `<option value="${v}"${(it.kieu || 'polaroid') === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
+        ${(it.kieu || 'polaroid') === 'polaroid' ? `<label class="field"><span>Chữ viết tay dưới ảnh<em>không bắt buộc</em></span><input data-dk="chu" value="${esc(it.chu)}" placeholder="vd: Spring 2025"></label>` : ''}
+        <label class="field"><span>Cỡ ảnh<em id="dkW">${w}%</em></span><input type="range" min="5" max="60" step="0.5" data-dk="w" value="${w}"></label>
+        <label class="field"><span>Xoay<em id="dkR">${+it.xoay || 0}°</em></span><input type="range" min="-25" max="25" step="1" data-dk="xoay" value="${+it.xoay || 0}"></label>
+        <label class="field"><span>Nằm</span><select data-dk="lop"><option value="truoc"${it.lop !== 'sau' ? ' selected' : ''}>Trước chữ</option><option value="sau"${it.lop === 'sau' ? ' selected' : ''}>Sau chữ</option></select></label>
+        ${phone ? `<label class="field check"><input type="checkbox" data-dk="anDT"${it.anDT ? ' checked' : ''}> Ẩn ảnh này trên điện thoại</label>
+          <button class="btn small" data-act="deco-resetdt">↺ Dùng lại vị trí như máy tính</button>` : ''}
+        <div class="deco-btns">
+          <button class="btn small" data-act="deco-crop">✂ Cắt ảnh</button>
+          <button class="btn small" data-act="deco-layer" data-v="up" title="Đưa lên trên các ảnh khác">⬆ Lên trên</button>
+          <button class="btn small" data-act="deco-layer" data-v="down" title="Đưa xuống dưới các ảnh khác">⬇ Xuống dưới</button>
+          <button class="btn small danger" data-act="deco-del">Xoá ảnh</button>
+        </div>` : `<p class="hint" style="margin-top:14px">Bấm vào một ảnh (ở danh sách hoặc ngay trên trang bên trái) để chỉnh.</p>`}
+      <p class="hint" style="margin-top:16px">🖐 <b>Kéo ảnh trực tiếp trên trang bên trái</b> để đổi vị trí. Vị trí trên <b>máy tính</b> và <b>điện thoại</b> lưu riêng: bấm 📱 Điện thoại để sắp xếp riêng cho màn hình nhỏ. Xong nhớ bấm <b>Lưu thay đổi</b>.</p>`;
+  }
+  main.addEventListener('input', (e) => {
+    const k0 = e.target.dataset.dk;
+    if (tab !== 'deco' || !k0) return;
+    const it = S.trangTri[decoZone][decoSel]; if (!it) return;
+    const phone = decoDev === 'dt';
+    const k = k0 === 'w' && phone ? 'wDT' : k0;
+    it[k] = e.target.type === 'checkbox' ? e.target.checked : e.target.type === 'range' ? +e.target.value : e.target.value;
+    if (k0 === 'w') $('#dkW').textContent = e.target.value + '%';
+    if (k0 === 'xoay') $('#dkR').textContent = e.target.value + '°';
+    setDirty(); decoFrame();
+    if (k0 === 'kieu' || k0 === 'anDT') renderDecoSide();
+  });
+
   // ---------- Tab Giao diện: màu, font, cỡ chữ ----------
   function renderLook() {
     const g = S.giaoDien;
@@ -501,17 +585,6 @@
         <button class="icon" data-act="row-del" data-key="${key}" data-j="${j}" title="Xoá mục này">✕</button>
       </div></div>`).join('')}
       <button class="btn small" data-act="row-add" data-key="${key}">+ Thêm</button></div>`;
-  // 3 ảnh của bạn: anh (chân dung trang About), anhHover (hiện khi rê chuột vào tên ở trang đầu), anhTron (ảnh tròn ở phần liên hệ)
-  const PHOTOS = [['anh', 'Ảnh chân dung — trang About', 'ảnh dọc đẹp nhất · để trống thì phần chữ trải rộng'],
-    ['anhHover', 'Ảnh hiện khi rê chuột vào tên', 'trang đầu (Video) · trên điện thoại hiện thành ảnh tròn nhỏ cạnh tên'],
-    ['anhTron', 'Ảnh tròn ở phần liên hệ', 'cuối mọi trang · nên chọn ảnh rõ mặt, nền trơn']];
-  const photoHTML = (a, k = 'anh') => a[k]
-    ? `<img src="${esc(a[k])}" alt="" style="width:100%;max-height:260px;object-fit:contain;border-radius:10px;background:#000">
-       <div class="side"><div class="drop" data-drop="me:${k}"><div><b>↻</b>Đổi ảnh</div></div>
-         <button class="btn small danger" data-act="me-del" data-k="${k}">Bỏ ảnh</button></div>`
-    : `<div class="drop" data-drop="me:${k}" style="min-height:140px"><div><b>+</b>Kéo ảnh vào đây<br>(không bắt buộc)</div></div>`;
-  const photosHTML = (a) => PHOTOS.map(([k, t, em]) => `<div class="field"><span>${t}<em>${em}</em></span><div class="vid" data-photo="${k}">${photoHTML(a, k)}</div></div>`).join('');
-
   function renderAbout() {
     const a = S.about;
     main.innerHTML = `<div class="form" style="max-width:920px">
@@ -523,8 +596,7 @@
       ${field('motCau', 'Một câu nói bạn làm gì', a.motCau, { em: 'hiện dưới nghề, và ở đầu trang Video', ph: 'Mình viết kịch bản và dựng MV, phim ngắn…', max: 110 })}
       ${field('khuVuc', 'Khu vực', a.khuVuc, { ph: 'TP. Hồ Chí Minh, Việt Nam' })}
       ${area('tomTat', 'Giới thiệu', a.tomTat, 'xuống dòng để tách đoạn')}
-      <p class="section-title">Ảnh của bạn</p>
-      <div id="photoBox">${photosHTML(a)}</div>
+      <p class="hint">📷 Ảnh của bạn (chân dung, polaroid, ảnh tròn…) giờ thêm, xoá và kéo vị trí trong tab <b>Ảnh trang trí</b>.</p>
       <p class="section-title">Con số nổi bật</p>${rowsHTML('conSo')}
       <p class="section-title">Kinh nghiệm làm việc</p>${rowsHTML('kinhNghiem')}
       <p class="section-title">Dự án & hoạt động</p>${rowsHTML('hoatDong')}
@@ -546,7 +618,8 @@
   // Sau khi tải file xong: chỉ vẽ lại phần ảnh/video, không làm mất chữ đang gõ
   function refreshMedia() {
     if (tab === 'info') return;
-    if (tab === 'about') { const b = $('#photoBox'); if (b) b.innerHTML = photosHTML(S.about); return; }
+    if (tab === 'about') return;
+    if (tab === 'deco') { renderDecoSide(); decoFrame(); return; }
     const p = S[tab][sel[tab]], b = $('#mediaBox');
     if (b && p) b.innerHTML = tab === 'design' ? mediaDesign(p) : mediaVideo(p) + mediaExtra(p);
     refreshFrame();
@@ -632,9 +705,26 @@
         else if (act === 'row-del') { if (!confirm('Xoá mục này?')) return; list.splice(j, 1); }
         else { const n = act === 'row-up' ? j - 1 : j + 1; [list[j], list[n]] = [list[n], list[j]]; }
         const y = scrollY; setDirty(); renderAbout(); scrollTo(0, y);
-      } else if (act === 'me-del') {
-        S.about[a.dataset.k] = '';
-        setDirty(); refreshMedia();
+      } else if (act === 'deco-zone' || act === 'deco-dev') {
+        if (act === 'deco-zone') { decoZone = a.dataset.v; decoSel = -1; } else decoDev = a.dataset.v;
+        renderDeco();
+      } else if (act === 'deco-sel') {
+        decoSel = +a.dataset.i; renderDecoSide(); markDecoSel();
+      } else if (act === 'deco-del') {
+        if (!confirm('Bỏ ảnh này khỏi trang?\n\nFile ảnh vẫn còn trong máy, không bị xoá.')) return;
+        S.trangTri[decoZone].splice(decoSel, 1); decoSel = -1;
+        setDirty(); renderDecoSide(); decoFrame();
+      } else if (act === 'deco-crop') {
+        openCrop(S.trangTri, S.trangTri[decoZone][decoSel].src);
+      } else if (act === 'deco-resetdt') {
+        const it = S.trangTri[decoZone][decoSel];
+        ['xDT', 'yDT', 'wDT'].forEach((k) => delete it[k]);
+        setDirty(); renderDecoSide(); decoFrame();
+      } else if (act === 'deco-layer') {
+        const L = S.trangTri[decoZone], j = decoSel, n = a.dataset.v === 'up' ? j + 1 : j - 1;
+        if (n < 0 || n >= L.length) return;
+        [L[j], L[n]] = [L[n], L[j]]; decoSel = n;
+        setDirty(); renderDecoSide(); decoFrame();
       } else if (act === 'link-add') {
         S.thongTin.lienKet.push({ nhan: '', chu: '', link: '' });
         $('#linkRows').innerHTML = linkRows(S.thongTin); bindLinks(); setDirty();
@@ -674,7 +764,7 @@
   addEventListener('drop', (e) => e.preventDefault());
 
   async function handleFiles(kind, files) {
-    const target = kind.startsWith('me:') ? S.about : S[tab][sel[tab]];
+    const target = kind === 'deco' ? S.trangTri : S[tab][sel[tab]];
     if (!target) return;
     const list = kind === 'anh' ? files : files.slice(0, 1);
     for (const file of list) {
@@ -688,7 +778,11 @@
         const r = await upload(file, job.progress);
         if (kind === 'anh') target.anh.push(r.loai === 'video' ? r.video : r.duongDan);
         else if (kind === 'bia') target.anhBia = r.duongDan;
-        else if (kind.startsWith('me:')) target[kind.slice(3)] = r.duongDan;
+        else if (kind === 'deco') {
+          // ảnh mới: polaroid giữa vùng, lệch nhẹ; tự chọn để chỉnh luôn
+          target[decoZone].push({ src: r.duongDan, x: 60, y: 50, w: 14, xoay: -4, kieu: 'polaroid', chu: '', lop: 'truoc' });
+          decoSel = target[decoZone].length - 1;
+        }
         else {
           Object.assign(target, { video: r.video, xemTruoc: r.xemTruoc, anhBia: r.anhBia });
           if (r.thoiLuong) target.thoiLuong = r.thoiLuong;
@@ -696,7 +790,7 @@
         if (r.canhBao) toast(r.canhBao, true);
         job.done();
         busy--; setDirty();
-        const shown = tab === 'info' ? S.thongTin : tab === 'about' ? S.about : S[tab][sel[tab]];
+        const shown = tab === 'info' ? S.thongTin : tab === 'about' ? S.about : tab === 'deco' ? S.trangTri : S[tab][sel[tab]];
         if (shown === target) refreshMedia(); else if (tab !== 'info') renderList(tab);
       } catch (err) {
         job.fail(err.message);

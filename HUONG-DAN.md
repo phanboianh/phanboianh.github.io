@@ -145,6 +145,16 @@ Ngay dưới có ô **Xem trước trên web**: đổi bố cục hay khung là 
 
 Ảnh gốc không bị cắt thật, chỉ đổi cách hiển thị, nên bạn đổi qua lại thoải mái.
 
+## 5g. Ảnh trang trí (ảnh của bạn trên web)
+
+Bấm tab **Ảnh trang trí**:
+1. Chọn vùng ở trên: **Đầu trang Video**, **Đầu trang About** hay **Phần liên hệ**. Khung bên trái chính là trang web thật.
+2. **Kéo ảnh trực tiếp trên trang** để đổi chỗ.
+3. Bấm một ảnh để chỉnh ở cột phải: **Kiểu** (Polaroid, Hoà vào nền, Tròn, Khung mảnh), **chữ viết tay** dưới polaroid, **Cỡ**, **Xoay**, nằm **trước hay sau chữ**, **✂ Cắt**, **Lên trên / Xuống dưới**, **Xoá**.
+4. **+ Thêm ảnh**: kéo ảnh mới vào ô này.
+5. Bấm **📱 Điện thoại** để sắp xếp riêng cho màn hình điện thoại (kéo, đổi cỡ, hoặc tick *Ẩn ảnh này trên điện thoại*). Vị trí máy tính không bị ảnh hưởng.
+6. Xong bấm **Lưu thay đổi**.
+
 ## 6. Xem kết quả và tắt
 
 - Bấm **Xem website ↗** để mở website trong tab mới. Nếu đang mở sẵn, bấm **⌘ Command + R** để tải lại.

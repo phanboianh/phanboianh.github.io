@@ -123,10 +123,6 @@
     });
   }
 
-  // Ảnh tròn nhỏ ở phần liên hệ (ảnh "tròn" trong tab About me)
-  const AB = D.about || {}, cava = $('#c-ava');
-  if (cava && AB.anhTron) { cava.src = AB.anhTron; cava.alt = AB.hoTen || name; cava.hidden = false; }
-
   // Liên hệ ở cuối mọi trang
   $('#links').innerHTML = (T.lienKet || []).filter((l) => l.nhan || l.chu).map((l) => {
     const ext = /^https?:/.test(l.link || '');
@@ -168,16 +164,6 @@
     $('#vh-name span').textContent = A.hoTen || name;
     $('#vh-role').textContent = A.chucDanh || '';
     $('#vh-line').textContent = A.motCau || '';
-    // Rê chuột vào tên → ảnh của bạn hiện ra, đi theo con trỏ (điện thoại: ảnh tròn nhỏ cạnh tên)
-    if (A.anhHover) {
-      const ava = $('#vh-ava'), peek = $('#peek'), nm = $('#vh-name');
-      ava.src = peek.src = A.anhHover; ava.hidden = false;
-      if (canHover) {
-        nm.addEventListener('mouseenter', () => peek.classList.add('on'));
-        nm.addEventListener('mouseleave', () => peek.classList.remove('on'));
-        nm.addEventListener('mousemove', (e) => { peek.style.left = e.clientX + 'px'; peek.style.top = e.clientY + 'px'; });
-      }
-    }
     // Video: lưới video xem trước tự chạy, thấy sản phẩm ngay
     $('#vgrid').innerHTML = VS.map((v, i) => `
       <article class="vcard" data-i="${i}" data-cursor data-reveal>
@@ -293,8 +279,6 @@
     $('#ab-role').textContent = A.chucDanh || '';
     $('#ab-line').textContent = A.motCau || '';
     $('#ab-sum').innerHTML = paras(A.tomTat);
-    const ph = $('#ab-photo');
-    if (A.anh) ph.innerHTML = `<img src="${esc(A.anh)}" alt="${esc(A.hoTen || name)}">`; else ph.remove();
     const phone = (T.lienKet || []).find((l) => /^tel:/.test(l.link || ''));
     $('#ab-contact').innerHTML = [
       T.email && `<a href="mailto:${esc(T.email)}">${esc(T.email)}</a>`,
@@ -322,6 +306,57 @@
       <div><span class="mono">${esc(h.thoiGian)}</span><h3>${esc(h.ten)}</h3><p>${esc(h.moTa)}</p></div>`).join('');
     $('#ab-lang').innerHTML = lines(A.ngonNgu).map((t) => `<li>${esc(t)}</li>`).join('');
     $('#ab-goal').innerHTML = paras(A.mucTieu);
+  }
+
+  // ======================= ẢNH TRANG TRÍ =======================
+  // Ảnh đặt tự do ở 3 vùng: đầu trang Video, đầu trang About, phần liên hệ (sửa trong Trình chỉnh sửa → tab "Ảnh trang trí").
+  // Mỗi ảnh: { src, x, y (tâm ảnh, % của vùng), w (% bề rộng vùng), xoay (độ), kieu: polaroid / hoa / tron / khung,
+  //   chu (chữ viết tay dưới polaroid), lop: truoc / sau (trước hay sau chữ), xDT/yDT/wDT: vị trí riêng trên điện thoại, anDT: ẩn trên điện thoại }
+  const editDeco = /[?&]trangtri=/.test(location.search) && window.parent !== window && window.parent.__deco;
+  const isPhone = () => matchMedia('(max-width: 760px)').matches;
+  function renderDeco() {
+    const TT = (editDeco ? window.parent.__deco.get() : D.trangTri) || {}, phone = isPhone();
+    $$('[data-deco]').forEach((zone) => {
+      const key = zone.dataset.deco;
+      $$(':scope > .deco', zone).forEach((x) => x.remove());
+      (TT[key] || []).forEach((it, i) => {
+        if (!it.src || (phone && it.anDT && !editDeco)) return;
+        const x = phone && it.xDT != null ? it.xDT : it.x, y = phone && it.yDT != null ? it.yDT : it.y, w = phone && it.wDT != null ? it.wDT : it.w;
+        const c = GIAO_DIEN.getCrop(TT, it.src);
+        const el = document.createElement('figure');
+        el.className = `deco ${it.kieu || 'polaroid'}${it.lop === 'sau' ? ' sau' : ''}${phone && it.anDT ? ' an-dt' : ''}`;
+        el.style.cssText = `left:${+x}%;top:${+y}%;--w:${+w || 16}%;--rot:${+it.xoay || 0}deg`;
+        el.innerHTML = (c ? GIAO_DIEN.cropImg(it.src, c) : `<img src="${esc(it.src)}" alt="" draggable="false">`) +
+          (it.kieu === 'polaroid' && it.chu ? `<figcaption>${esc(it.chu)}</figcaption>` : '');
+        el.dataset.i = i;
+        if (editDeco) {
+          const sel = window.parent.__deco.sel;
+          if (sel && sel.zone === key && sel.i === i) el.classList.add('chon');
+          // Kéo thả trong Trình chỉnh sửa: ghi lại vị trí mới (máy tính hoặc điện thoại tuỳ khung đang xem)
+          el.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            window.parent.__deco.select(key, i);
+            const r = zone.getBoundingClientRect(), sx = e.clientX, sy = e.clientY, x0 = +x, y0 = +y;
+            el.setPointerCapture(e.pointerId);
+            const mv = (ev) => {
+              const nx = Math.round((x0 + (ev.clientX - sx) / r.width * 100) * 10) / 10, ny = Math.round((y0 + (ev.clientY - sy) / r.height * 100) * 10) / 10;
+              el.style.left = nx + '%'; el.style.top = ny + '%';
+              el._pos = [nx, ny];
+            };
+            const up = () => { el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); if (el._pos) window.parent.__deco.move(key, i, el._pos[0], el._pos[1], phone); };
+            el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up);
+          });
+        }
+        zone.append(el);
+      });
+    });
+  }
+  renderDeco();
+  addEventListener('resize', () => { clearTimeout(renderDeco.t); renderDeco.t = setTimeout(renderDeco, 150); });
+  if (editDeco) {
+    window.__renderDeco = renderDeco;
+    document.documentElement.classList.add('edit-deco');
+    $$('[data-reveal]').forEach((e) => e.classList.add('in'));
   }
 
   // ---------- Hiệu ứng chung ----------

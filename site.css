@@ -71,6 +71,32 @@ body::after {
 .nav nav a i { font-style: normal; color: var(--mute); margin-right: 6px; }
 .nav nav a.on { color: var(--accent); }
 
+/* ---------- ẢNH TRANG TRÍ (tab "Ảnh trang trí" trong Trình chỉnh sửa) ---------- */
+[data-deco] { position: relative; }
+.vhero > :not(.deco), .ab-hero > :not(.deco), #contact > :not(.deco) { position: relative; z-index: 2; }
+.deco { position: absolute; z-index: 3; width: clamp(84px, var(--w), 440px); margin: 0; transform: translate(-50%, -50%) rotate(var(--rot)); transition: transform .5s var(--ease); }
+.deco.sau { z-index: 1; }
+.deco img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+.deco .crop img { aspect-ratio: auto; }
+@media (hover: hover) { .deco:hover { transform: translate(-50%, -50%) rotate(0deg) scale(1.04); } }
+/* polaroid: khung trắng, lề dưới dày, mẩu băng dính trên đầu */
+.deco.polaroid { background: #f5f1e8; padding: max(5px, calc(var(--w) * .06)) max(5px, calc(var(--w) * .06)) 0; box-shadow: 0 18px 40px rgba(0, 0, 0, .45), 0 2px 6px rgba(0, 0, 0, .25); }
+.deco.polaroid figcaption { padding: 7% 4% 9%; text-align: center; color: #2b2622; font: 600 clamp(12px, 1.25vw, 18px)/1.1 'Dancing Script', cursive; }
+.deco.polaroid:not(:has(figcaption))::after { content: ''; display: block; height: clamp(18px, 2.6vw, 38px); }
+.deco.polaroid::before { content: ''; position: absolute; left: 50%; top: -9px; width: 38%; height: 18px; transform: translateX(-50%) rotate(-3deg); background: rgba(255, 248, 225, .55); box-shadow: 0 1px 3px rgba(0, 0, 0, .15); }
+/* hoà vào nền: mép ảnh mờ dần vào màu nền */
+.deco.hoa img, .deco.hoa .crop { -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); }
+.deco.hoa { filter: saturate(.9); }
+/* tròn có viền màu nhấn */
+.deco.tron img, .deco.tron .crop { aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
+/* khung mảnh */
+.deco.khung { padding: 6px; border: 1px solid rgba(var(--ink-rgb), .35); background: rgba(var(--ink-rgb), .04); }
+/* trong Trình chỉnh sửa: kéo được, ảnh đang chọn có viền */
+.edit-deco .deco { cursor: grab; transition: none; }
+.edit-deco .deco:active { cursor: grabbing; }
+.edit-deco .deco.chon { outline: 2px dashed var(--accent); outline-offset: 6px; }
+.edit-deco .deco.an-dt { opacity: .3; }
+
 /* ---------- tiêu đề mỗi phần ---------- */
 .sec-head { display: flex; justify-content: space-between; align-items: end; padding: 0 var(--pad); margin-bottom: 40px; gap: 20px; }
 .sec-head h2 { font: var(--tw) calc(clamp(52px, 10vw, 156px) * var(--ts))/.88 var(--title); letter-spacing: calc(-.055em * var(--tls)); }
@@ -101,17 +127,10 @@ body::after {
 /* ---------- VIDEO: lưới video tự chạy ---------- */
 #video { padding: 130px 0 120px; }
 /* Đầu trang Video (trang đầu tiên): tên to + nghề; mục "Video (07)" nhỏ lại thành nhãn */
-.vhero { padding: 0 var(--pad); margin-bottom: 64px; }
+.vhero { position: relative; padding: 0 var(--pad); margin-bottom: 64px; min-height: clamp(260px, 30vw, 380px); }
 .vhero h1 { display: inline-flex; align-items: center; gap: .25em; font: var(--tw) calc(clamp(48px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin-bottom: 14px; cursor: default; }
-.vh-ava { display: none; }
 #video .sec-head h2 { font-size: calc(clamp(30px, 3.6vw, 52px) * var(--ts)); letter-spacing: calc(-.04em * var(--tls)); }
 #video .sec-head { border-top: 1px solid var(--line); padding-top: 26px; margin-left: var(--pad); margin-right: var(--pad); padding-left: 0; padding-right: 0; }
-/* ảnh hiện ra khi rê chuột vào tên */
-.peek { position: fixed; left: 0; top: 0; z-index: 70; width: clamp(180px, 16vw, 240px); aspect-ratio: 4 / 5; object-fit: cover; pointer-events: none; border-radius: 4px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, .5); opacity: 0; transform: translate(24px, -50%) rotate(-4deg) scale(.85); transition: opacity .35s, transform .5s var(--ease); }
-.peek.on { opacity: 1; transform: translate(24px, -50%) rotate(-4deg) scale(1); }
-/* ảnh tròn ở phần liên hệ */
-.c-ava { width: clamp(72px, 7vw, 108px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; margin-bottom: 28px; border: 2px solid var(--accent); }
 .vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 24px; padding: 0 var(--pad); }
 .vcard { cursor: pointer; }
 .vcard .scr { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
@@ -235,18 +254,15 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 .mini-contact .big { font-size: clamp(40px, 6.4vw, 92px); }
 
 /* ---------- TRANG ABOUT (about.html) ---------- */
-.ab-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: end; padding: 150px var(--pad) 60px; }
+.ab-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: end; padding: 150px var(--pad) 60px; }
 .ab-hero .crumb { color: var(--accent); }
 .ab-hero h1 { font: var(--tw) calc(clamp(52px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin: 18px 0 14px; }
 .ab-role { font: var(--tw) calc(clamp(22px, 2.6vw, 38px) * var(--ts))/1.15 var(--title); letter-spacing: calc(-.03em * var(--tls)); color: var(--accent); }
 .ab-line { margin-top: 10px; max-width: 46ch; font-size: clamp(16px, 1.4vw, 20px); color: var(--ink2); }
 .ab-sum { margin-top: 30px; max-width: 58ch; }
-.ab-hero:not(:has(.ab-photo)) { grid-template-columns: 1fr; } /* chưa có ảnh chân dung thì phần chữ trải rộng */
 .ab-sum p { font-size: clamp(17px, 1.5vw, 21px); line-height: 1.6; color: var(--ink2); margin-bottom: 12px; }
 .ab-contact { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 15px; }
 .ab-contact a:hover { color: var(--accent); }
-.ab-photo { aspect-ratio: 4 / 5; overflow: hidden; background: var(--card); }
-.ab-photo img { height: 100%; object-fit: cover; filter: grayscale(.2); }
 .ab-nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .ab-nums div { padding: 34px var(--pad); border-left: 1px solid var(--line); }
 .ab-nums div:first-child { border-left: 0; }
@@ -276,7 +292,6 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 @media (max-width: 900px) {
   .ab-hero, .ab-grid, .ab-grid.three { grid-template-columns: 1fr; }
   .ab-hero { padding-top: 120px; }
-  .ab-photo { max-width: 420px; }
   .ab-nums { grid-template-columns: 1fr 1fr; }
   .ab-nums div:nth-child(3) { border-left: 0; }
   .ab-nums div:nth-child(n+3) { border-top: 1px solid var(--line); }
@@ -293,7 +308,7 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 .cursor b { font: 700 10px var(--mono); letter-spacing: .1em; color: #000; opacity: 0; }
 .cursor.big { width: 78px; height: 78px; }
 .cursor.big b { opacity: 1; }
-@media (hover: none) { .peek { display: none; } .vh-ava { display: block; width: .78em; height: .78em; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex: none; } .cursor { display: none; } .vcard .play { opacity: 1; transform: none; width: 48px; height: 48px; margin: -24px 0 0 -24px; } }
+@media (hover: none) { .cursor { display: none; } .vcard .play { opacity: 1; transform: none; width: 48px; height: 48px; margin: -24px 0 0 -24px; } }
 
 /* ---------- máy tính bảng ---------- */
 @media (max-width: 1000px) {
@@ -303,7 +318,8 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 @media (max-width: 760px) {
   .nav nav a i { display: none; }
   .nav nav { gap: 12px; }
-  .vh-ava { display: block; width: .78em; height: .78em; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex: none; }
+  .vhero:has(> .deco:not(.an-dt)) { min-height: 440px; }
+  .ab-hero:has(> .deco:not(.an-dt)) { padding-top: 300px; }
   .vhero { margin-bottom: 44px; }
   .g-arrow { width: 38px; height: 38px; margin-top: -19px; font-size: 15px; }
   .g-prev { left: 8px; } .g-next { right: 8px; }

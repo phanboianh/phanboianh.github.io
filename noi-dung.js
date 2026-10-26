@@ -396,7 +396,6 @@ window.PORTFOLIO = {
   "about": {
     "hoTen": "Phan Bội Ánh",
     "chucDanh": "Video Editor & Scriptwriter",
-    "anh": "assets/me/chan-dung.jpg",
     "khuVuc": "TP. Hồ Chí Minh, Việt Nam",
     "tomTat": "",
     "conSo": [
@@ -494,9 +493,7 @@ window.PORTFOLIO = {
         "ketQua": "Tăng followers cho page từ ~300 lên 2.000 followers trong năm 2020 (trong 1 năm hoạt động).\nThu hút nhiều sự quan tâm cả trong và ngoài trường.\nBài đăng trung bình đạt 200–500 lượt thích; MV nổi bật đạt 21K lượt xem, 1,1K lượt thích và hơn 200 lượt chia sẻ."
       }
     ],
-    "motCau": "Mình viết kịch bản và dựng MV, phim ngắn, video LED cho nghệ sĩ.",
-    "anhHover": "assets/me/r-chuot.jpg",
-    "anhTron": "assets/me/tron.jpg"
+    "motCau": "Mình viết kịch bản và dựng MV, phim ngắn, video LED cho nghệ sĩ."
   },
   "giaoDien": {
     "boMau": "tuChon",
@@ -514,5 +511,66 @@ window.PORTFOLIO = {
     "mauVien": "#3b0202",
     "saoSang": "0.55",
     "saoMoKhiCuon": "co"
+  },
+  "trangTri": {
+    "video": [
+      {
+        "kieu": "polaroid",
+        "chu": "",
+        "lop": "truoc",
+        "src": "assets/me/r-chuot.jpg",
+        "x": 86,
+        "y": 46,
+        "w": 14,
+        "xoay": 7,
+        "xDT": 72,
+        "yDT": 80,
+        "wDT": 36
+      },
+      {
+        "kieu": "polaroid",
+        "chu": "",
+        "lop": "truoc",
+        "src": "assets/me/pho-thu.jpg",
+        "x": 71,
+        "y": 58,
+        "w": 12,
+        "xoay": -6,
+        "xDT": 32,
+        "yDT": 84,
+        "wDT": 32
+      }
+    ],
+    "about": [
+      {
+        "kieu": "polaroid",
+        "chu": "",
+        "lop": "truoc",
+        "src": "assets/me/chan-dung.jpg",
+        "x": 80,
+        "y": 56,
+        "w": 19,
+        "xoay": -3,
+        "xDT": 50,
+        "yDT": 20,
+        "wDT": 46
+      }
+    ],
+    "contact": [
+      {
+        "src": "assets/me/tron.jpg",
+        "kieu": "tron",
+        "chu": "",
+        "lop": "truoc",
+        "x": 88,
+        "y": 34,
+        "w": 9,
+        "xoay": 0,
+        "xDT": 84,
+        "yDT": 9,
+        "wDT": 22
+      }
+    ],
+    "catAnh": {}
   }
 };

@@ -1,5 +1,10 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0j. Ảnh trang trí kéo thả (2026-10-26) — thay cho 0i (đã bỏ ảnh rê chuột, ab-photo, c-ava, about.anh*)
+- `PORTFOLIO.trangTri = { video:[], about:[], contact:[], catAnh:{} }`. Mỗi ảnh: { src, x, y (tâm, % vùng), w (% bề rộng vùng), xoay, kieu: polaroid|hoa|tron|khung, chu, lop: truoc|sau, xDT/yDT/wDT (riêng điện thoại ≤760px), anDT }. Vùng = phần tử có `data-deco` (.vhero, .ab-hero, #contact). site.js `renderDeco()`.
+- Trình chỉnh sửa, tab "Ảnh trang trí": iframe trang thật `?trangtri=1` đọc `window.parent.__deco` (get/sel/select/move), kéo ảnh trong iframe để ghi vị trí. Nút Máy tính/Điện thoại (iframe 1280 thu nhỏ / 380). Thêm ảnh (drop 'deco'), kiểu, chữ viết tay (font Dancing Script), cỡ, xoay, trước/sau chữ, ẩn trên ĐT, cắt (openCrop trên S.trangTri), lên/xuống lớp, xoá.
+- Ảnh: assets/me/r-chuot.jpg + pho-thu.jpg (polaroid ở trang Video), chan-dung.jpg (polaroid About), tron.jpg (tròn ở liên hệ).
+
 ## 0i. Tên to + ảnh cá nhân (2026-10-26)
 - Đầu index.html có .vhero: h1 #vh-name (tên to), #vh-role, #vh-line. "Video (07)" thu nhỏ thành nhãn. Rê chuột vào tên → img#peek (about.anhHover) bay theo con trỏ. Trên điện thoại (hover:none) hiện ảnh tròn .vh-ava cạnh tên.
 - about.anh = assets/me/chan-dung.jpg (ảnh hoa mai nhìn thẳng, 4:5), about.anhHover = assets/me/r-chuot.jpg (ảnh nhắm mắt), about.anhTron = assets/me/tron.jpg (selfie tốt nghiệp) → img#c-ava tròn ở phần liên hệ mọi trang. Trình chỉnh sửa, tab About me → "Ảnh của bạn" có 3 ô (drop kind 'me:<khóa>').
