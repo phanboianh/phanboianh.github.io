@@ -1,5 +1,24 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
+## 0o. Menu (2026-10-26, chưa đăng)
+- Menu chỉ còn "Video · Design" (chuyển trang; đã bỏ số 01/02/03 ở menu, nhãn tiêu đề và số đếm (07) cạnh tiêu đề) + nút viền vàng "Liên hệ" (.nav-cta, cuộn tới #contact cuối trang hiện tại). About không còn trên menu: nằm trong trang chủ (bấm logo "Ánh Phan"). Link cũ about.html / index.html#about vẫn cuộn tới About.
+
+## 0n. About gọn + CV PDF (2026-10-26, chưa đăng) — thay một phần 0m
+- Phần About trên trang chủ chỉ còn: about-top (tiêu đề + nút "Tải CV (PDF)" + tomTat + liên hệ), ab-nums, .xp-wrap 2 cột (kinh nghiệm / dự án: thời gian | nơi | vai trò), .cv-cta "Tải CV đầy đủ". Kỹ năng, công cụ, học vấn, ngôn ngữ, mục tiêu không còn hiện trên web (dữ liệu vẫn giữ trong tab About me).
+- about.cv = file PDF người dùng TỰ tải lên (tab About me → "File CV (PDF)"). Chưa có file thì nút Tải CV ẩn. KHÔNG tự tạo CV thay người dùng.
+- may-chu.py nhận .pdf (DOC_EXT, kiểm tra đầu file %PDF-, giữ nguyên, cảnh báo nếu > 20 MB). Cần khởi động lại Trình chỉnh sửa mới có tác dụng.
+- Logo = thongTin.logo || thongTin.ten ("Ánh Phan"). CSS thêm `[hidden]{display:none!important}`.
+
+## 0m. About gộp vào trang chủ, logo "AP Home" (2026-10-26, chưa đăng)
+- index.html có `<section id="about">`: .about-top (data-deco="about": home-head, #ab-sum tomTat, #ab-contact) + ab-nums + kinh nghiệm, hoạt động, kỹ năng, công cụ, học vấn, ngôn ngữ, mục tiêu. site.js fillAbout() (trước đây là aboutPage). about.html chỉ còn tự chuyển về index.html#about. Menu "03 About" → index.html#about; vào bằng #about thì JS cuộn tới ngay (behavior instant).
+- Logo = thongTin.logo || 'AP Home' (Trình chỉnh sửa: ô "Chữ ở logo" thay cho "Tên hiển thị"). Vùng ảnh trang trí "Phần About" nằm ở index.html#about.
+- Ảnh polaroid About trên điện thoại đang che chữ "About me": người dùng cần kéo lại ở tab Ảnh trang trí → Phần About → 📱. Mình không sửa noi-dung.js vì lúc đó người dùng đang mở Trình chỉnh sửa.
+
+## 0l. Design bung ra (2026-10-26, bản thử, chưa đăng)
+- design.html: page-head + #dfilter (Tất cả + mảng nào có sản phẩm) + #dgrid toàn bộ sản phẩm (dcard: ảnh bìa 4:5, tên, vai trò, mảng · năm). Bấm vào mở bảng chi tiết (#panel) giống Video. Hash #sp-<chỉ số gốc>; ?muc=… (link cũ) thì mở sẵn bộ lọc. Đã bỏ trang từng mục (subnav, cat-hero, cat-next không còn dùng).
+- site.js: makePanel({items,label,hash,body}) dùng chung cho Video và Design. Trang chủ: phần Design = 3 dcard có noiBat (đang tick: Pakamio, Mưa Đỏ, Mầm).
+- Trình chỉnh sửa: ô tick ⭐ Nổi bật cho cả Design. "Xem trên web" của Design → design.html#sp-i.
+
 ## 0k. Trang chủ + trang con chung khuôn (2026-10-26) — MỚI NHẤT
 - index.html = **Trang chủ** (data-page home): .vhero (tên/nghề/motCau + ảnh trang trí vùng `home`), "Selected work" (video có noiBat, tối đa 4, thẻ dẫn video.html#video-n), 4 mục Design, About ngắn (tomTat đoạn đầu + tên nơi làm + ab-nums), liên hệ.
 - video.html = trang Video (có panel), design.html, about.html đều dùng khuôn `.page-head` (kick "0X — Tên" màu nhấn, h1 = var(--page-title), mô tả). ab-hero h1 và cat-hero h1 cũng dùng --page-title. Logo về trang chủ. Menu: Video · Design · About · Contact.

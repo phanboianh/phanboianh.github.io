@@ -30,6 +30,7 @@ LIMIT_VIDEO = 45 * 1024 * 1024  # video lớn hơn mức này sẽ được nén
 
 IMAGE_EXT = {'.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.tif', '.tiff', '.gif'}
 VIDEO_EXT = {'.mp4', '.mov', '.m4v', '.webm', '.mkv', '.avi'}
+DOC_EXT = {'.pdf'}  # file CV để người xem tải về (giữ nguyên, không nén)
 
 HEADER = (
     '// NỘI DUNG WEBSITE — file này do Trình chỉnh sửa tự ghi lại mỗi lần bấm "Lưu".\n'
@@ -242,8 +243,8 @@ class Handler(SimpleHTTPRequestHandler):
 
     def receive_file(self, filename, length):
         ext = os.path.splitext(filename)[1].lower()
-        if ext not in IMAGE_EXT | VIDEO_EXT:
-            raise ValueError(f'Chưa hỗ trợ loại file {ext or "này"}. Dùng ảnh JPG/PNG/HEIC hoặc video MP4/MOV.')
+        if ext not in IMAGE_EXT | VIDEO_EXT | DOC_EXT:
+            raise ValueError(f'Chưa hỗ trợ loại file {ext or "này"}. Dùng ảnh JPG/PNG/HEIC, video MP4/MOV hoặc file PDF.')
         os.makedirs(UPLOAD_DIR, exist_ok=True)
         fd, tmp = tempfile.mkstemp(suffix=ext, dir=UPLOAD_DIR)
         with os.fdopen(fd, 'wb') as fh:
@@ -256,6 +257,14 @@ class Handler(SimpleHTTPRequestHandler):
                 left -= len(chunk)
         name = slug(filename)
         try:
+            if ext in DOC_EXT:
+                with open(tmp, 'rb') as fh:
+                    if fh.read(5) != b'%PDF-':
+                        raise ValueError('File này không phải PDF hợp lệ.')
+                out = unique_path(name, '.pdf')
+                shutil.move(tmp, out)
+                warn = 'File PDF nặng hơn 20 MB, người xem sẽ tải lâu. Nên xuất lại bản nhẹ hơn.' if os.path.getsize(out) > 20 * 1024 * 1024 else ''
+                return {'ok': True, 'loai': 'pdf', 'duongDan': rel(out), 'canhBao': warn}
             return process_image(tmp, name, ext) if ext in IMAGE_EXT else process_video(tmp, name, ext)
         finally:
             if os.path.exists(tmp):

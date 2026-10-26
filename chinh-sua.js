@@ -347,7 +347,7 @@
   // ---------- Tab Ảnh trang trí: kéo thả ảnh ngay trên trang web thật ----------
   // Khung bên trái là chính trang web (iframe, chế độ ?trangtri=1); kéo ảnh trong đó để đổi vị trí.
   // Vị trí máy tính (x, y, w) và điện thoại (xDT, yDT, wDT) lưu riêng.
-  const ZONES = [['home', 'Trang chủ', 'index.html', ''], ['about', 'Đầu trang About', 'about.html', ''], ['contact', 'Phần liên hệ', 'index.html', '#contact']];
+  const ZONES = [['home', 'Trang chủ', 'index.html', ''], ['about', 'Phần About', 'index.html', '#about'], ['contact', 'Phần liên hệ', 'index.html', '#contact']];
   const KIEU = [['polaroid', 'Polaroid — khung trắng, băng dính'], ['hoa', 'Hoà vào nền — mép mờ dần'], ['tron', 'Tròn — viền màu nhấn'], ['khung', 'Khung mảnh']];
   let decoZone = 'home', decoDev = 'pc', decoSel = -1;
   window.__deco = {
@@ -502,12 +502,12 @@
     f.innerHTML = `<div class="form">
       <div class="form-head">
         <h2>${isD ? 'Sản phẩm Design' : 'Video'} số ${i + 1}</h2>
-        <a class="btn small" href="${isD ? `design.html?muc=${encodeURIComponent(p.nhom)}#sp-${i}` : `video.html#video-${i + 1}`}" target="_blank" title="Nhớ bấm Lưu trước">Xem trên web ↗</a>
+        <a class="btn small" href="${isD ? `design.html#sp-${i}` : `video.html#video-${i + 1}`}" target="_blank" title="Nhớ bấm Lưu trước">Xem trên web ↗</a>
         <button class="btn small danger" data-act="del">Xoá</button>
       </div>
       ${isD ? `<label class="field"><span>Thuộc mục<em>sản phẩm sẽ hiện trong trang của mục này</em></span>
         <select data-f="nhom">${S.nhomDesign.map((c) => `<option value="${esc(c.ma)}"${c.ma === p.nhom ? ' selected' : ''}>${esc(c.ten)}</option>`).join('')}</select></label>` : ''}
-      ${isD ? '' : `<label class="field check"><input type="checkbox" data-chk="noiBat"${p.noiBat ? ' checked' : ''}> ⭐ Nổi bật ở trang chủ <em style="font-weight:400;color:var(--mute)">(trang chủ hiện tối đa 4 video được tick)</em></label>`}
+      <label class="field check"><input type="checkbox" data-chk="noiBat"${p.noiBat ? ' checked' : ''}> ⭐ Nổi bật ở trang chủ <em style="font-weight:400;color:var(--mute)">(trang chủ hiện tối đa ${isD ? '3 sản phẩm Design' : '4 video'} được tick)</em></label>
       <div id="mediaBox">${isD ? mediaDesign(p) : mediaVideo(p) + mediaExtra(p)}</div>
       ${layoutField(p)}
       ${frameField(p)}
@@ -536,7 +536,7 @@
     const t = S.thongTin;
     main.innerHTML = `<div class="form" style="max-width:920px">
       <div class="grid2">
-        ${field('ten', 'Tên hiển thị', t.ten, { em: 'chữ to ở đầu trang' })}
+        ${field('logo', 'Chữ ở logo', t.logo || t.ten || '', { em: 'góc trái trên, bấm vào là về trang chủ' })}
         ${field('email', 'Email', t.email, { ph: 'ten@email.com' })}
       </div>
       <p class="section-title">Các mục trong Design</p>
@@ -594,16 +594,23 @@
         <button class="icon" data-act="row-del" data-key="${key}" data-j="${j}" title="Xoá mục này">✕</button>
       </div></div>`).join('')}
       <button class="btn small" data-act="row-add" data-key="${key}">+ Thêm</button></div>`;
+  const cvHTML = () => S.about.cv
+    ? `<div class="cv-row"><a class="btn small" href="${esc(S.about.cv)}" target="_blank">📄 ${esc(S.about.cv.split('/').pop())} ↗</a>
+        <div class="drop" data-drop="cv" style="min-height:0;padding:10px"><div>↻ Đổi file CV khác</div></div>
+        <button class="btn small danger" data-act="cv-del">Bỏ CV</button></div>`
+    : '<div class="drop" data-drop="cv" style="min-height:90px"><div><b>+</b>Kéo file CV (.pdf) vào đây, hoặc bấm để chọn</div></div>';
+
   function renderAbout() {
     const a = S.about;
     main.innerHTML = `<div class="form" style="max-width:920px">
-      <p class="hint" style="margin:0 0 18px">Nội dung trang <b>About</b> (nút "03 About" trên menu, giống một bản CV). Tên và nghề cũng hiện ở đầu trang Video, là trang đầu tiên của web. Email và số điện thoại lấy từ tab "Thông tin & liên hệ".</p>
+      <p class="hint" style="margin:0 0 18px">Nội dung phần <b>About</b> — nằm ngay trong trang chủ, dưới phần Design (nút "03 About" trên menu sẽ cuộn tới đây). Họ tên, nghề và câu giới thiệu hiện ở đầu trang chủ. Email và số điện thoại lấy từ tab "Thông tin & liên hệ".</p>
       <div class="grid2">
         ${field('hoTen', 'Họ tên', a.hoTen, { em: 'chữ to đầu trang' })}
         ${field('chucDanh', 'Nghề / chức danh', a.chucDanh, { em: 'chữ to, màu nhấn', ph: 'Video Editor & Scriptwriter' })}
       </div>
       ${field('motCau', 'Một câu nói bạn làm gì', a.motCau, { em: 'hiện dưới nghề, và ở đầu trang Video', ph: 'Mình viết kịch bản và dựng MV, phim ngắn…', max: 110 })}
       ${field('khuVuc', 'Khu vực', a.khuVuc, { ph: 'TP. Hồ Chí Minh, Việt Nam' })}
+      <div class="field"><span>File CV (PDF)<em>hiện nút "Tải CV" ở phần About trên trang chủ · bạn tự xuất file CV rồi kéo vào đây</em></span><div id="cvBox">${cvHTML()}</div></div>
       ${area('tomTat', 'Giới thiệu', a.tomTat, 'xuống dòng để tách đoạn')}
       <p class="hint">📷 Ảnh của bạn (chân dung, polaroid, ảnh tròn…) giờ thêm, xoá và kéo vị trí trong tab <b>Ảnh trang trí</b>.</p>
       <p class="section-title">Con số nổi bật</p>${rowsHTML('conSo')}
@@ -627,7 +634,7 @@
   // Sau khi tải file xong: chỉ vẽ lại phần ảnh/video, không làm mất chữ đang gõ
   function refreshMedia() {
     if (tab === 'info') return;
-    if (tab === 'about') return;
+    if (tab === 'about') { const b = $('#cvBox'); if (b) b.innerHTML = cvHTML(); return; }
     if (tab === 'deco') { renderDecoSide(); decoFrame(); return; }
     const p = S[tab][sel[tab]], b = $('#mediaBox');
     if (b && p) b.innerHTML = tab === 'design' ? mediaDesign(p) : mediaVideo(p) + mediaExtra(p);
@@ -714,6 +721,9 @@
         else if (act === 'row-del') { if (!confirm('Xoá mục này?')) return; list.splice(j, 1); }
         else { const n = act === 'row-up' ? j - 1 : j + 1; [list[j], list[n]] = [list[n], list[j]]; }
         const y = scrollY; setDirty(); renderAbout(); scrollTo(0, y);
+      } else if (act === 'cv-del') {
+        if (!confirm('Bỏ nút "Tải CV" khỏi website?\n\nFile PDF vẫn còn trong máy, không bị xoá.')) return;
+        S.about.cv = ''; setDirty(); refreshMedia();
       } else if (act === 'deco-zone' || act === 'deco-dev') {
         if (act === 'deco-zone') { decoZone = a.dataset.v; decoSel = -1; } else decoDev = a.dataset.v;
         renderDeco();
@@ -754,7 +764,7 @@
   function pick(kind) {
     const inp = document.createElement('input');
     inp.type = 'file';
-    inp.accept = isVideoKind(kind) ? 'video/*,.mov,.mp4,.m4v' : kind === 'anh' ? 'image/*,.heic,.heif,video/*,.mov,.mp4,.m4v' : 'image/*,.heic,.heif';
+    inp.accept = kind === 'cv' ? '.pdf,application/pdf' : isVideoKind(kind) ? 'video/*,.mov,.mp4,.m4v' : kind === 'anh' ? 'image/*,.heic,.heif,video/*,.mov,.mp4,.m4v' : 'image/*,.heic,.heif';
     inp.multiple = kind === 'anh';
     inp.onchange = () => handleFiles(kind, [...inp.files]);
     inp.click();
@@ -773,20 +783,22 @@
   addEventListener('drop', (e) => e.preventDefault());
 
   async function handleFiles(kind, files) {
-    const target = kind === 'deco' ? S.trangTri : S[tab][sel[tab]];
+    const target = kind === 'deco' ? S.trangTri : kind === 'cv' ? S.about : S[tab][sel[tab]];
     if (!target) return;
     const list = kind === 'anh' ? files : files.slice(0, 1);
     for (const file of list) {
       const img = /^image\//.test(file.type) || /\.(heic|heif)$/i.test(file.name);
       const vid = /^video\//.test(file.type) || /\.(mov|mp4|m4v)$/i.test(file.name);
-      const okType = kind === 'anh' ? img || vid : isVideoKind(kind) ? vid : img;
-      if (!okType) { toast(`"${file.name}" không phải ${isVideoKind(kind) ? 'video' : 'ảnh'}`, true); continue; }
+      const pdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+      const okType = kind === 'cv' ? pdf : kind === 'anh' ? img || vid : isVideoKind(kind) ? vid : img;
+      if (!okType) { toast(`"${file.name}" không phải ${kind === 'cv' ? 'file PDF' : isVideoKind(kind) ? 'video' : 'ảnh'}`, true); continue; }
       const job = addJob(file.name, vid);
       busy++; setDirty(dirty);
       try {
         const r = await upload(file, job.progress);
         if (kind === 'anh') target.anh.push(r.loai === 'video' ? r.video : r.duongDan);
         else if (kind === 'bia') target.anhBia = r.duongDan;
+        else if (kind === 'cv') target.cv = r.duongDan;
         else if (kind === 'deco') {
           // ảnh mới: polaroid giữa vùng, lệch nhẹ; tự chọn để chỉnh luôn
           target[decoZone].push({ src: r.duongDan, x: 60, y: 50, w: 14, xoay: -4, kieu: 'polaroid', chu: '', lop: 'truoc' });
