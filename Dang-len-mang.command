@@ -5,6 +5,11 @@ cd "$(dirname "$0")" || exit 1
 export PATH="/opt/homebrew/bin:$PATH"
 
 echo "Đang kiểm tra thay đổi…"
+if [ -n "$(git status --porcelain)" ]; then
+  # Đổi số phiên bản ?v=… để điện thoại/trình duyệt tải bản mới thay vì dùng bản cũ đã nhớ
+  v=$(date +%Y%m%d%H%M)
+  sed -i '' -E "s#\?v=[0-9]+\"#?v=$v\"#g" index.html design.html video.html
+fi
 git add -A
 if git diff --cached --quiet; then
   echo "Không có gì mới để đăng — web đang là bản mới nhất."
