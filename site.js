@@ -123,6 +123,10 @@
     });
   }
 
+  // Ảnh tròn nhỏ ở phần liên hệ (ảnh "tròn" trong tab About me)
+  const AB = D.about || {}, cava = $('#c-ava');
+  if (cava && AB.anhTron) { cava.src = AB.anhTron; cava.alt = AB.hoTen || name; cava.hidden = false; }
+
   // Liên hệ ở cuối mọi trang
   $('#links').innerHTML = (T.lienKet || []).filter((l) => l.nhan || l.chu).map((l) => {
     const ext = /^https?:/.test(l.link || '');
@@ -160,9 +164,20 @@
     const A = D.about || {};
     document.title = `${A.hoTen || name} — ${A.chucDanh || 'Video'}`;
     $('#n-video').textContent = `(${pad(VS.length)})`;
-    // Trang đầu tiên: một dòng cho người xem biết ngay đây là ai, làm nghề gì
-    $('#who').innerHTML = [A.hoTen || name, A.chucDanh].filter(Boolean).map((x, k) => k ? `<b>${esc(x)}</b>` : esc(x)).join(' — ') +
-      (A.motCau ? `<span>${esc(A.motCau)}</span>` : '');
+    // Trang đầu tiên: tên thật to + nghề, để người xem biết ngay đây là ai, làm nghề gì
+    $('#vh-name span').textContent = A.hoTen || name;
+    $('#vh-role').textContent = A.chucDanh || '';
+    $('#vh-line').textContent = A.motCau || '';
+    // Rê chuột vào tên → ảnh của bạn hiện ra, đi theo con trỏ (điện thoại: ảnh tròn nhỏ cạnh tên)
+    if (A.anhHover) {
+      const ava = $('#vh-ava'), peek = $('#peek'), nm = $('#vh-name');
+      ava.src = peek.src = A.anhHover; ava.hidden = false;
+      if (canHover) {
+        nm.addEventListener('mouseenter', () => peek.classList.add('on'));
+        nm.addEventListener('mouseleave', () => peek.classList.remove('on'));
+        nm.addEventListener('mousemove', (e) => { peek.style.left = e.clientX + 'px'; peek.style.top = e.clientY + 'px'; });
+      }
+    }
     // Video: lưới video xem trước tự chạy, thấy sản phẩm ngay
     $('#vgrid').innerHTML = VS.map((v, i) => `
       <article class="vcard" data-i="${i}" data-cursor data-reveal>
