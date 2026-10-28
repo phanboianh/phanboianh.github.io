@@ -29,7 +29,7 @@
   S.giaoDien = { ...G.DEFAULT, ...(S.giaoDien || {}) };
   S.trangTri = { home: [], about: [], contact: [], catAnh: {}, ...(S.trangTri || {}) };
   if (S.trangTri.video) { S.trangTri.home = S.trangTri.home.length ? S.trangTri.home : S.trangTri.video; delete S.trangTri.video; } // tên cũ của vùng trang chủ
-  ['conSo', 'kinhNghiem', 'hoatDong', 'kyNang', 'hocVan'].forEach((k) => { S.about[k] = S.about[k] || []; });
+  ['conSo', 'kinhNghiem', 'hoatDong', 'kyNang', 'hocVan', 'viTri'].forEach((k) => { S.about[k] = S.about[k] || []; });
   S.nhomDesign = S.nhomDesign && S.nhomDesign.length ? S.nhomDesign : CAT_DEFAULT;
   S.design.forEach((p) => {
     p.anh = Array.isArray(p.anh) ? p.anh : p.anh ? [p.anh] : [];
@@ -522,15 +522,34 @@
       </div>
       ${field('moTa', 'Mô tả ngắn', p.moTa, { em: 'hiện ngay dưới hình, nên 1 câu', max: 80 })}
       ${area('chuThich', 'Chú thích chi tiết', p.chuThich, 'hiện khi người xem bấm vào sản phẩm · xuống dòng để tách đoạn')}
+      <label class="field"><span>Case study<em>không bắt buộc · có nội dung thì hiện bên trong bảng chi tiết của video, kèm nhãn "Case study" trên thẻ</em></span>
+        <textarea data-f="caseStudy" style="min-height:${p.caseStudy ? 320 : 90}px" placeholder="Để trống nếu không viết case study cho sản phẩm này">${esc(p.caseStudy || '')}</textarea></label>
+      <p class="hint" style="margin-top:-6px">Cách viết: <b>&gt; câu mở</b> · <b>- Nhãn: nội dung</b> (dòng thông tin) · <b>## Tiêu đề phần</b> · <b>1. Câu đầu in đậm. Phần giải thích</b> · ảnh: <b>![chú thích](đường dẫn ảnh)</b> — đường dẫn ảnh lấy bằng cách bấm chuột phải vào ảnh nhỏ ở trên → Sao chép địa chỉ ảnh, rồi bỏ phần đầu "http://127.0.0.1:…/".
+        ${p.caseStudy ? '' : '<button class="btn small" data-act="case-tpl" style="margin-left:6px">Chèn khung mẫu</button>'}</p>
       <div class="grid2">
         ${field('vaiTro', 'Vai trò của bạn', p.vaiTro, { ph: 'Ví dụ: Concept, thiết kế, 3D' })}
         ${field('congCu', 'Công cụ', p.congCu, { ph: 'Ví dụ: Photoshop, Blender' })}
       </div>
       ${area('link', 'Link xem thêm', p.link, isD ? 'không bắt buộc · mỗi dòng một link · muốn đặt tên nút thì ghi: Tên nút | https://...'
         : 'link YouTube sẽ phát ngay trên web (không cần tải video lên) · mỗi dòng một link · đặt tên nút: Trailer | https://...')}
+      ${enBox(p)}
     </div>`;
     bindFields(f, p, k);
   }
+
+  // Bản tiếng Anh của một sản phẩm (hiện khi người xem bấm nút EN trên web) — ô nào trống thì web dùng tiếng Việt
+  const enBox = (p) => `<details class="en-box">
+      <summary>🇬🇧 Tiếng Anh <em>— hiện khi người xem chọn EN trên web · để trống ô nào thì ô đó dùng tiếng Việt</em></summary>
+      <div class="grid2">
+        ${field('tieuDe_en', 'Tên (EN)', p.tieuDe_en || '', { ph: p.tieuDe })}
+        ${field('loai_en', 'Thể loại (EN)', p.loai_en || '', { ph: 'Music video' })}
+      </div>
+      ${field('moTa_en', 'Mô tả ngắn (EN)', p.moTa_en || '', { max: 80 })}
+      ${area('chuThich_en', 'Chú thích chi tiết (EN)', p.chuThich_en || '', 'xuống dòng để tách đoạn')}
+      ${field('vaiTro_en', 'Vai trò (EN)', p.vaiTro_en || '', { ph: 'Scriptwriter, Editor' })}
+      ${area('link_en', 'Link xem thêm (EN)', p.link_en || '', 'chỉ cần điền nếu muốn đổi tên nút sang tiếng Anh · Tên nút | https://...')}
+      ${p.caseStudy ? `<label class="field"><span>Case study (EN)<em>cùng cách viết với ô Case study tiếng Việt</em></span><textarea data-f="caseStudy_en" style="min-height:260px">${esc(p.caseStudy_en || '')}</textarea></label>` : ''}
+    </details>`;
 
   function renderInfo() {
     const t = S.thongTin;
@@ -539,6 +558,7 @@
         ${field('logo', 'Chữ ở logo', t.logo || t.ten || '', { em: 'góc trái trên, bấm vào là về trang chủ' })}
         ${field('email', 'Email', t.email, { ph: 'ten@email.com' })}
       </div>
+      <div class="field"><span>Showreel<em>video 45–60 giây đặt ngay đầu trang chủ, tự chạy không tiếng · người xem bấm để nghe có tiếng</em></span><div id="reelBox">${reelHTML()}</div></div>
       <p class="section-title">Các mục trong Design</p>
       <div id="catRows">${S.nhomDesign.map((c, j) => `<div class="grid2">
         <label class="field"><span>Mục ${j + 1} — tên</span><input data-cat="${j}" data-cf="ten" value="${esc(c.ten)}"></label>
@@ -563,6 +583,11 @@
       setDirty();
     }));
   }
+  const reelHTML = () => S.thongTin.showreel && !/showreel\.mp4$/.test(S.thongTin.showreel)
+    ? `<div class="cv-row"><video src="${esc(S.thongTin.showreel)}" muted playsinline style="width:220px;border-radius:6px;background:#000"></video>
+        <div class="drop" data-drop="reel" style="min-height:0;padding:10px"><div>↻ Đổi showreel khác</div></div>
+        <button class="btn small danger" data-act="reel-del">Bỏ showreel</button></div>`
+    : '<div class="drop" data-drop="reel" style="min-height:90px"><div><b>+</b>Kéo file showreel (video) vào đây, hoặc bấm để chọn</div></div>';
   const linkRows = (t) => t.lienKet.map((l, j) => `<div class="links-row">
       <input data-l="${j}" data-lf="nhan" value="${esc(l.nhan)}" placeholder="Instagram">
       <input data-l="${j}" data-lf="chu" value="${esc(l.chu)}" placeholder="@tenban">
@@ -575,19 +600,44 @@
     }));
   }
 
+  // Khung mẫu cho ô Case study (nút "Chèn khung mẫu")
+  const CASE_TPL = `> Một câu mở gây tò mò: quyết định quan trọng nhất của bạn trong dự án này là gì?
+- Khách hàng: Tên khách / nơi làm
+- Vai trò: Vai trò của bạn
+- Năm: 2026
+## Bài toán
+Brief là gì, giới hạn gì (thời gian, ngân sách, yêu cầu của khách).
+## Hướng tiếp cận
+Insight bạn tìm ra và concept bạn chọn.
+## Các quyết định
+1. Quyết định thứ nhất. Vì sao bạn chọn như vậy và nó giải quyết được gì.
+2. Quyết định thứ hai. Vì sao bạn chọn như vậy và nó giải quyết được gì.
+## Kết quả
+Số liệu, phản hồi của khách, giải thưởng.
+## Nhìn lại
+Bạn học được gì, lần sau làm khác đi chỗ nào.`;
+
   // ---------- Tab About me ----------
   // Bảng nhiều dòng (kinh nghiệm, con số, kỹ năng, học vấn): mỗi dòng là một mục, có nút thêm / xoá / ↑↓
   const ROWS = {
-    conSo: [['so', 'Con số', '1M+'], ['nhan', 'Ghi chú', 'lượt xem clip TikTok']],
-    kinhNghiem: [['noi', 'Công ty / dự án', 'The 1210 Label'], ['thoiGian', 'Thời gian', '9/2025 – nay'], ['vaiTro', 'Vai trò', 'Freelancer · Video Editor'], ['moTa', 'Công việc (mỗi dòng một ý)', 'Viết kịch bản…', 1], ['ketQua', 'Kết quả (mỗi dòng một ý)', 'MV đạt 4,8K lượt xem…', 1]],
+    conSo: [['so', 'Con số', '1M+'], ['nhan', 'Ghi chú', 'lượt xem clip TikTok'], ['nhan_en', '🇬🇧 Ghi chú (EN)', 'TikTok views']],
+    kinhNghiem: [['noi', 'Công ty / dự án', 'The 1210 Label'], ['thoiGian', 'Thời gian', '9/2025 – nay'], ['vaiTro', 'Vai trò', 'Freelancer · Video Editor'], ['moTa', 'Công việc (mỗi dòng một ý)', 'Viết kịch bản…', 1], ['ketQua', 'Kết quả (mỗi dòng một ý)', 'MV đạt 4,8K lượt xem…', 1],
+      ['noi_en', '🇬🇧 Công ty / dự án (EN)', 'Personal projects'], ['thoiGian_en', '🇬🇧 Thời gian (EN)', '9/2025 – Present'], ['vaiTro_en', '🇬🇧 Vai trò (EN)', 'Freelance Video Editor']],
     get hoatDong() { return this.kinhNghiem; },
     kyNang: [['nhom', 'Nhóm kỹ năng', 'Video & nội dung'], ['muc', 'Các kỹ năng (mỗi dòng một kỹ năng)', 'Dựng video', 1]],
     hocVan: [['thoiGian', 'Thời gian', '2022 – 2026'], ['ten', 'Trường', 'Đại học…'], ['moTa', 'Ngành, xếp loại', 'Cử nhân…']],
+    viTri: [['ma', 'Mã trong link (không dấu, không cách)', 'editor'], ['chucDanh', 'Tiêu đề thay thế', 'Video Editor'],
+      ['uuTien', 'Phần đưa lên đầu trang chủ', '', 'sel'], ['motCau', 'Một câu thay thế', 'Mình dựng MV, phim ngắn…'],
+      ['chucDanh_en', '🇬🇧 Tiêu đề (EN)', 'Video Editor'], ['motCau_en', '🇬🇧 Một câu (EN)', 'I edit music videos…']],
   };
+  const UU_TIEN = [['', 'Giữ thứ tự thường'], ['video', 'Video nổi bật'], ['design', 'Design']];
+  const SITE = 'https://phanboianh.github.io/';
   const rowsHTML = (key) => `<div class="rows">${S.about[key].map((r, j) => `<div class="row-card">
-      <div class="grid2">${ROWS[key].map(([f, label, ph, big]) => `<label class="field"${big ? ' style="grid-column:1/-1"' : ''}><span>${label}</span>${big
-        ? `<textarea data-r="${key}" data-ri="${j}" data-rf="${f}" placeholder="${esc(ph)}" style="min-height:90px">${esc(r[f])}</textarea>`
+      <div class="grid2">${ROWS[key].map(([f, label, ph, big]) => `<label class="field"${big === 1 ? ' style="grid-column:1/-1"' : ''}><span>${label}</span>${big === 'sel'
+        ? `<select data-r="${key}" data-ri="${j}" data-rf="${f}">${UU_TIEN.map(([v, t]) => `<option value="${v}"${(r[f] || '') === v ? ' selected' : ''}>${t}</option>`).join('')}</select>`
+        : big ? `<textarea data-r="${key}" data-ri="${j}" data-rf="${f}" placeholder="${esc(ph)}" style="min-height:90px">${esc(r[f])}</textarea>`
         : `<input data-r="${key}" data-ri="${j}" data-rf="${f}" value="${esc(r[f])}" placeholder="${esc(ph)}">`}</label>`).join('')}</div>
+      ${key === 'viTri' ? `<p class="hint vt-link">Link gửi nhà tuyển dụng: <b data-vt="${j}">${r.ma ? esc(SITE + '?vt=' + r.ma) : '(điền mã ở trên)'}</b>${r.ma ? ` <button class="btn small" data-act="vt-copy" data-j="${j}">Sao chép link</button>` : ''}</p>` : ''}
       <div class="row-tools">
         <button class="icon" data-act="row-up" data-key="${key}" data-j="${j}" title="Đưa lên"${j === 0 ? ' disabled' : ''}>↑</button>
         <button class="icon" data-act="row-down" data-key="${key}" data-j="${j}" title="Đưa xuống"${j === S.about[key].length - 1 ? ' disabled' : ''}>↓</button>
@@ -610,6 +660,17 @@
       </div>
       ${field('motCau', 'Một câu nói bạn làm gì', a.motCau, { em: 'hiện dưới nghề, và ở đầu trang Video', ph: 'Mình viết kịch bản và dựng MV, phim ngắn…', max: 110 })}
       ${field('khuVuc', 'Khu vực', a.khuVuc, { ph: 'TP. Hồ Chí Minh, Việt Nam' })}
+      <details class="en-box"><summary>🇬🇧 Tiếng Anh <em>— nghề, câu giới thiệu, đoạn Giới thiệu khi người xem chọn EN</em></summary>
+        <div class="grid2">
+          ${field('chucDanh_en', 'Nghề / chức danh (EN)', a.chucDanh_en || '', { ph: a.chucDanh })}
+          ${field('khuVuc_en', 'Khu vực (EN)', a.khuVuc_en || '', { ph: 'Ho Chi Minh City, Vietnam' })}
+        </div>
+        ${field('motCau_en', 'Một câu nói bạn làm gì (EN)', a.motCau_en || '', { max: 110 })}
+        ${area('tomTat_en', 'Giới thiệu (EN)', a.tomTat_en || '', 'xuống dòng để tách đoạn')}
+      </details>
+      <p class="section-title">Tiêu đề theo vị trí ứng tuyển</p>
+      <p class="hint">Mỗi dòng là một bản tiêu đề cho một loại vị trí. Nộp vị trí nào thì gửi đúng link của dòng đó: trang chủ sẽ đổi chữ to ở đầu trang và đưa phần phù hợp lên trước. Link thường (không có ?vt=) vẫn dùng "Nghề / chức danh" ở trên.</p>
+      ${rowsHTML('viTri')}
       <div class="field"><span>File CV (PDF)<em>hiện nút "Tải CV" ở phần About trên trang chủ · bạn tự xuất file CV rồi kéo vào đây</em></span><div id="cvBox">${cvHTML()}</div></div>
       ${area('tomTat', 'Giới thiệu', a.tomTat, 'xuống dòng để tách đoạn')}
       <p class="hint">📷 Ảnh của bạn (chân dung, polaroid, ảnh tròn…) giờ thêm, xoá và kéo vị trí trong tab <b>Ảnh trang trí</b>.</p>
@@ -628,12 +689,16 @@
     $$('[data-r]', main).forEach((inp) => inp.addEventListener('input', () => {
       S.about[inp.dataset.r][+inp.dataset.ri][inp.dataset.rf] = inp.value;
       setDirty();
+      if (inp.dataset.r === 'viTri' && inp.dataset.rf === 'ma') {
+        const b = $(`[data-vt="${inp.dataset.ri}"]`, main);
+        if (b) b.textContent = inp.value ? SITE + '?vt=' + inp.value : '(điền mã ở trên)';
+      }
     }));
   }
 
   // Sau khi tải file xong: chỉ vẽ lại phần ảnh/video, không làm mất chữ đang gõ
   function refreshMedia() {
-    if (tab === 'info') return;
+    if (tab === 'info') { const b = $('#reelBox'); if (b) b.innerHTML = reelHTML(); return; }
     if (tab === 'about') { const b = $('#cvBox'); if (b) b.innerHTML = cvHTML(); return; }
     if (tab === 'deco') { renderDecoSide(); decoFrame(); return; }
     const p = S[tab][sel[tab]], b = $('#mediaBox');
@@ -721,6 +786,14 @@
         else if (act === 'row-del') { if (!confirm('Xoá mục này?')) return; list.splice(j, 1); }
         else { const n = act === 'row-up' ? j - 1 : j + 1; [list[j], list[n]] = [list[n], list[j]]; }
         const y = scrollY; setDirty(); renderAbout(); scrollTo(0, y);
+      } else if (act === 'reel-del') {
+        if (!confirm('Bỏ showreel khỏi trang chủ?\n\nFile video vẫn còn trong máy, không bị xoá.')) return;
+        S.thongTin.showreel = ''; S.thongTin.anhShowreel = ''; setDirty(); refreshMedia();
+      } else if (act === 'vt-copy') {
+        const r = S.about.viTri[+a.dataset.j];
+        navigator.clipboard.writeText(SITE + '?vt=' + r.ma).then(() => toast('Đã sao chép link'), () => toast('Không sao chép được — hãy bôi đen link rồi Cmd+C', true));
+      } else if (act === 'case-tpl') {
+        p.caseStudy = CASE_TPL; setDirty(); renderForm(tab);
       } else if (act === 'cv-del') {
         if (!confirm('Bỏ nút "Tải CV" khỏi website?\n\nFile PDF vẫn còn trong máy, không bị xoá.')) return;
         S.about.cv = ''; setDirty(); refreshMedia();
@@ -760,7 +833,7 @@
   });
 
   // ---------- Chọn / kéo thả file ----------
-  const isVideoKind = (kind) => kind === 'video';
+  const isVideoKind = (kind) => kind === 'video' || kind === 'reel';
   function pick(kind) {
     const inp = document.createElement('input');
     inp.type = 'file';
@@ -783,7 +856,7 @@
   addEventListener('drop', (e) => e.preventDefault());
 
   async function handleFiles(kind, files) {
-    const target = kind === 'deco' ? S.trangTri : kind === 'cv' ? S.about : S[tab][sel[tab]];
+    const target = kind === 'deco' ? S.trangTri : kind === 'cv' ? S.about : kind === 'reel' ? S.thongTin : S[tab][sel[tab]];
     if (!target) return;
     const list = kind === 'anh' ? files : files.slice(0, 1);
     for (const file of list) {
@@ -799,6 +872,7 @@
         if (kind === 'anh') target.anh.push(r.loai === 'video' ? r.video : r.duongDan);
         else if (kind === 'bia') target.anhBia = r.duongDan;
         else if (kind === 'cv') target.cv = r.duongDan;
+        else if (kind === 'reel') Object.assign(target, { showreel: r.video, anhShowreel: r.anhBia || '' });
         else if (kind === 'deco') {
           // ảnh mới: polaroid giữa vùng, lệch nhẹ; tự chọn để chỉnh luôn
           target[decoZone].push({ src: r.duongDan, x: 60, y: 50, w: 14, xoay: -4, kieu: 'polaroid', chu: '', lop: 'truoc' });

@@ -156,7 +156,30 @@ Bấm tab **Ảnh trang trí**:
 5. Bấm **📱 Điện thoại** để sắp xếp riêng cho màn hình điện thoại (kéo, đổi cỡ, hoặc tick *Ẩn ảnh này trên điện thoại*). Vị trí máy tính không bị ảnh hưởng.
 6. Xong bấm **Lưu thay đổi**.
 
-## 6. Xem kết quả và tắt
+## 5h. Showreel, Case study, tiêu đề theo vị trí ứng tuyển
+
+**Showreel** — tab **Thông tin & liên hệ** → ô **Showreel**: kéo file video 45–60 giây vào. Video sẽ tự chạy (không tiếng) ngay dưới tên bạn ở trang chủ; người xem bấm "Xem showreel có tiếng" để nghe. Chưa có showreel thì ô này ẩn trên web.
+
+**Case study** — tab **Video** → chọn video → ô **Case study** (dưới "Chú thích chi tiết"). Video nào có case study sẽ có nhãn đỏ "Case study" trên thẻ video; bài viết nằm bên trong bảng chi tiết (bấm vào video là thấy, có nút "Đọc case study ↓"). Cách viết:
+- `> Câu mở` — câu chữ to ở đầu bài
+- `- Nhãn: nội dung` — dòng thông tin (Khách hàng, Vai trò, Năm…)
+- `## Tiêu đề phần` — Bài toán, Hướng tiếp cận, Kết quả…
+- `1. Câu đầu in đậm. Phần giải thích` — các quyết định có đánh số
+- `![chú thích](assets/…/ten-anh.jpg)` — ảnh minh hoạ; 2–3 dòng ảnh liền nhau sẽ xếp cạnh nhau
+Chưa biết bắt đầu thì bấm **Chèn khung mẫu**.
+
+**Tiêu đề theo vị trí ứng tuyển** — tab **About me** → "Tiêu đề theo vị trí ứng tuyển". Mỗi dòng có một link riêng (nút **Sao chép link**):
+- `phanboianh.github.io/?vt=editor` → tiêu đề "Video Editor", video lên trước
+- `phanboianh.github.io/?vt=bienkich` → "Scriptwriter & Concept Creator", video lên trước
+- `phanboianh.github.io/?vt=design` → "Graphic Designer & Illustrator", Design lên trước
+Nộp vị trí nào thì dán đúng link đó vào CV/email. Link thường (không có `?vt=`) vẫn như cũ.
+
+## 5i. Tiếng Anh (nút VI / EN)
+
+Trên menu web có nút **VI / EN**. Người xem bấm EN là cả web chuyển sang tiếng Anh. Muốn gửi thẳng bản tiếng Anh thì dùng link `phanboianh.github.io/?lang=en`.
+Sửa chữ tiếng Anh: trong Trình chỉnh sửa, mỗi sản phẩm và tab About me có khối **🇬🇧 Tiếng Anh** (bấm để mở). Ô tiếng Anh nào để trống thì web hiện chữ tiếng Việt ở chỗ đó. Khi thêm sản phẩm mới, nhớ điền cả phần tiếng Anh.
+
+
 
 - Bấm **Xem website ↗** để mở website trong tab mới. Nếu đang mở sẵn, bấm **⌘ Command + R** để tải lại.
 - Trong form của từng sản phẩm có nút **Xem trên web ↗**, mở thẳng trang chú thích của sản phẩm đó. Nhớ **Lưu trước** rồi mới bấm.

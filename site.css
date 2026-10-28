@@ -408,3 +408,68 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
   .work { padding-top: 50px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .line > span, [data-reveal] { transform: none; opacity: 1; } }
+
+/* ---------- SHOWREEL đầu trang chủ ---------- */
+.reel { padding: 0 var(--pad); margin-top: -10px; }
+.reel-in { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+.reel video { width: 100%; height: 100%; object-fit: cover; }
+.reel-btn { position: absolute; right: 22px; top: 20px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 99px; color: #fff; background: rgba(0, 0, 0, .45); border: 1px solid rgba(255, 255, 255, .6); backdrop-filter: blur(6px); transition: background .3s, border-color .3s; }
+.reel-btn:hover { background: var(--accent); border-color: var(--accent); }
+.reel.on .reel-btn { display: none; }
+.reel.on video { object-fit: contain; }
+
+/* ---------- CASE STUDY: thẻ nhỏ ở trang chủ (xếp cạnh nhau) ---------- */
+.cs-sec { padding-bottom: 0; }
+.cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 0 var(--pad); }
+.ccard { display: block; cursor: pointer; }
+.cthumb { position: relative; aspect-ratio: 21 / 9; overflow: hidden; background: var(--card); }
+.cthumb img, .cthumb video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; transition: transform 1.2s var(--ease); }
+.ccard:hover .cthumb img { transform: scale(1.035); }
+.cbody { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 14px; }
+.cbody h3 { font: var(--tw) calc(clamp(20px, 2vw, 28px) * var(--ts))/1.05 var(--title); letter-spacing: calc(-.03em * var(--tls)); transition: color .4s; }
+.ccard:hover h3 { color: var(--accent); }
+.cbody .role { color: var(--mute); font-size: 10.5px; margin-top: 8px; }
+.cbody .read { flex: none; padding: 9px 14px; border: 1px solid var(--line); border-radius: 99px; transition: border-color .3s, color .3s; }
+.ccard:hover .read { border-color: var(--accent); color: var(--accent); }
+/* nhãn "Case study" trên thẻ video có case study */
+.cs-badge { position: absolute; top: 10px; right: 12px; padding: 5px 9px; background: var(--accent); color: #fff; font-size: 10px; }
+
+/* ---------- CASE STUDY: bài viết trong bảng chi tiết ---------- */
+.case { grid-column: 1; margin: 56px 0 40px; padding-top: 40px; border-top: 1px solid var(--line); max-width: 760px; }
+.case > .kick { color: var(--accent); }
+.case p { font-size: 16.5px; line-height: 1.8; color: var(--ink2); margin-bottom: 14px; }
+.case .cs-lede { font: var(--tw) calc(clamp(22px, 2.3vw, 32px) * var(--ts))/1.3 var(--title); letter-spacing: calc(-.02em * var(--tls)); color: var(--ink); margin: 18px 0 30px; }
+.cs-h { font: var(--tw) calc(clamp(24px, 2.4vw, 34px) * var(--ts))/1.1 var(--title); letter-spacing: calc(-.03em * var(--tls)); margin: 48px 0 16px; }
+.cs-facts { border-top: 1px solid var(--line); margin-bottom: 8px; }
+.cs-facts div { display: grid; grid-template-columns: 120px 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.cs-facts dt { color: var(--mute); }
+.cs-step { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 22px 0; border-top: 1px solid var(--line); }
+.cs-step > .mono { color: var(--accent); padding-top: 4px; }
+.cs-step h4 { font: 600 18px/1.45 var(--sans); color: var(--ink); margin-bottom: 8px; }
+.cs-step p { margin-bottom: 0; }
+.cs-imgs { display: grid; gap: 12px; margin: 22px 0 26px; }
+.cs-imgs.n2 { grid-template-columns: 1fr 1fr; }
+.cs-imgs.n3 { grid-template-columns: repeat(3, 1fr); }
+.cs-imgs img, .cs-imgs video { width: 100%; height: auto; display: block; }
+.cs-imgs.n2 img, .cs-imgs.n3 img { aspect-ratio: 16 / 10; object-fit: cover; }
+.cs-imgs figcaption { color: var(--mute); font-size: 10.5px; margin-top: 8px; }
+.cs-go { cursor: pointer; border-color: var(--accent); color: var(--accent); }
+.cs-go:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+@media (max-width: 900px) {
+  .case { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .cs-imgs.n3 { grid-template-columns: 1fr; }
+  .cases { grid-template-columns: 1fr; gap: 32px; }
+  .cs-facts div { grid-template-columns: 1fr; gap: 4px; }
+  .reel-btn { right: 10px; top: 10px; padding: 8px 12px; font-size: 10px; }
+}
+
+/* ---------- Nút đổi ngôn ngữ VI / EN ---------- */
+.nav .lang { display: inline-flex; align-items: center; gap: 4px; padding: 9px 2px; color: var(--mute); cursor: pointer; }
+.nav .lang b { font-weight: inherit; transition: color .3s; }
+.nav .lang b.on { color: var(--ink); }
+.nav .lang i { font-style: normal; opacity: .5; }
+.nav .lang:hover b:not(.on) { color: var(--accent); }
+.reel-btn em { font-style: normal; }

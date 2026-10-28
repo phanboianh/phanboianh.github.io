@@ -12,3 +12,5 @@ __pycache__/
 
 # Bản gốc của video quá nặng (đã thay bằng bản nén trong assets/tai-len)
 tools/video-goc/
+showreel-src/
+VIDEOS/

@@ -1,25 +1,47 @@
 # HANDOVER — Website portfolio cá nhân (cập nhật 2026-10-24)
 
-## 0o. Menu (2026-10-26, chưa đăng)
+## 0r. Showreel bản CapCut (2026-10-28) — MỚI NHẤT
+- Người dùng muốn tự chỉnh showreel trong CapCut. Script `promo-video/scripts/showreel-capcut.py "<tên>"` tạo bản nháp CapCut (khuôn lấy từ bản nháp "Vlog Tet som - Huong C - Nhac" (video/nhạc/chuyển cảnh Mờ dần) và "Vlog Tet som - Huong C" (chữ)), đăng ký vào root_meta_info.json (có sao lưu .truoc-showreel-*.bak). Phải THOÁT CapCut trước khi chạy; tên đã có thì script từ chối.
+- Đã tạo bản nháp **"Showreel Phan Boi Anh 2026"** (1920×1080, 55,29 s, 33 cảnh trên track chính + track phủ viền đen 2.39:1/chớp trắng + 16 lớp chữ Be Vietnam Pro + nhạc đã cắt). Media ở ~/Movies/ShowreelAnh (video gốc, lop-phu/*.png, nhac/). Mỗi cảnh trỏ file gốc + điểm vào nên kéo mép được. CapCut đã liệt kê bản nháp, CHƯA xác nhận người dùng mở được.
+- Bản CapCut đã có cảnh NMLL + Quên Đi (2 MV người dùng tải vào VIDEOS/ bằng YTSave). Bản trên web (assets/video/showreel-2026.mp4, Remotion) CHƯA có 2 MV này — người dùng xuất từ CapCut rồi kéo vào ô Showreel trong Trình chỉnh sửa.
+
+## 0q. Case study gọn + VI/EN + showreel thật (2026-10-28 chiều, chưa đăng)
+- Người dùng ĐỔI Ý: giờ muốn có nút tiếng Anh cho cả web, và muốn mục Case study ở trang chủ nhưng gọn: 2 thẻ nhỏ cạnh nhau (khung 21:9), nằm TRÊN Selected work (#cases, không có data-sec nên luôn ở trên).
+- Song ngữ: site.js đầu file đọc `?lang=en` hoặc localStorage 'lang', rồi useEn() thay mọi ô `x` bằng `x_en` nếu có (đệ quy toàn PORTFOLIO), nên phần vẽ không phải sửa. Chữ cố định trong HTML dùng `data-en="…"`; chuỗi trong JS dùng `L(vi, en)`. Nút `.lang` (VI / EN) chèn vào menu bằng JS; bấm thì đổi và tải lại trang (thêm ?lang=en vào link). Đã dịch toàn bộ nội dung (86 ô *_en, cả 2 case study). Trình chỉnh sửa: khối "🇬🇧 Tiếng Anh" (details.en-box) trong form Video/Design và tab About me; các hàng About có ô 🇬🇧. Chưa có ô EN cho nhãn liên kết ở tab Thông tin (chỉ "Khu vực" đã dịch sẵn trong dữ liệu).
+- Showreel: dựng bằng Remotion trong `promo-video/` → composition **Showreel** (src/showreel/Showreel.tsx + edl.json danh sách cảnh). `python3 scripts/showreel-cat-canh.py` cắt cảnh từ portfolio-web/VIDEOS + assets/tai-len vào public/showreel/ và ghép nhạc; `npx remotion render src/index.ts Showreel out/showreel.mp4 --crf 18`. Bản web nén lại: assets/video/showreel-2026.mp4 (23 MB) + showreel-2026-bia.jpg.
+- Nhạc: "A New Life" — Eugenio Mininni, Mixkit (Mixkit Free License, không cần ghi nguồn), 127 BPM; đoạn 9.01–50.57 s nối 73.27–87 s; cú bùng nổ ở giây 15.12 của reel. Pixabay bị chặn bởi ô xác minh robot nên dùng Mixkit. File gốc ở showreel-src/nhac/ (gitignore).
+- Cấu trúc reel (người dùng duyệt hướng "Điện ảnh: chậm → bùng nổ"): tên trên nền đen → 01 Story 6 cảnh Lỡ/Và Tôi Đi khung 2.39:1 → chớp + viền mở → 02 Color & Motion 16 cảnh theo phách (LED, Mầm, Jimin…) → 03 Seen on screens (màn LED ga Seoul, "Korea · Thailand · Vietnam") → cao trào 6 phách → khung kết tên/nghề/website. Chưa có cảnh NMLL/Quên Đi (chỉ có ảnh, video ở YouTube).
+- VIDEOS/ (Mầm 231 MB) và showreel-src/ đã thêm vào .gitignore — KHÔNG đưa lên GitHub (giới hạn 100 MB).
+- LƯU Ý iCloud: Desktop đồng bộ iCloud, file có thể bị "dataless" (đẩy lên mây) → Remotion lỗi ETIMEDOUT. Tìm bằng `find public -flags +dataless`, cắt lại file đó.
+
+## 0p. Showreel + Case study + tiêu đề theo vị trí (2026-10-28, chưa đăng)
+- Làm theo nhận xét "3 điểm yếu" người dùng nhận từ Claude khác. Người dùng dặn: KHÔNG làm bản tiếng Anh, KHÔNG thêm thông tin liên hệ.
+- `caseStudy` (chuỗi) trên video/design: site.js `caseHTML()` hiểu `>` câu mở, `- Nhãn: x` (dl), `## ` tiêu đề, `1. ` bước (câu đầu in đậm), `![chú thích](src)` (ảnh liền nhau → .cs-imgs.n2/.n3). Bảng chi tiết chèn `<article class="case" id="case">` sau .p-m; nút "Đọc case study ↓" (data-case) và link `video.html#case-N` cuộn tới (P.toCase, 900 ms khi vào bằng link). 2026-10-28 (sau): người dùng KHÔNG muốn mục Case study riêng ở trang chủ → đã bỏ #cases/.ccard; chỉ giữ Selected work như cũ, case study đọc bên trong bảng chi tiết, thẻ video có .cs-badge. uuTien chỉ còn video|design.
+- Đã viết case study NMLL + Và Tôi Đi từ bản người dùng đưa (bỏ hết chỗ [điền]; số view lấy từ chú thích có sẵn). Khung hình Và Tôi Đi trích từ video bằng ffmpeg → `assets/case/va-toi-di-1..6.jpg` (đang dùng 1, 2, 3). Chú thích ảnh "Sau: đã thành designer" là mình đoán theo hình — cần người dùng xác nhận.
+- `thongTin.showreel` (+ anhShowreel): khối `#reel` dưới .vhero, tự chạy không tiếng, ẩn nếu trống/lỗi. Trình chỉnh sửa: tab Thông tin → ô Showreel (kind 'reel'). Đã xoá đường dẫn cũ assets/video/showreel.mp4 (file không tồn tại). CHƯA có showreel thật.
+- `about.viTri = [{ma, chucDanh, motCau, uuTien: case|video|design}]`; `?vt=ma` đổi #vh-role/#vh-line/title và đưa `[data-sec=uuTien]` lên đầu; nhớ bằng sessionStorage. Trình chỉnh sửa: tab About me → "Tiêu đề theo vị trí ứng tuyển" (ROWS kiểu 'sel', nút Sao chép link).
+- Sửa chữ: "hoành thành" → "hoàn thành", motCau thiếu chữ "viết", "Ánh đây !", "Thái Lan,..", khoảng trắng thừa. Và Tôi Đi vaiTro → "Biên kịch, Editor, Hỗ trợ quay" (khớp case study). Bản trước khi sửa: tools/sao-luu/noi-dung-*-truoc-case-study.js.
+
+## 0o. Menu (2026-10-26, đã đăng 27/10)
 - Menu chỉ còn "Video · Design" (chuyển trang; đã bỏ số 01/02/03 ở menu, nhãn tiêu đề và số đếm (07) cạnh tiêu đề) + nút viền vàng "Liên hệ" (.nav-cta, cuộn tới #contact cuối trang hiện tại). About không còn trên menu: nằm trong trang chủ (bấm logo "Ánh Phan"). Link cũ about.html / index.html#about vẫn cuộn tới About.
 
-## 0n. About gọn + CV PDF (2026-10-26, chưa đăng) — thay một phần 0m
+## 0n. About gọn + CV PDF (2026-10-26, đã đăng 27/10) — thay một phần 0m
 - Phần About trên trang chủ chỉ còn: about-top (tiêu đề + nút "Tải CV (PDF)" + tomTat + liên hệ), ab-nums, .xp-wrap 2 cột (kinh nghiệm / dự án: thời gian | nơi | vai trò), .cv-cta "Tải CV đầy đủ". Kỹ năng, công cụ, học vấn, ngôn ngữ, mục tiêu không còn hiện trên web (dữ liệu vẫn giữ trong tab About me).
 - about.cv = file PDF người dùng TỰ tải lên (tab About me → "File CV (PDF)"). Chưa có file thì nút Tải CV ẩn. KHÔNG tự tạo CV thay người dùng.
 - may-chu.py nhận .pdf (DOC_EXT, kiểm tra đầu file %PDF-, giữ nguyên, cảnh báo nếu > 20 MB). Cần khởi động lại Trình chỉnh sửa mới có tác dụng.
 - Logo = thongTin.logo || thongTin.ten ("Ánh Phan"). CSS thêm `[hidden]{display:none!important}`.
 
-## 0m. About gộp vào trang chủ, logo "AP Home" (2026-10-26, chưa đăng)
+## 0m. About gộp vào trang chủ, logo "AP Home" (2026-10-26, đã đăng 27/10)
 - index.html có `<section id="about">`: .about-top (data-deco="about": home-head, #ab-sum tomTat, #ab-contact) + ab-nums + kinh nghiệm, hoạt động, kỹ năng, công cụ, học vấn, ngôn ngữ, mục tiêu. site.js fillAbout() (trước đây là aboutPage). about.html chỉ còn tự chuyển về index.html#about. Menu "03 About" → index.html#about; vào bằng #about thì JS cuộn tới ngay (behavior instant).
 - Logo = thongTin.logo || 'AP Home' (Trình chỉnh sửa: ô "Chữ ở logo" thay cho "Tên hiển thị"). Vùng ảnh trang trí "Phần About" nằm ở index.html#about.
 - Ảnh polaroid About trên điện thoại đang che chữ "About me": người dùng cần kéo lại ở tab Ảnh trang trí → Phần About → 📱. Mình không sửa noi-dung.js vì lúc đó người dùng đang mở Trình chỉnh sửa.
 
-## 0l. Design bung ra (2026-10-26, bản thử, chưa đăng)
+## 0l. Design bung ra (2026-10-26, đã đăng 27/10)
 - design.html: page-head + #dfilter (Tất cả + mảng nào có sản phẩm) + #dgrid toàn bộ sản phẩm (dcard: ảnh bìa 4:5, tên, vai trò, mảng · năm). Bấm vào mở bảng chi tiết (#panel) giống Video. Hash #sp-<chỉ số gốc>; ?muc=… (link cũ) thì mở sẵn bộ lọc. Đã bỏ trang từng mục (subnav, cat-hero, cat-next không còn dùng).
 - site.js: makePanel({items,label,hash,body}) dùng chung cho Video và Design. Trang chủ: phần Design = 3 dcard có noiBat (đang tick: Pakamio, Mưa Đỏ, Mầm).
 - Trình chỉnh sửa: ô tick ⭐ Nổi bật cho cả Design. "Xem trên web" của Design → design.html#sp-i.
 
-## 0k. Trang chủ + trang con chung khuôn (2026-10-26) — MỚI NHẤT
+## 0k. Trang chủ + trang con chung khuôn (2026-10-26)
 - index.html = **Trang chủ** (data-page home): .vhero (tên/nghề/motCau + ảnh trang trí vùng `home`), "Selected work" (video có noiBat, tối đa 4, thẻ dẫn video.html#video-n), 4 mục Design, About ngắn (tomTat đoạn đầu + tên nơi làm + ab-nums), liên hệ.
 - video.html = trang Video (có panel), design.html, about.html đều dùng khuôn `.page-head` (kick "0X — Tên" màu nhấn, h1 = var(--page-title), mô tả). ab-hero h1 và cat-hero h1 cũng dùng --page-title. Logo về trang chủ. Menu: Video · Design · About · Contact.
 - trangTri.video đổi tên thành trangTri.home (Trình chỉnh sửa tự đổi dữ liệu cũ). Form video có ô tick ⭐ "Nổi bật ở trang chủ" (noiBat).
