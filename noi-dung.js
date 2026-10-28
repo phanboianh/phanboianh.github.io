@@ -665,10 +665,10 @@ window.PORTFOLIO = {
         "y": 50.5,
         "w": 14,
         "xoay": 7,
-        "xDT": 74.6,
-        "yDT": 80.6,
-        "wDT": 13,
-        "anDT": true
+        "xDT": 72.3,
+        "yDT": 83.2,
+        "wDT": 26,
+        "anDT": false
       },
       {
         "kieu": "polaroid",
@@ -679,10 +679,10 @@ window.PORTFOLIO = {
         "y": 70.1,
         "w": 12,
         "xoay": -6,
-        "xDT": 35.9,
-        "yDT": 80.7,
-        "wDT": 5,
-        "anDT": true
+        "xDT": 29.5,
+        "yDT": 74,
+        "wDT": 35.5,
+        "anDT": false
       }
     ],
     "about": [
