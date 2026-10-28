@@ -18,10 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500&family=Dancing+Script:wght@600&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610270041">
+<link rel="stylesheet" href="site.css?v=202610281647">
 <!-- nội dung + màu/font chọn trong Trình chỉnh sửa: nạp sớm để trang không bị nháy màu -->
-<script src="noi-dung.js?v=202610270041"></script>
-<script src="giao-dien.js?v=202610270041"></script>
+<script src="noi-dung.js?v=202610281647"></script>
+<script src="giao-dien.js?v=202610281647"></script>
 </head>
 <body data-page="home">
 
@@ -31,7 +31,7 @@
   <nav>
     <a href="video.html">Video</a>
     <a href="design.html">Design</a>
-    <a href="#contact" class="nav-cta">Liên hệ</a>
+    <a href="#contact" class="nav-cta" data-en="Contact">Liên hệ</a>
   </nav>
 </header>
 
@@ -42,19 +42,35 @@
   <p class="ab-line" id="vh-line"></p>
 </section>
 
+<!-- Showreel (tab "Thông tin & liên hệ" → Showreel): tự chạy không tiếng; chưa có file thì ẩn -->
+<section class="reel" id="reel" hidden>
+  <div class="reel-in">
+    <video muted loop playsinline autoplay preload="auto"></video>
+    <button class="reel-btn mono" type="button"><span>▶</span><em data-en="Watch with sound">Xem showreel có tiếng</em></button>
+  </div>
+</section>
+
+<!-- Case study: video nào có viết case study (tab Video → ô "Case study") hiện thành thẻ nhỏ, xếp cạnh nhau -->
+<section class="home-sec cs-sec" id="cases" hidden>
+  <div class="home-head" data-reveal>
+    <div><span class="mono kick">Case study</span><h2>Behind the work</h2></div>
+  </div>
+  <div class="cases" id="case-list"></div>
+</section>
+
 <!-- Video nổi bật (tick "Nổi bật ở trang chủ" trong Trình chỉnh sửa) -->
-<section class="home-sec">
+<section class="home-sec" data-sec="video">
   <div class="home-head" data-reveal>
     <div><span class="mono kick">Video</span><h2>Selected work</h2></div>
-    <a class="mono more" href="video.html">Xem tất cả video →</a>
+    <a class="mono more" href="video.html" data-en="All videos →">Xem tất cả video →</a>
   </div>
   <div class="vgrid" id="vgrid"></div>
 </section>
 
-<section class="home-sec">
+<section class="home-sec" data-sec="design">
   <div class="home-head" data-reveal>
     <div><span class="mono kick">Design</span><h2>Design &amp; Illustration</h2></div>
-    <a class="mono more" href="design.html">Xem tất cả →</a>
+    <a class="mono more" href="design.html" data-en="See all →">Xem tất cả →</a>
   </div>
   <div class="dgrid" id="dgrid"></div>
 </section>
@@ -65,7 +81,7 @@
   <div class="about-top" data-deco="about">
     <div class="home-head" data-reveal>
       <div><span class="mono kick">About</span><h2>About me</h2></div>
-      <a class="mono more cv-btn" id="cv-top" target="_blank" rel="noopener" hidden>Tải CV (PDF) ↓</a>
+      <a class="mono more cv-btn" id="cv-top" target="_blank" rel="noopener" hidden data-en="Download CV (PDF) ↓">Tải CV (PDF) ↓</a>
     </div>
     <div class="home-about" id="ab-sum" data-reveal></div>
     <div class="ab-contact home-contact" id="ab-contact" data-reveal></div>
@@ -73,12 +89,12 @@
   <div class="ab-nums" id="ab-nums"></div>
   <!-- Kinh nghiệm dạng gọn: thời gian · nơi làm · vai trò (chi tiết nằm trong file CV) -->
   <div class="xp-wrap">
-    <div class="xp-col" data-reveal><h3 class="mono xp-h">Kinh nghiệm làm việc</h3><div id="ab-exp"></div></div>
-    <div class="xp-col" data-reveal><h3 class="mono xp-h">Dự án &amp; hoạt động</h3><div id="ab-act"></div></div>
+    <div class="xp-col" data-reveal><h3 class="mono xp-h" data-en="Experience">Kinh nghiệm làm việc</h3><div id="ab-exp"></div></div>
+    <div class="xp-col" data-reveal><h3 class="mono xp-h" data-en="Projects &amp; activities">Dự án &amp; hoạt động</h3><div id="ab-act"></div></div>
   </div>
   <div class="cv-cta" id="cv-cta" data-reveal hidden>
-    <p>Kỹ năng, công cụ, học vấn và mô tả công việc chi tiết có trong CV.</p>
-    <a class="p-link mono" id="cv-bottom" target="_blank" rel="noopener">Tải CV đầy đủ (PDF) ↓</a>
+    <p data-en="Skills, tools, education and full job descriptions are in my CV.">Kỹ năng, công cụ, học vấn và mô tả công việc chi tiết có trong CV.</p>
+    <a class="p-link mono" id="cv-bottom" target="_blank" rel="noopener" data-en="Download full CV (PDF) ↓">Tải CV đầy đủ (PDF) ↓</a>
   </div>
 </section>
 
@@ -92,6 +108,6 @@
 
 <div class="cursor" id="cursor"><b>XEM</b></div>
 
-<script src="site.js?v=202610270041"></script>
+<script src="site.js?v=202610281647"></script>
 </body>
 </html>

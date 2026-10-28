@@ -2,6 +2,25 @@
 // Khi thêm/bớt sản phẩm thì KHÔNG cần sửa file này — chỉ cần dùng Trình chỉnh sửa.
 (() => {
   const D = window.PORTFOLIO;
+  // ---------- Ngôn ngữ: Tiếng Việt / English ----------
+  // Chọn bằng nút VI · EN trên menu (nhớ trong trình duyệt) hoặc link …?lang=en
+  // Bản tiếng Anh: mỗi ô có thêm ô "<tên>_en" (Trình chỉnh sửa → phần 🇬🇧). Ô tiếng Anh để trống thì dùng tiếng Việt.
+  const LANG = (() => {
+    let l = new URLSearchParams(location.search).get('lang');
+    try { if (l) localStorage.setItem('lang', l); else l = localStorage.getItem('lang'); } catch (e) { /* trình duyệt chặn lưu trữ */ }
+    return l === 'en' ? 'en' : 'vi';
+  })();
+  const EN = LANG === 'en';
+  const L = (vi, en) => (EN ? en : vi);
+  document.documentElement.lang = LANG;
+  // Đổi toàn bộ nội dung sang tiếng Anh một lần: x.tieuDe = x.tieuDe_en (nếu có)
+  (function useEn(o) {
+    if (!EN || !o || typeof o !== 'object') return;
+    if (Array.isArray(o)) return o.forEach(useEn);
+    Object.keys(o).forEach((k) => {
+      if (k.endsWith('_en')) { if (String(o[k] ?? '').trim()) o[k.slice(0, -3)] = o[k]; } else useEn(o[k]);
+    });
+  })(D);
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -14,7 +33,7 @@
   const links = (t) => String(t || '').split(/\n+/).map((l) => l.trim()).filter(Boolean).map((l) => {
     const [a, b] = l.includes(' | ') ? l.split(' | ') : ['', l];
     const site = (SITES.find(([re]) => re.test(b)) || [])[1];
-    return { url: b.trim(), nhan: a.trim() || (site ? `Xem trên ${site}` : 'Xem thêm') };
+    return { url: b.trim(), nhan: a.trim() || (site ? L(`Xem trên ${site}`, `Watch on ${site}`) : L('Xem thêm', 'See more')) };
   });
   const ytId = (t) => { const m = String(t || '').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/); return m && m[1]; };
 
@@ -34,6 +53,18 @@
   const page = document.body.dataset.page;
 
   // ---------- Phần chung của mọi trang ----------
+  // Chữ cố định trong HTML: phần tử có data-en="…" đổi sang tiếng Anh
+  if (EN) $$('[data-en]').forEach((el) => { el.textContent = el.dataset.en; });
+  // Nút đổi ngôn ngữ (cạnh nút Liên hệ)
+  $('.nav nav').insertAdjacentHTML('beforeend', `<button class="lang mono" id="lang" title="${L('Switch to English', 'Chuyển sang tiếng Việt')}"><b class="${EN ? '' : 'on'}">VI</b><i>/</i><b class="${EN ? 'on' : ''}">EN</b></button>`);
+  $('#lang').addEventListener('click', () => {
+    const next = EN ? 'vi' : 'en';
+    try { localStorage.setItem('lang', next); } catch (e) { /* bỏ qua */ }
+    const u = new URL(location.href);
+    u.searchParams.delete('lang');
+    if (!EN) u.searchParams.set('lang', 'en'); // giữ ?lang=en trên link để gửi đi là mở đúng bản tiếng Anh
+    location.href = u.toString();
+  });
   $('#logo').textContent = T.logo || name; // nút về trang chủ (đổi chữ ở tab Thông tin & liên hệ)
   $('#copy').textContent = `© ${new Date().getFullYear()} ${name}`;
   $('#c1').textContent = T.tieuDeLienHe || '';
@@ -48,15 +79,43 @@
 
   // Khối chữ: thể loại, tên, chú thích, vai trò/công cụ
   function aside(p, isVideo) {
-    const cred = [['Thể loại', p.loai], ['Vai trò', p.vaiTro], ['Công cụ', p.congCu], ['Năm', p.nam], ['Thời lượng', isVideo && p.thoiLuong]]
+    const cred = [[L('Thể loại', 'Type'), p.loai], [L('Vai trò', 'Role'), p.vaiTro], [L('Công cụ', 'Tools'), p.congCu], [L('Năm', 'Year'), p.nam], [L('Thời lượng', 'Length'), isVideo && p.thoiLuong]]
       .filter(([, v]) => v).map(([t, v]) => `<div><dt class="mono">${t}</dt><dd>${esc(v)}</dd></div>`).join('');
     return `<aside class="p-t"><div class="in">
       <span class="mono kick">${[p.loai, p.nam].filter(Boolean).map(esc).join(' · ')}</span>
       <h2>${esc(p.tieuDe)}</h2>
       <div class="p-desc">${paras(p.chuThich || p.moTa)}</div>
       ${cred ? `<dl class="p-cred">${cred}</dl>` : ''}
-      ${links(p.link).length ? `<div class="p-links">${links(p.link).map((l) => `<a class="p-link mono" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.nhan)} ↗</a>`).join('')}</div>` : ''}
+      ${p.caseStudy || links(p.link).length ? `<div class="p-links">${p.caseStudy ? `<button class="p-link mono cs-go" data-case>${L('Đọc case study ↓', 'Read the case study ↓')}</button>` : ''}${links(p.link).map((l) => `<a class="p-link mono" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.nhan)} ↗</a>`).join('')}</div>` : ''}
     </div></aside>`;
+  }
+  // Case study (ô "Case study" trong Trình chỉnh sửa), viết bằng vài ký hiệu đơn giản:
+  //   > câu mở · - Nhãn: nội dung (dòng thông tin) · ## Tiêu đề phần · 1. Câu đầu in đậm. Phần giải thích
+  //   ![chú thích](đường dẫn ảnh) — nhiều dòng ảnh liền nhau thì xếp cạnh nhau
+  function caseHTML(t) {
+    let h = '', group = '', buf = [];
+    const flush = () => {
+      if (group === 'facts') h += `<dl class="cs-facts">${buf.join('')}</dl>`;
+      if (group === 'imgs') h += `<div class="cs-imgs n${buf.length}">${buf.join('')}</div>`;
+      group = ''; buf = [];
+    };
+    const add = (g, x) => { if (group !== g) flush(); group = g; buf.push(x); };
+    String(t || '').split('\n').map((l) => l.trim()).filter(Boolean).forEach((l) => {
+      let m;
+      if ((m = l.match(/^!\[(.*)\]\((.+)\)$/))) add('imgs', `<figure>${media(m[2], m[1])}${m[1] ? `<figcaption class="mono">${esc(m[1])}</figcaption>` : ''}</figure>`);
+      else if ((m = l.match(/^-\s*([^:]{1,30}):\s*(.+)$/))) add('facts', `<div><dt class="mono">${esc(m[1])}</dt><dd>${esc(m[2])}</dd></div>`);
+      else {
+        flush();
+        if ((m = l.match(/^##\s*(.+)$/))) h += `<h3 class="cs-h">${esc(m[1])}</h3>`;
+        else if ((m = l.match(/^>\s*(.+)$/))) h += `<p class="cs-lede">${esc(m[1])}</p>`;
+        else if ((m = l.match(/^(\d+)[.)]\s*(.+)$/))) {
+          const [, head, rest] = m[2].match(/^(.+?[.!?…])\s+(.+)$/) || [, m[2], ''];
+          h += `<div class="cs-step"><span class="mono">${pad(m[1])}</span><div><h4>${esc(head)}</h4>${rest ? `<p>${esc(rest)}</p>` : ''}</div></div>`;
+        } else h += `<p>${esc(l.replace(/^-\s*/, ''))}</p>`;
+      }
+    });
+    flush();
+    return `<article class="case" id="case"><span class="mono kick">Case study</span>${h}</article>`;
   }
   // Ảnh/video của một sản phẩm, theo bố cục chọn trong Trình chỉnh sửa:
   //   trinhChieu = khung cố định, lướt bằng mũi tên ← → (mặc định) · luoi = lưới 2 cột · doc = xếp dọc từng ảnh
@@ -80,7 +139,7 @@
     return `<div class="p-m g-show${fit}"${look}>
       <div class="g-frame">
         <div class="g-track">${list.map((a) => `<div class="g-slide">${isVid(a) ? '' : `<img class="g-bg" src="${esc(a)}" alt="" aria-hidden="true">`}${one(a, true)}</div>`).join('')}</div>
-        <button class="g-arrow g-prev" aria-label="Ảnh trước">←</button><button class="g-arrow g-next" aria-label="Ảnh sau">→</button>
+        <button class="g-arrow g-prev" aria-label="${L('Ảnh trước', 'Previous')}">←</button><button class="g-arrow g-next" aria-label="${L('Ảnh sau', 'Next')}">→</button>
         <span class="mono g-count">01 / ${pad(list.length)}</span>
       </div>
       <div class="g-thumbs">${list.map((a, k) => `<button data-k="${k}" class="${k ? '' : 'on'}" aria-label="Ảnh ${k + 1}">${isVid(a) ? '<span>▶</span>' : `<img src="${esc(a)}" alt="">`}</button>`).join('')}</div>
@@ -139,6 +198,7 @@
           <span class="mono idx">${pad(i + 1)}</span>
           ${v.thoiLuong ? `<span class="mono tc">${esc(v.thoiLuong)}</span>` : ''}
           <span class="play">▶</span>
+          ${v.caseStudy ? '<span class="mono cs-badge">Case study</span>' : ''}
         </div>
         <div class="info">
           <div><h3>${esc(v.tieuDe)}</h3>${v.vaiTro ? `<p class="mono role">${esc(v.vaiTro)}</p>` : ''}${v.moTa ? `<p>${esc(v.moTa)}</p>` : ''}</div>
@@ -159,16 +219,44 @@
   const numsHTML = (A) => (A.conSo || []).filter((c) => c.so).map((c) => `<div data-reveal><b>${esc(c.so)}</b><span>${esc(c.nhan)}</span></div>`).join('');
 
   const muc = new URLSearchParams(location.search).get('muc');
+  // Tiêu đề theo vị trí ứng tuyển (tab About me → "Tiêu đề theo vị trí"): gửi link …/?vt=editor
+  // Nhớ trong phiên xem, để bấm logo quay về trang chủ vẫn giữ đúng tiêu đề
+  const viTri = (() => {
+    const list = (D.about || {}).viTri || [];
+    let ma = new URLSearchParams(location.search).get('vt');
+    try { if (ma) sessionStorage.setItem('vt', ma); else ma = sessionStorage.getItem('vt'); } catch (e) { /* trình duyệt chặn lưu trữ */ }
+    return list.find((v) => v.ma && v.ma === ma) || null;
+  })();
   if (page === 'home') homePage(); else if (page === 'video') videoPage(); else designAll();
 
   // ======================= TRANG CHỦ =======================
-  // Tên to + nghề + ảnh trang trí · video nổi bật · 4 mục Design · giới thiệu ngắn + con số · liên hệ
+  // Tên to + nghề + showreel · video nổi bật · Design · About · liên hệ
   function homePage() {
     const A = D.about || {};
-    document.title = [A.hoTen || name, A.chucDanh].filter(Boolean).join(' — ');
+    const role = (viTri && viTri.chucDanh) || A.chucDanh, line = (viTri && viTri.motCau) || A.motCau;
+    document.title = [A.hoTen || name, role].filter(Boolean).join(' — ');
     $('#vh-name span').textContent = A.hoTen || name;
-    $('#vh-role').textContent = A.chucDanh || '';
-    $('#vh-line').textContent = A.motCau || '';
+    $('#vh-role').textContent = role || '';
+    $('#vh-line').textContent = line || '';
+    // Phần được ưu tiên theo vị trí (video / design) đưa lên ngay dưới showreel
+    if (viTri && viTri.uuTien) {
+      const first = $(`[data-sec="${viTri.uuTien}"]`), top = $('[data-sec]');
+      if (first && top && first !== top) top.before(first);
+    }
+    showreel();
+    // Case study: thẻ nhỏ xếp cạnh nhau, bấm vào mở video và cuộn tới bài viết
+    const cs = VS.map((v, i) => [v, i]).filter(([v]) => v.caseStudy);
+    if (cs.length) {
+      $('#cases').hidden = false;
+      $('#case-list').innerHTML = cs.map(([v, i]) => `
+        <a class="ccard" href="video.html#case-${i + 1}" data-cursor data-reveal>
+          <div class="cthumb">${media(v.bia, v.tieuDe)}<span class="mono cs-badge">Case study</span></div>
+          <div class="cbody">
+            <div><h3>${esc(v.tieuDe)}</h3><p class="mono role">${esc([v.loai, v.nam].filter(Boolean).join(' · '))}</p></div>
+            <span class="mono read">${L('Đọc →', 'Read →')}</span>
+          </div>
+        </a>`).join('');
+    }
     // Video nổi bật: những video tick "Nổi bật ở trang chủ" trong Trình chỉnh sửa (chưa tick cái nào thì lấy 4 video đầu)
     const picked = VS.map((v, i) => [v, i]).filter(([v]) => v.noiBat);
     const feat = (picked.length ? picked : VS.map((v, i) => [v, i])).slice(0, 4);
@@ -185,6 +273,24 @@
     }
   }
 
+  // Showreel đầu trang chủ (tab Thông tin & liên hệ → "Showreel"): tự chạy không tiếng, bấm để xem có tiếng
+  // Chưa có file (hoặc file lỗi) thì cả khối ẩn đi
+  function showreel() {
+    const box = $('#reel');
+    if (!box || !T.showreel) return;
+    const v = $('video', box), btn = $('.reel-btn', box);
+    v.addEventListener('error', () => { box.hidden = true; });
+    v.addEventListener('loadeddata', () => { box.hidden = false; });
+    if (T.anhShowreel) v.poster = T.anhShowreel;
+    v.src = T.showreel;
+    v.play().catch(() => {});
+    btn.addEventListener('click', () => {
+      v.muted = false; v.controls = true; v.loop = false; v.currentTime = 0;
+      v.play().catch(() => {});
+      box.classList.add('on');
+    });
+  }
+
   // ======================= DESIGN: tất cả sản phẩm + nút lọc =======================
   function designAll() {
     document.title = `Design — ${(D.about || {}).hoTen || name}`;
@@ -192,18 +298,18 @@
     let filt = CATS.some((c) => c.ma === muc) ? muc : 'all';
     const shown = () => DS.filter((p) => filt === 'all' || p.nhom === filt);
     const chips = () => {
-      $('#dfilter').innerHTML = [['all', 'Tất cả', DS.length], ...CATS.map((c) => [c.ma, c.ten, inCat(c.ma).length])].filter(([, , n]) => n)
+      $('#dfilter').innerHTML = [['all', L('Tất cả', 'All'), DS.length], ...CATS.map((c) => [c.ma, c.ten, inCat(c.ma).length])].filter(([, , n]) => n)
         .map(([m, t, n]) => `<button data-f="${esc(m)}" class="${m === filt ? 'on' : ''}">${esc(t)}<i>${n}</i></button>`).join('');
     };
     const draw = () => {
       chips();
-      $('#dgrid').innerHTML = shown().map((p, j) => dcard(p, j)).join('') || '<p class="none">Chưa có sản phẩm — thêm trong Trình chỉnh sửa.</p>';
+      $('#dgrid').innerHTML = shown().map((p, j) => dcard(p, j)).join('') || `<p class="none">${L('Chưa có sản phẩm — thêm trong Trình chỉnh sửa.', 'No work yet.')}</p>`;
       $$('#dgrid [data-reveal]').forEach((el) => el.classList.add('in'));
       $$('#dgrid video[data-auto]').forEach((v) => v.play().catch(() => {}));
     };
     $('#dfilter').addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (b) { filt = b.dataset.f; draw(); } });
     draw();
-    const P = makePanel({ items: shown, label: 'Design', hash: (p) => `sp-${p.i}`, body: (p) => `${aside(p, false)}${gallery(p.anh, p.tieuDe, p)}` });
+    const P = makePanel({ items: shown, label: 'Design', hash: (p) => `sp-${p.i}`, body: (p) => `${aside(p, false)}${gallery(p.anh, p.tieuDe, p)}${p.caseStudy ? caseHTML(p.caseStudy) : ''}` });
     $('#dgrid').addEventListener('click', (e) => { const c = e.target.closest('.dcard'); if (c) { e.preventDefault(); P.open(+c.dataset.i); } });
     // Mở thẳng một sản phẩm: design.html#sp-3 (nút "Xem trên web" trong Trình chỉnh sửa, thẻ ở trang chủ)
     const m = location.hash.match(/^#sp-(\d+)$/);
@@ -222,11 +328,12 @@
         : v.yt ? `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${v.yt}?rel=0" title="${esc(v.tieuDe)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
         : `<img src="${esc(v.bia)}" alt="${esc(v.tieuDe)}">`;
       const extra = (v.anh || []).filter((a) => a !== v.bia || v.yt);
-      return `${aside(v, true)}<div class="p-m">${main}</div>${gallery(extra, v.tieuDe, v)}`;
+      return `${aside(v, true)}<div class="p-m">${main}</div>${v.caseStudy ? caseHTML(v.caseStudy) : ''}${gallery(extra, v.tieuDe, v)}`;
     } });
     $('#vgrid').addEventListener('click', (e) => { const c = e.target.closest('.vcard'); if (c) P.open(+c.dataset.i); });
-    const m = location.hash.match(/^#video-(\d+)$/);
-    if (m) P.open(+m[1] - 1);
+    // #video-2 mở video số 2 · #case-2 mở video số 2 rồi cuộn tới phần case study
+    const m = location.hash.match(/^#(video|case)-(\d+)$/);
+    if (m) { P.open(+m[2] - 1); if (m[1] === 'case') P.toCase(900); } // đợi bảng trượt lên xong, video có kích thước
   }
 
   // Bảng chi tiết trượt lên (dùng chung cho Video và Design): ← → hoặc nút Trước/Tiếp để chuyển, Esc để đóng
@@ -264,14 +371,24 @@
       history.replaceState(null, '', location.pathname + location.search);
       setTimeout(() => { if (cur < 0) content.innerHTML = ''; }, 800);
     }
-    content.addEventListener('click', (e) => { const g = e.target.closest('[data-go]'); if (g) open(+g.dataset.go); });
+    // Cuộn bảng chi tiết tới phần case study (nút "Đọc case study ↓", link #case-n)
+    // (trừ vị trí của chính bảng vì bảng có thể đang trượt lên)
+    const toCase = (wait = 120) => setTimeout(() => {
+      const c = $('#case', content);
+      if (c) panel.scrollTo({ top: c.getBoundingClientRect().top - panel.getBoundingClientRect().top + panel.scrollTop - 80, behavior: 'smooth' });
+    }, wait);
+    content.addEventListener('click', (e) => {
+      const g = e.target.closest('[data-go]');
+      if (g) open(+g.dataset.go);
+      if (e.target.closest('[data-case]')) toCase();
+    });
     $('#p-close').addEventListener('click', close);
     addEventListener('keydown', (e) => {
       if (e.key === 'Escape') close();
       if (cur >= 0 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) open((cur + (e.key === 'ArrowRight' ? 1 : -1) + items().length) % items().length);
     });
     panel.addEventListener('mouseenter', () => $('#cursor').classList.remove('big'));
-    return { open, close };
+    return { open, close, toCase };
   }
 
   // ======================= PHẦN ABOUT (CV, nằm trong trang chủ) =======================

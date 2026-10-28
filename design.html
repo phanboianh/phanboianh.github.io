@@ -18,10 +18,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@300;400;500&family=Dancing+Script:wght@600&display=swap&subset=vietnamese" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610270041">
+<link rel="stylesheet" href="site.css?v=202610281647">
 <!-- nội dung + màu/font chọn trong Trình chỉnh sửa: nạp sớm để trang không bị nháy màu -->
-<script src="noi-dung.js?v=202610270041"></script>
-<script src="giao-dien.js?v=202610270041"></script>
+<script src="noi-dung.js?v=202610281647"></script>
+<script src="giao-dien.js?v=202610281647"></script>
 </head>
 <body data-page="design">
 
@@ -31,7 +31,7 @@
   <nav>
     <a href="video.html">Video</a>
     <a href="design.html" class="on">Design</a>
-    <a href="#contact" class="nav-cta">Liên hệ</a>
+    <a href="#contact" class="nav-cta" data-en="Contact">Liên hệ</a>
   </nav>
 </header>
 
@@ -39,7 +39,7 @@
 <header class="page-head" data-reveal>
   <span class="mono kick">Design</span>
   <h1>Design &amp; Illustration</h1>
-  <p>Poster, minh hoạ, motion và 3D. Bấm vào từng sản phẩm để xem chi tiết.</p>
+  <p data-en="Posters, illustration, motion and 3D. Click a piece to see the details.">Poster, minh hoạ, motion và 3D. Bấm vào từng sản phẩm để xem chi tiết.</p>
 </header>
 
 <!-- Tất cả sản phẩm Design trong một lưới; nút lọc theo mảng ở trên -->
@@ -58,12 +58,12 @@
 
 <!-- Bảng chi tiết sản phẩm -->
 <div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Chi tiết sản phẩm">
-  <div class="p-top"><span class="mono" id="p-where"></span><button class="p-close mono" id="p-close">Đóng <b>×</b></button></div>
+  <div class="p-top"><span class="mono" id="p-where"></span><button class="p-close mono" id="p-close"><span data-en="Close">Đóng</span> <b>×</b></button></div>
   <div id="p-content"></div>
 </div>
 
 <div class="cursor" id="cursor"><b>XEM</b></div>
 
-<script src="site.js?v=202610270041"></script>
+<script src="site.js?v=202610281647"></script>
 </body>
 </html>
