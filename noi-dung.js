@@ -90,7 +90,8 @@ window.PORTFOLIO = {
       "loai": "Illustration",
       "nam": "2026",
       "anh": [
-        "assets/img/halloween.jpg"
+        "assets/tai-len/artboard-1.png",
+        "assets/tai-len/copy-f75251a0-47e0-4db6-8665-7f78379af0cd.mp4"
       ],
       "moTa": "Dự án cá nhân - Halloween",
       "chuThich": "Concept Halloween dễ thương, tinh quái",
@@ -100,7 +101,9 @@ window.PORTFOLIO = {
       "noiBat": true,
       "moTa_en": "Personal project · Halloween",
       "chuThich_en": "A cute, mischievous Halloween concept",
-      "vaiTro_en": "Design"
+      "vaiTro_en": "Design",
+      "boCuc": "doc",
+      "khung": "4 / 5"
     },
     {
       "nhom": "graphic",
@@ -524,7 +527,7 @@ window.PORTFOLIO = {
       },
       {
         "noi": "Bunnie Studio - Design Commission",
-        "thoiGian": "3/2025 – 6/2026",
+        "thoiGian": "3/2025 – 6/2025",
         "vaiTro": "Freelancer - Video Editor",
         "moTa": "Dựng các video quảng bá cho màn hình LED do fan đóng góp kinh phí để làm dự án support nghệ sĩ.\nHỗ trợ thiết kế hình ảnh và đồ họa đi kèm cho các sản phẩm video.",
         "ketQua": "Video được trình chiếu trên màn hình LED tại Việt Nam, Hàn Quốc và Thái Lan.",
@@ -730,5 +733,7 @@ window.PORTFOLIO = {
       }
     ],
     "catAnh": {}
-  }
+  },
+  "chu": {},
+  "hienThi": {}
 };

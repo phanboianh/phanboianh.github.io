@@ -473,3 +473,6 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 .nav .lang i { font-style: normal; opacity: .5; }
 .nav .lang:hover b:not(.on) { color: var(--accent); }
 .reel-btn em { font-style: normal; }
+
+/* phần trang chủ bị tắt trong Trình chỉnh sửa (tab Trang chủ & chữ) */
+[data-tat] { display: none !important; }
