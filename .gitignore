@@ -14,3 +14,12 @@ __pycache__/
 tools/video-goc/
 showreel-src/
 VIDEOS/
+
+# File làm việc nội bộ: chỉ giữ trên máy, không đưa lên mạng
+HANDOVER.md
+HUONG-DAN.md
+chinh-sua.html
+chinh-sua.js
+*.command
+tools/
+style-tests/
