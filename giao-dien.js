@@ -23,7 +23,7 @@
     { ten: 'Cormorant Garamond', w: '300;400;500;600;700', tls: .4, serif: 1 },
     { ten: 'Lora', w: '400;500;600;700', tls: .3, serif: 1 },
   ];
-  const DEFAULT = { boMau: 'cinema', nen: '#0a0909', chu: '#eee8e1', nhan: '#ff3b5c', fontTieuDe: 'Arimo', fontChu: 'Be Vietnam Pro', coTieuDe: '1', doDam: '700', tiLeBia: '3 / 4.3',
+  const DEFAULT = { boMau: 'cinema', nen: '#0a0909', chu: '#eee8e1', nhan: '#ff3b5c', fontTieuDe: 'Arimo', fontChu: 'Be Vietnam Pro', coTieuDe: '1', doDam: '700', tiLeBia: '3 / 4.3', tiLeThe: '4 / 5', cotDesign: '3', tiLeVideo: '16 / 9', cotVideo: '2', videoDauLon: 'khong', kieuBiaVideo: 'video', vienDenVideo: 'hien',
     hieuUng: 'khong', mau2: '#3a1020', vienPhim: 'phim', mauVien: '#000000', saoSang: '0.5', saoMoKhiCuon: 'co' };
 
   const hex = (h) => { const m = String(h || '').replace('#', '').match(/^([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i); return m ? m.slice(1).map((x) => parseInt(x, 16)) : null; };
@@ -76,6 +76,11 @@
     set('--tw', String(g.doDam || 700));
     set('--tls', String(ft.tls));
     set('--cat-ratio', g.tiLeBia || DEFAULT.tiLeBia);
+    set('--dthumb-ratio', g.tiLeThe || DEFAULT.tiLeThe);
+    set('--dgrid-cols', String(g.cotDesign || DEFAULT.cotDesign));
+    set('--vthumb-ratio', g.tiLeVideo || DEFAULT.tiLeVideo);
+    set('--vgrid-cols', String(g.cotVideo || DEFAULT.cotVideo));
+    set('--v-first-span', g.videoDauLon === 'co' ? '1 / -1' : 'auto');
     loadFont(ft.ten); loadFont(fc.ten);
     if (ft.serif || fc.serif) loadFont(FONTS[0].ten);
     if (el === document.documentElement) el.style.colorScheme = light ? 'light' : 'dark';
@@ -118,7 +123,7 @@
     const inner = /\.(mp4|m4v|mov|webm)$/i.test(String(src).split(/[?#]/)[0])
       ? `<video src="${q(src)}" muted loop playsinline autoplay preload="metadata" data-auto ${pos}></video>`
       : `<img src="${q(src)}" alt="${q(alt)}" loading="lazy" decoding="async" ${pos}>`;
-    return `<div class="crop" style="aspect-ratio:${+c.r};${fill === 'h' ? 'height:100%' : 'width:100%'}">${inner}</div>`;
+    return `<div class="crop" style="aspect-ratio:${+c.r};${fill === 'h' ? 'height:100%' : fill === 'v' ? `width:min(100%, calc(84vh * ${+c.r}))` : 'width:100%'}">${inner}</div>`;
   }
 
   window.GIAO_DIEN = { PRESETS, FONTS, DEFAULT, apply, loadFont, cosmos, getCrop, cropImg, ratioNum };

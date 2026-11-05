@@ -171,9 +171,9 @@ body::after {
 /* Đầu trang Video (trang đầu tiên): tên to + nghề; mục "Video (07)" nhỏ lại thành nhãn */
 .vhero { position: relative; padding: 150px var(--pad) 40px; min-height: clamp(460px, 44vw, 600px); }
 .vhero h1 { display: inline-flex; align-items: center; gap: .25em; font: var(--tw) calc(clamp(48px, 8.5vw, 136px) * var(--ts))/.92 var(--title); letter-spacing: calc(-.055em * var(--tls)); margin-bottom: 14px; cursor: default; }
-.vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 24px; padding: 0 var(--pad); }
+.vgrid { display: grid; grid-template-columns: repeat(var(--vgrid-cols, 2), minmax(0, 1fr)); gap: 56px 24px; padding: 0 var(--pad); }
 .vcard { cursor: pointer; display: block; }
-.vcard .scr { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+.vcard .scr { position: relative; aspect-ratio: var(--vthumb-ratio, 16 / 9); overflow: hidden; background: #000; }
 .vcard .scr video, .vcard .scr img { height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .vcard:hover .scr video { transform: scale(1.035); }
 .vcard .idx { position: absolute; top: 12px; left: 14px; color: #fff; display: flex; gap: 8px; align-items: center; text-shadow: 0 1px 4px rgba(0, 0, 0, .7); }
@@ -186,6 +186,8 @@ body::after {
 .vcard:hover h3 { color: var(--accent); }
 .vcard .info p { margin-top: 8px; font-size: 14px; color: var(--mute); }
 .vcard .info .role { color: var(--accent); font-size: 10.5px; margin-top: 10px; }
+/* Trang Video: tuỳ chọn cho video đầu tiên to hết chiều ngang (Giao diện → Lưới trang Video) */
+body[data-page="video"] .vgrid .vcard:first-child { grid-column: var(--v-first-span, auto); }
 .vcard .kind { color: var(--mute); text-align: right; flex: none; max-width: 40%; }
 
 /* ---------- DESIGN: lưới tất cả sản phẩm + nút lọc ---------- */
@@ -195,9 +197,9 @@ body::after {
 .dfilter button:hover { border-color: var(--ink); }
 .dfilter button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .dfilter button i { font-style: normal; opacity: .55; margin-left: 6px; }
-.dgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 52px 22px; padding: 0 var(--pad); }
+.dgrid { display: grid; grid-template-columns: repeat(var(--dgrid-cols, 3), minmax(0, 1fr)); gap: 52px 22px; padding: 0 var(--pad); }
 .dcard { display: block; cursor: pointer; }
-.dthumb { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--card); }
+.dthumb { position: relative; aspect-ratio: var(--dthumb-ratio, 4 / 5); overflow: hidden; background: var(--card); }
 .dthumb img, .dthumb video { height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter .6s; filter: saturate(.92); }
 .dcard:hover .dthumb img, .dcard:hover .dthumb video { transform: scale(1.04); filter: saturate(1.05); }
 .dcard .info { display: flex; justify-content: space-between; align-items: start; gap: 14px; padding-top: 14px; }
@@ -476,3 +478,30 @@ footer.site { display: flex; justify-content: space-between; margin-top: 80px; c
 
 /* phần trang chủ bị tắt trong Trình chỉnh sửa (tab Trang chủ & chữ) */
 [data-tat] { display: none !important; }
+
+/* ---------- Ô bìa video: nền mờ khi "vừa khung", video chỉ chạy khi rê chuột ---------- */
+.vcard .scr { isolation: isolate; }
+.vcard .scr .bia-nen { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(22px) brightness(.55); transform: scale(1.15); z-index: -1; }
+.vcard .scr .bia-hover { position: absolute; inset: 0; width: 100%; opacity: 0; transition: opacity .35s; }
+.vcard.hov .scr .bia-hover { opacity: 1; }
+
+/* ---------- Bảng chi tiết: video dọc không to quá màn hình + các bố cục ---------- */
+.p-m > video { max-height: 84vh; object-fit: contain; }
+@media (min-width: 761px) {
+  .p-body.bc-trai { grid-template-columns: minmax(280px, 1fr) minmax(0, 1.55fr); }
+  .p-body.bc-trai .p-t { grid-column: 1; }
+  .p-body.bc-trai .p-m, .p-body.bc-trai .case { grid-column: 2; }
+  .p-body.bc-hep { grid-template-columns: minmax(0, .8fr) minmax(280px, 1fr); }
+  .p-body.bc-rong { grid-template-columns: minmax(0, 1fr); }
+  .p-body.bc-rong .p-t { grid-column: 1; grid-row: auto; }
+  .p-body.bc-rong .p-t .in { position: static; padding: 26px 0 30px; }
+  .p-body.bc-rong .p-desc p { max-width: 72ch; }
+}
+
+/* Ô video không bao giờ cao quá một màn hình: thừa chỗ dành cho menu và chữ dưới ô; ô tự thu hẹp và nằm giữa cột */
+.vgrid .vcard { --vr: var(--vthumb-ratio, 16 / 9); width: min(100%, max(280px, calc((100vh - 230px) * (var(--vr))))); justify-self: center; }
+
+/* Ẩn viền đen quanh video: video co theo đúng hình của nó, hai bên là nền trang */
+.vcard.khong-vien .scr { background: transparent; }
+.p-body.khong-vien .p-m > video { width: auto; background: transparent; display: block; margin: 0 auto; }
+.p-body.khong-vien .g-frame { background: transparent; }

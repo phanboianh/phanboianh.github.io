@@ -31,6 +31,8 @@
   const paras = (t) => String(t || '').split(/\n+/).filter((x) => x.trim()).map((x) => `<p>${esc(x)}</p>`).join('');
   const isVid = (s) => /\.(mp4|m4v|mov|webm)$/i.test(String(s || '').split(/[?#]/)[0]);
   const canHover = matchMedia('(hover: hover)').matches;
+  // Ảnh bìa sản phẩm Design: ảnh bìa riêng nếu có, không thì ảnh đầu tiên (bỏ qua video), cuối cùng mới là video
+  const coverOf = (p) => p.anhBia || (p.anh || []).find((a) => a && !isVid(a)) || (p.anh || [])[0] || '';
   // Ô "link" có thể ghi nhiều dòng, dạng "Nhãn | https://..." hoặc chỉ link
   const SITES = [[/youtu\.?be/, 'YouTube'], [/facebook\.com|fb\.watch/, 'Facebook'], [/drive\.google/, 'Google Drive'], [/behance\.net/, 'Behance'], [/tiktok\.com/, 'TikTok'], [/instagram\.com/, 'Instagram']];
   const links = (t) => String(t || '').split(/\n+/).map((l) => l.trim()).filter(Boolean).map((l) => {
@@ -139,7 +141,8 @@
     const R = GIAO_DIEN.ratioNum(p.khung);
     const one = (a, inShow) => {
       const c = GIAO_DIEN.getCrop(p, a);
-      return c ? GIAO_DIEN.cropImg(a, c, inShow && c.r < R ? 'h' : 'w', alt) : media(a, alt, 'controls');
+      // Video đã cắt riêng ở bố cục xếp dọc: giữ vừa một màn hình như video thường
+      return c ? GIAO_DIEN.cropImg(a, c, inShow && c.r < R ? 'h' : !inShow && isVid(a) && mode === 'doc' ? 'v' : 'w', alt) : media(a, alt, 'controls');
     };
     if (mode === 'doc' || list.length === 1) return list.map((a) => `<div class="p-m${fit}"${look}>${one(a)}</div>`).join('');
     // Lưới: mục nào bật "Cả hàng" trong Trình chỉnh sửa thì tách ra một hàng riêng, rộng hết khung
@@ -200,10 +203,25 @@
 
 
   // Thẻ video (trang Video: bấm mở bảng chi tiết · trang chủ: href dẫn sang trang Video, mở đúng dự án)
+  // Trong ô bìa video hiện gì (chọn ở tab Video → "Ô bìa"): kieuBia = video (tự chạy) · anh (ảnh đứng yên) · hover (ảnh, rê chuột mới chạy)
+  // datBia = phu (phủ kín, cắt mép) · vua (thấy trọn khung hình, nền mờ hai bên) · viTriBia = phần giữ lại khi phủ kín
+  const VI_TRI_BIA = { tren: '50% 0', duoi: '50% 100%', trai: '0 50%', phai: '100% 50%' };
+  // Ẩn viền đen quanh video: chọn riêng từng sản phẩm (vienDen), không thì theo tab Giao diện
+  const anVien = (v) => (v.vienDen || (D.giaoDien || {}).vienDenVideo) === 'an';
+  function vThumb(v) {
+    const kieu = v.kieuBia || (D.giaoDien || {}).kieuBiaVideo || 'video', vua = v.datBia === 'vua';
+    const style = vua ? 'object-fit:contain' : VI_TRI_BIA[v.viTriBia] ? `object-position:${VI_TRI_BIA[v.viTriBia]}` : '';
+    const nen = vua && v.bia ? `<img class="bia-nen" src="${esc(v.bia)}" alt="" aria-hidden="true">` : '';
+    const anh = () => `<img src="${esc(v.bia)}" alt="${esc(v.tieuDe)}" loading="lazy" decoding="async"${style ? ` style="${style}"` : ''}>`;
+    if (!v.video || (kieu === 'anh' && v.bia)) return nen + (v.video || v.bia ? anh() : '');
+    const src = esc(v.xemTruoc || v.video);
+    if (kieu === 'hover' && v.bia) return `${nen}${anh()}<video class="bia-hover" data-hover src="${src}" muted loop playsinline preload="none"${style ? ` style="${style}"` : ''}></video>`;
+    return nen + media(v.xemTruoc || v.video, v.tieuDe, v.anhBia ? `poster="${esc(v.anhBia)}"` : '', style);
+  }
   const vcard = (v, i, href = '') => `
-      <${href ? `a href="${href}"` : 'article'} class="vcard" data-i="${i}" data-cursor data-reveal>
-        <div class="scr">
-          ${v.video ? media(v.xemTruoc || v.video, v.tieuDe, v.anhBia ? `poster="${esc(v.anhBia)}"` : '') : media(v.bia, v.tieuDe)}
+      <${href ? `a href="${href}"` : 'article'} class="vcard${anVien(v) ? ' khong-vien' : ''}" data-i="${i}" data-cursor data-reveal${v.theRong || v.khungThe ? ` style="${v.theRong ? 'grid-column:1 / -1;' : ''}${v.khungThe ? `--vr:${esc(v.khungThe)}` : ''}"` : ''}>
+        <div class="scr"${v.khungThe ? ` style="aspect-ratio:${esc(v.khungThe)}"` : ''}>
+          ${vThumb(v)}
           <span class="mono idx">${pad(i + 1)}</span>
           ${v.thoiLuong ? `<span class="mono tc">${esc(v.thoiLuong)}</span>` : ''}
           <span class="play">▶</span>
@@ -218,7 +236,7 @@
   const catName = (ma) => (CATS.find((c) => c.ma === ma) || {}).ten || '';
   const dcard = (p, j, href = `#sp-${p.i}`) => `
       <a class="dcard" href="${href}" data-i="${j}" data-cursor data-reveal>
-        <div class="dthumb">${media(p.anh[0], p.tieuDe)}</div>
+        <div class="dthumb"${p.khungThe ? ` style="aspect-ratio:${esc(p.khungThe)}"` : ''}>${media(coverOf(p), p.tieuDe)}</div>
         <div class="info">
           <div><h3>${esc(p.tieuDe)}</h3>${p.vaiTro ? `<p class="mono role">${esc(p.vaiTro)}</p>` : ''}</div>
           <span class="mono kind">${esc([catName(p.nhom), p.nam].filter(Boolean).join(' · '))}</span>
@@ -254,7 +272,7 @@
     }
     showreel();
     // Case study: thẻ nhỏ xếp cạnh nhau (video và sản phẩm Design có viết case study, trừ cái bỏ tick "Hiện ở mục Case study")
-    const cs = [...VS.map((v, i) => ({ v, href: `video.html#case-${i + 1}`, bia: v.bia })), ...DS.map((p) => ({ v: p, href: `design.html#case-sp-${p.i}`, bia: p.anh[0] }))]
+    const cs = [...VS.map((v, i) => ({ v, href: `video.html#case-${i + 1}`, bia: v.bia })), ...DS.map((p) => ({ v: p, href: `design.html#case-sp-${p.i}`, bia: coverOf(p) }))]
       .filter((x) => x.v.caseStudy && x.v.caseTrangChu !== false);
     if (cs.length) {
       $('#cases').hidden = false;
@@ -360,7 +378,7 @@
       const n = L.length, prev = L[(i - 1 + n) % n], next = L[(i + 1) % n];
       where.textContent = `${label} — ${pad(i + 1)} / ${pad(n)}`;
       content.innerHTML = `
-        <div class="p-body">${body(v)}</div>
+        <div class="p-body${v.boCucChiTiet ? ` bc-${esc(v.boCucChiTiet)}` : ''}${anVien(v) ? ' khong-vien' : ''}">${body(v)}</div>
         ${n > 1 ? `<div class="p-nav">
           <button data-go="${(i - 1 + n) % n}"><span class="mono">← Trước</span><b>${esc(prev.tieuDe)}</b></button>
           <button data-go="${(i + 1) % n}"><span class="mono">Tiếp →</span><b>${esc(next.tieuDe)}</b></button>
@@ -490,6 +508,12 @@
   // Video không tiếng tự chạy khi thấy, tự dừng khi cuộn qua (đỡ nặng máy)
   const vio = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause())), { threshold: 0.35 });
   $$('video[data-auto]').forEach((v) => vio.observe(v));
+  // Ô bìa kiểu "rê chuột mới chạy video"
+  if (canHover) $$('video[data-hover]').forEach((v) => {
+    const card = v.closest('.vcard');
+    card.addEventListener('mouseenter', () => { card.classList.add('hov'); v.play().catch(() => {}); });
+    card.addEventListener('mouseleave', () => { card.classList.remove('hov'); v.pause(); });
+  });
 
   // Con trỏ tròn "XEM" trên những thứ bấm được (chỉ máy tính)
   if (canHover) {
